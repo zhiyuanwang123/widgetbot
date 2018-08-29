@@ -27,7 +27,7 @@
     "@widgetbot/react-embed": "^1.2.1",
     "color": "^3.0.0",
     "create-emotion": "^9.2.6",
-    "create-emotion-styled": "^9.2.6",
+    "create-emotion-styled": "^9.2.8",
     "immer": "^1.5.0",
     "react-markdown": "^3.4.1",
     "react-redux": "^5.0.7",
