@@ -4,7 +4,8 @@ import memoize from 'memoizee'
 import * as React from 'react'
 import emoji from 'react-easy-emoji'
 import { Base, Emote } from '@ui/shared/Emoji/elements'
-import { findFromKeyword } from '@ui/shared/Emoji/emojiMap'
+import { emojis } from '@services/Emoji'
+import Tooltip from 'rc-tooltip'
 
 interface Props {
   [key: string]: any
@@ -42,15 +43,32 @@ class Emoji extends React.PureComponent<Props> {
     // Resolve all text representations of emojis
     if (resolveNames) text = this.resolve(text)
 
-    const resolved = emoji(text, (code, string, key) => (
-      <Emote
-        innerRef={this.handleErrors}
-        src={`https://twitter.github.io/twemoji/2/svg/${code + '.svg'}`}
-        alt={string}
-        className={cx('emoji', className)}
-        key={key}
-      />
-    ))
+    const resolved = emoji(text, (code, string, key) => {
+      const emoji = emojis.get(string)
+
+      const emote = (
+        <Emote
+          innerRef={this.handleErrors}
+          src={`https://twitter.github.io/twemoji/2/svg/${code + '.svg'}`}
+          alt={string}
+          className={cx('emoji', className)}
+          key={key}
+        />
+      )
+
+      return emoji ? (
+        <Tooltip
+          placement="top"
+          overlay={`:${emoji.keywords[0]}:`}
+          mouseEnterDelay={0.6}
+          mouseLeaveDelay={0}
+        >
+          <span>{emote}</span>
+        </Tooltip>
+      ) : (
+        emote
+      )
+    })
 
     return this.jumbofy(resolved)
   }
@@ -62,7 +80,7 @@ class Emoji extends React.PureComponent<Props> {
 
   resolve = memoize((text: string) => {
     const parsed = text.replace(/:([^\s:]+?):/g, (match, name) => {
-      const result = findFromKeyword(name)
+      const result = emojis.get(name)
       return result ? result.emoji : match
     })
 

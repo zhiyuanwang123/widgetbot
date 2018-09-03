@@ -22,6 +22,7 @@ export const Name = styled('div')`
 `
 
 export const Text = styled('span')`
+  pointer-events: none;
   margin: 0;
   font-size: 12px;
   font-weight: 500;
@@ -44,7 +45,7 @@ export const Collapse = styled(FaAngleDown)`
   width: 20px;
   padding: 4px;
   color: inherit;
-  & * {
+  * {
     color: inherit;
   }
 `
