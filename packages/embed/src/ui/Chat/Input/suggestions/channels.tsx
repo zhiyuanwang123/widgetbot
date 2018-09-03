@@ -24,7 +24,12 @@ const Channels: Suggestion<any /*Channel*/> = {
   description: query => (
     <Description>
       Text Channels
-      {query && [` matching `, <strong>{`#${query}`}</strong>]}
+      {query ? (
+        <React.Fragment>
+          {` matching `}
+          <strong>{`#${query}`}</strong>
+        </React.Fragment>
+      ) : null}
     </Description>
   ),
 

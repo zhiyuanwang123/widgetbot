@@ -57,9 +57,22 @@ class Chat extends React.PureComponent<withI18nProps> {
                 query={GET_CHANNEL_NAME}
                 variables={{ channel }}
               >
-                {a => {
-                  console.log(a)
-                  return null
+                {({ data }) => {
+                  const channel = data && data.channel && data.channel.name
+
+                  return (
+                    <Input
+                      onChange={this.onChange.bind(this)}
+                      onSubmit={this.onSubmit.bind(this)}
+                      innerRef={ref => (this.input = ref)}
+                      innerProps={{
+                        // TODO: FIX
+                        placeholder: channel
+                          ? i18n.t`Message #${channel}`
+                          : null
+                      }}
+                    />
+                  )
                 }}
               </Query>
             )}

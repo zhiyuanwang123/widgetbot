@@ -1,6 +1,6 @@
 query ChannelName($channel: Snowflake!) {
   channel(id: $channel) {
-    name @defer
+    name
     id
   }
 }

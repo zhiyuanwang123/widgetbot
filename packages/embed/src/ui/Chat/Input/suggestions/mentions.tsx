@@ -23,7 +23,12 @@ const Mentions: Suggestion<any /*Member*/> = {
   description: query => (
     <Description>
       Members
-      {query && [` matching `, <strong>{`@${query}`}</strong>]}
+      {query ? (
+        <React.Fragment>
+          {` matching `}
+          <strong>{`@${query}`}</strong>
+        </React.Fragment>
+      ) : null}
     </Description>
   ),
 

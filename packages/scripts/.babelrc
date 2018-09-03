@@ -9,7 +9,18 @@
     "react",
     "stage-0"
   ],
-  "plugins": ["syntax-dynamic-import", "macros", "preval"],
+  "plugins": [
+    "preval",
+    "syntax-dynamic-import",
+    "macros",
+    [
+      "babel-plugin-transform-builtin-extend",
+      {
+        "globals": ["Error", "Array"],
+        "approximate": true
+      }
+    ]
+  ],
   "env": {
     "development": {
       "plugins": [

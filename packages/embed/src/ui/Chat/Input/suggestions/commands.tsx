@@ -38,7 +38,12 @@ const Commands: Suggestion<Command> = {
   description: query => (
     <Description>
       Commands
-      {query && [` matching `, <strong>{`/${query}`}</strong>]}
+      {query ? (
+        <React.Fragment>
+          {` matching `}
+          <strong>{`/${query}`}</strong>
+        </React.Fragment>
+      ) : null}
     </Description>
   ),
 

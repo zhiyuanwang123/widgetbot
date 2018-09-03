@@ -6,6 +6,9 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 module.exports = function override(config, env) {
   const loaders = config.module.rules[1].oneOf
 
+  const jsRule = loaders[1]
+  delete jsRule.options.babelrc
+
   const tsRule = loaders[2]
   tsRule.use.unshift('babel-loader')
 

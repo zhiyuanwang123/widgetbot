@@ -13,6 +13,7 @@ interface Props {
 
 const MAX_SUGGESTIONS = 15
 
+@autobind
 class EmojiSuggestions extends React.Component<Props> {
   state = {
     selected: 0,
@@ -53,7 +54,6 @@ class EmojiSuggestions extends React.Component<Props> {
     this.props.onSelect(suggestions[selected])
   }
 
-  @autobind
   focus(suggestion: HTMLElement) {
     if (suggestion && !this.mouseEvent) {
       scrollIntoView(suggestion, {
@@ -77,8 +77,9 @@ class EmojiSuggestions extends React.Component<Props> {
             selected={index === selected}
             innerRef={index === selected ? this.focus : null}
             onClick={() => this.props.onSelect(suggestion)}
-            onMouseOver={() => {
+            onMouseEnter={e => {
               this.setState({ selected: index })
+
               this.mouseEvent = true
             }}
             children={handler.suggestion(suggestion)}

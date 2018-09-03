@@ -4,19 +4,10 @@ import * as React from 'react'
 
 import { Description, Icon, Info, Name } from '../elements'
 import { Suggestion } from '../types'
+import { emojis as $emojis } from '@services/Emoji'
 
 const Emojis: Suggestion<Emoji> = {
-  getSuggestions: query =>
-    matchSorter([...emojis], query, {
-      keys: [
-        {
-          minRanking: matchSorter.rankings.STRING_CASE_ACRONYM,
-          maxRanking: matchSorter.rankings.STARTS_WITH,
-          threshold: matchSorter.rankings.STARTS_WITH,
-          key: 'keywords'
-        }
-      ]
-    }),
+  getSuggestions: query => $emojis.query(query),
   extract: query =>
     query.length > 2 &&
     query[0] === ':' &&
@@ -28,7 +19,12 @@ const Emojis: Suggestion<Emoji> = {
   description: query => (
     <Description>
       Emoji
-      {query && [` matching `, <strong>{`:${query}`}</strong>]}
+      {query ? (
+        <React.Fragment>
+          {` matching `}
+          <strong>{`:${query}`}</strong>
+        </React.Fragment>
+      ) : null}
     </Description>
   ),
 
