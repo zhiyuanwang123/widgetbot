@@ -17,14 +17,6 @@ function parserFor(rules, returnAst?) {
   )
   return memoize(
     (input = '', inline = true, state = {}, transform = null) => {
-      if (typeof input !== 'string') {
-        console.error(
-          `[MARKDOWN_PARSE_ERROR] Expected type 'string', got`,
-          input
-        )
-        input = 'MARKDOWN_PARSE_ERROR'
-      }
-
       if (!inline) {
         input += '\n\n'
       }
