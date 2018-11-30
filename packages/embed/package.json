@@ -81,7 +81,7 @@
     "apollo-link-retry": "^2.2.4",
     "apollo-link-state": "^0.4.1",
     "apollo-link-ws": "^1.0.8",
-    "autobind-decorator": "^2.1.0",
+    "autobind-decorator": "^2.4.0",
     "babel-polyfill": "^6.26.0",
     "color": "^3.0.0",
     "emotion": "^9.2.8",
