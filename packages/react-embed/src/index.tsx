@@ -68,6 +68,7 @@ class WidgetBot extends React.PureComponent<IProps> {
           src={defer ? '' : this.state.url}
           ref={ref => (this.api.iframe = ref)}
           style={Embed}
+          title="Discord chat embed"
         />
       </div>
     )
