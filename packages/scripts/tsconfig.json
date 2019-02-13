@@ -1,9 +1,17 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      //"@widgetbot/*": ["packages/*/src"]
-    }
-  }
+    "baseUrl": "."
+  },
+  "references": [
+    { "path": "../react-embed" },
+    { "path": "../crate" },
+    { "path": "../crate-cloudflare" },
+    { "path": "../embed-api" },
+    { "path": "../html-embed" },
+    { "path": "../react-embed" },
+    { "path": "../scripts" },
+    { "path": "../../src/embed" },
+    { "path": "../../src/server" }
+  ]
 }

@@ -1239,11 +1239,6 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/graphql@0.12.6":
-  version "0.12.6"
-  resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.12.6.tgz#3d619198585fcabe5f4e1adfb5cf5f3388c66c13"
-  integrity sha512-wXAVyLfkG1UMkKOdMijVWFky39+OD/41KftzqfX1Oejd0Gm6dOIKjCihSVECg6X7PHjftxXmfOKA/d1H79ZfvQ==
-
 "@types/graphql@^0.13.4":
   version "0.13.4"
   resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.13.4.tgz#55ae9c29f0fd6b85ee536f5c72b4769d5c5e06b1"
@@ -2436,16 +2431,7 @@ apollo-link-ws@^1.0.14:
   dependencies:
     apollo-link "^1.2.8"
 
-apollo-link@^1.0.0, apollo-link@^1.2.1:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-1.2.2.tgz#54c84199b18ac1af8d63553a68ca389c05217a03"
-  integrity sha512-Uk/BC09dm61DZRDSu52nGq0nFhq7mcBPTjy5EEH1eunJndtCaNXQhQz/BjkI2NdrfGI+B+i5he6YSoRBhYizdw==
-  dependencies:
-    "@types/graphql" "0.12.6"
-    apollo-utilities "^1.0.0"
-    zen-observable-ts "^0.8.9"
-
-apollo-link@^1.2.3, apollo-link@^1.2.8:
+apollo-link@1.2.8, apollo-link@^1.0.0, apollo-link@^1.2.1, apollo-link@^1.2.3, apollo-link@^1.2.8:
   version "1.2.8"
   resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-1.2.8.tgz#0f252adefd5047ac1a9f35ba9439d216587dcd84"
   integrity sha512-lfzGRxhK9RmiH3HPFi7TIEBhhDY9M5a2ZDnllcfy5QDk7cCQHQ1WQArcw1FK0g1B+mV4Kl72DSrlvZHZJEolrA==
@@ -2537,7 +2523,7 @@ apollo-utilities@1.1.2, apollo-utilities@^1.0.1, apollo-utilities@^1.1.2:
     fast-json-stable-stringify "^2.0.0"
     tslib "^1.9.3"
 
-apollo-utilities@^1.0.0, apollo-utilities@^1.0.17, apollo-utilities@^1.0.8:
+apollo-utilities@^1.0.17, apollo-utilities@^1.0.8:
   version "1.0.17"
   resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.0.17.tgz#04cd22db5c5dba8dbd349e28b0d9f9f525ab8e8a"
   integrity sha512-Mm8pS48QVV/CUbcUFN5TmbkdjIJtYw99qVqbBHnIwL8x0H2RW0NpzASpC+5+qSxD1sKNLUl9pA6F5Et/0bbaVg==
@@ -19202,13 +19188,6 @@ zen-observable-ts@^0.8.15:
   version "0.8.15"
   resolved "https://registry.yarnpkg.com/zen-observable-ts/-/zen-observable-ts-0.8.15.tgz#6cf7df6aa619076e4af2f707ccf8a6290d26699b"
   integrity sha512-sXKPWiw6JszNEkRv5dQ+lQCttyjHM2Iks74QU5NP8mMPS/NrzTlHDr780gf/wOBqmHkPO6NCLMlsa+fAQ8VE8w==
-  dependencies:
-    zen-observable "^0.8.0"
-
-zen-observable-ts@^0.8.9:
-  version "0.8.9"
-  resolved "https://registry.yarnpkg.com/zen-observable-ts/-/zen-observable-ts-0.8.9.tgz#d3c97af08c0afdca37ebcadf7cc3ee96bda9bab1"
-  integrity sha512-KJz2O8FxbAdAU5CSc8qZ1K2WYEJb1HxS6XDRF+hOJ1rOYcg6eTMmS9xYHCXzqZZzKw6BbXWyF4UpwSsBQnHJeA==
   dependencies:
     zen-observable "^0.8.0"
 
