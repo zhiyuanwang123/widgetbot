@@ -37,6 +37,10 @@ popd
 pushd src/embed
 yarn build
 popd
+
+# WidgetBot has now been built at src/server/dist
+# simply edit & copy over data/config.template.yml to data/config.yml
+# and run `npm install; npm run start` to get it up
 ```
 
 ## Development
@@ -90,24 +94,6 @@ The GraphQL server uses [type-graphql](https://github.com/19majkel94/type-graphq
 
  - src      # This folder contains sources for stuff that it doesn't make sense
             # to publish on NPM. eg. the server & embed
-```
-
-```bash
-git clone https://github.com/widgetbot-io/widgetbot.git
-cd widgetbot
-
-# Install dependencies
-yarn
-
-# Build the server
-pushd src/server
-yarn build
-popd
-
-# Build the embed
-pushd src/embed
-yarn build
-popd
 ```
 
 ---
