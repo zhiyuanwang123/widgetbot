@@ -3,12 +3,12 @@ import { Snowflake } from '@widgetbot/discord.js'
 import { getGuildFromChannel } from '@utils'
 import { User } from '@app'
 
-import { getRepository } from '@services/Database'
 import { BansService } from '@services/Guild'
 import MessagingService from '@services/Messaging'
 import ProfilesService from '@services/Profiles'
 
 import Guild, { GuildGuest } from '@entities/Guild'
+import DatabaseService from '@services/Database'
 
 @Service('guild.guests')
 export class GuestsService {
@@ -21,16 +21,17 @@ export class GuestsService {
   @Inject(type => BansService)
   private bansService: BansService
 
-  private guildRepo = getRepository(Guild)
+  @Inject(type => DatabaseService)
+  private databaseService: DatabaseService
 
   /**
    * Gets a guest by their ID from a guild
    */
   public async get(id: Snowflake, guest: string): Promise<GuildGuest> {
-    const guild = await this.guildRepo.findOne({ id, 'guests.id': guest })
-    if (!guild) return null
+    const [guildGuest] = await this.databaseService.connection
+      .guild({ id })
+      .guests<GuildGuest[]>({ where: { id: guest } })
 
-    const guildGuest = guild.guests.find(g => g.id === guest)
     return guildGuest
   }
 
@@ -38,32 +39,28 @@ export class GuestsService {
    * Gets all the guests in the guild
    */
   public async getAll(id: string): Promise<GuildGuest[]> {
-    const guild = await this.guildRepo.findOne({
-      id,
-      guests: { $exists: true }
+    const guests = await this.databaseService.connection.guildGuests({
+      where: {
+        guild: {
+          id
+        }
+      }
     })
-    if (!guild) return []
 
-    return guild.guests
+    return guests
   }
 
   /**
-   * Adds a guest to a guild
+   * Adds a profile to a guild
    */
-  public async add(id: Snowflake, guest: string) {
-    const exists = !!(await this.guildRepo.findOne({ id, 'guests.id': guest }))
-    if (exists) return
-
-    const newGuest: GuildGuest = {
-      id: guest,
-      nickname: null
-    }
-
-    await this.guildRepo.updateOne(
-      { id },
-      { $addToSet: { guests: newGuest } },
-      { upsert: true }
-    )
+  public async add(id: Snowflake, profile: string) {
+    await this.databaseService.connection.createGuildGuest({
+      profile: {
+        connect: { id: profile }
+      },
+      nickname: null,
+      guild: { connect: { id } }
+    })
   }
 
   /**
@@ -73,12 +70,9 @@ export class GuestsService {
     await this.guildRepo.updateOne({ id }, { $pull: { guests: { id: guest } } })
   }
 
-  /**
-   * Adds the guest to the guild, and sets their nickname
-   */
-  public async setNickname(id: Snowflake, guest: string, nickname: string) {
+  public async setNickname(id: Snowflake, profile: string, nickname: string) {
     if (!nickname) nickname = null
-    await this.add(id, guest)
+    // await this.add(id, guest)
 
     await this.guildRepo.updateOne(
       { id, 'guests.id': guest },
