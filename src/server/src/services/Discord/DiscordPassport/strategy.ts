@@ -36,7 +36,7 @@ export default class Strategy extends OAuth2Strategy {
     this._oauth2.get(
       'https://discordapp.com/api/users/@me',
       accessToken,
-      // @ts-ignore
+
       (err, body, res) => {
         if (err) {
           return done(
@@ -45,7 +45,7 @@ export default class Strategy extends OAuth2Strategy {
         }
 
         try {
-          var parsedData = JSON.parse(body)
+          var parsedData = JSON.parse(body as string)
         } catch (e) {
           return done(new Error('Failed to parse the user profile.'))
         }
@@ -76,14 +76,13 @@ export default class Strategy extends OAuth2Strategy {
       this._oauth2.get(
         `https://discordapp.com/api/users/@me/${scope}`,
         accessToken,
-        // @ts-ignore
         (err, body, res) => {
           if (err)
             return cb(
               new InternalOAuthError(`Failed to fetch user's ${scope}`, err)
             )
           try {
-            var json = JSON.parse(body)
+            var json = JSON.parse(body as string)
           } catch (e) {
             return cb(new Error(`Failed to parse user's ${scope}`))
           }

@@ -59,6 +59,6 @@ module.exports = (overrides = {}) => ({
   devtool: 'inline-source-map',
   resolve: {
     plugins: [new TsConfigPathsPlugin()],
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js', '.mjs']
   }
 })

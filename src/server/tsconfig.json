@@ -1,4 +1,5 @@
 {
+  "extends": "../../packages/scripts/tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
     "esModuleInterop": true,
@@ -29,5 +30,6 @@
       "database": ["src/lib/database.ts"],
       "database/*": ["src/database/*"]
     }
-  }
+  },
+  "exclude": ["scripts", "dist"]
 }
