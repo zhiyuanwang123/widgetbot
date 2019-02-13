@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "outDir": "./dist/",
+    "target": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "baseUrl": ".",
+    "lib": ["dom", "es6", "esnext"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "rootDir": "src",
+    "paths": {
+      "@services/*": ["src/services/*"],
+      "@entities/*": ["src/entities/*"],
+      "@resolvers/*": ["src/resolvers/*"],
+      "@models/*": ["src/models/*"],
+      "@utils/*": ["src/utils/*"],
+      "@utils": ["src/utils/index"],
+      "@lib/*": ["src/lib/*"],
+
+      "@app": ["src/app/index.ts"],
+      "@app/*": ["src/app/*"],
+
+      "engine/*": ["src/engine/*"],
+      "engine": ["src/engine/index.ts"],
+
+      "database": ["src/lib/database.ts"],
+      "database/*": ["src/database/*"]
+    }
+  }
+}

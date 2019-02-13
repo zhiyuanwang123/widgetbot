@@ -1,0 +1,13 @@
+{
+  "files.exclude": {
+    // "**/node_modules": true
+    "scripts/webpack/.cache": true,
+    "yarn-error.log": true
+  },
+  "search.exclude": {
+    "**/.git": true,
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/tmp": true
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "WidgetBot": {
+      "schemaPath": "schema.graphql",
+      "extensions": {
+        "endpoints": {
+          "stable": "https://widgetbot.io/api/graphql",
+          "beta": "https://beta.widgetbot.io/api/graphql",
+          "dev": "http://localhost:7000/api/graphql"
+        }
+      }
+    }
+  }
+}
