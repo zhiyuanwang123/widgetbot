@@ -352,9 +352,14 @@ type GuildConnection {
 }
 
 input GuildCreateInput {
-  theme: ThemeCreateOneWithoutGuildInput
+  theme: ThemeCreateOneWithoutGuildsInput
   guests: GuildGuestCreateManyWithoutGuildInput
   bans: GuildBanCreateManyWithoutGuildInput
+}
+
+input GuildCreateManyWithoutThemeInput {
+  create: [GuildCreateWithoutThemeInput!]
+  connect: [GuildWhereUniqueInput!]
 }
 
 input GuildCreateOneWithoutBansInput {
@@ -367,18 +372,13 @@ input GuildCreateOneWithoutGuestsInput {
   connect: GuildWhereUniqueInput
 }
 
-input GuildCreateOneWithoutThemeInput {
-  create: GuildCreateWithoutThemeInput
-  connect: GuildWhereUniqueInput
-}
-
 input GuildCreateWithoutBansInput {
-  theme: ThemeCreateOneWithoutGuildInput
+  theme: ThemeCreateOneWithoutGuildsInput
   guests: GuildGuestCreateManyWithoutGuildInput
 }
 
 input GuildCreateWithoutGuestsInput {
-  theme: ThemeCreateOneWithoutGuildInput
+  theme: ThemeCreateOneWithoutGuildsInput
   bans: GuildBanCreateManyWithoutGuildInput
 }
 
@@ -531,6 +531,26 @@ type GuildPreviousValues {
   id: ID!
 }
 
+input GuildScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  AND: [GuildScalarWhereInput!]
+  OR: [GuildScalarWhereInput!]
+  NOT: [GuildScalarWhereInput!]
+}
+
 type GuildSubscriptionPayload {
   mutation: MutationType!
   node: Guild
@@ -550,16 +570,20 @@ input GuildSubscriptionWhereInput {
 }
 
 input GuildUpdateInput {
-  theme: ThemeUpdateOneWithoutGuildInput
+  theme: ThemeUpdateOneWithoutGuildsInput
   guests: GuildGuestUpdateManyWithoutGuildInput
   bans: GuildBanUpdateManyWithoutGuildInput
 }
 
-input GuildUpdateOneRequiredWithoutThemeInput {
-  create: GuildCreateWithoutThemeInput
-  update: GuildUpdateWithoutThemeDataInput
-  upsert: GuildUpsertWithoutThemeInput
-  connect: GuildWhereUniqueInput
+input GuildUpdateManyWithoutThemeInput {
+  create: [GuildCreateWithoutThemeInput!]
+  delete: [GuildWhereUniqueInput!]
+  connect: [GuildWhereUniqueInput!]
+  set: [GuildWhereUniqueInput!]
+  disconnect: [GuildWhereUniqueInput!]
+  update: [GuildUpdateWithWhereUniqueWithoutThemeInput!]
+  upsert: [GuildUpsertWithWhereUniqueWithoutThemeInput!]
+  deleteMany: [GuildScalarWhereInput!]
 }
 
 input GuildUpdateWithoutThemeDataInput {
@@ -567,7 +591,13 @@ input GuildUpdateWithoutThemeDataInput {
   bans: GuildBanUpdateManyWithoutGuildInput
 }
 
-input GuildUpsertWithoutThemeInput {
+input GuildUpdateWithWhereUniqueWithoutThemeInput {
+  where: GuildWhereUniqueInput!
+  data: GuildUpdateWithoutThemeDataInput!
+}
+
+input GuildUpsertWithWhereUniqueWithoutThemeInput {
+  where: GuildWhereUniqueInput!
   update: GuildUpdateWithoutThemeDataInput!
   create: GuildCreateWithoutThemeInput!
 }
@@ -657,7 +687,7 @@ type PageInfo {
 type Profile {
   id: ID!
   username: String!
-  avatarURL: String!
+  avatarURL: String
   connections(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connection!]
   email: String
 }
@@ -670,7 +700,7 @@ type ProfileConnection {
 
 input ProfileCreateInput {
   username: String!
-  avatarURL: String!
+  avatarURL: String
   connections: ConnectionCreateManyInput
   email: String
 }
@@ -703,7 +733,7 @@ enum ProfileOrderByInput {
 type ProfilePreviousValues {
   id: ID!
   username: String!
-  avatarURL: String!
+  avatarURL: String
   email: String
 }
 
@@ -840,15 +870,15 @@ type Subscription {
 
 type Theme {
   id: ID!
-  guild: Guild!
-  css: String!
+  guilds(where: GuildWhereInput, orderBy: GuildOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Guild!]
+  css: String
   colors: ThemeColors!
 }
 
 type ThemeColors {
-  primary: String!
-  accent: String!
-  background: String!
+  primary: String
+  accent: String
+  background: String
 }
 
 type ThemeColorsConnection {
@@ -858,9 +888,9 @@ type ThemeColorsConnection {
 }
 
 input ThemeColorsCreateInput {
-  primary: String!
-  accent: String!
-  background: String!
+  primary: String
+  accent: String
+  background: String
 }
 
 input ThemeColorsCreateOneInput {
@@ -888,9 +918,9 @@ enum ThemeColorsOrderByInput {
 }
 
 type ThemeColorsPreviousValues {
-  primary: String!
-  accent: String!
-  background: String!
+  primary: String
+  accent: String
+  background: String
 }
 
 type ThemeColorsSubscriptionPayload {
@@ -989,18 +1019,18 @@ type ThemeConnection {
 }
 
 input ThemeCreateInput {
-  guild: GuildCreateOneWithoutThemeInput!
-  css: String!
+  guilds: GuildCreateManyWithoutThemeInput
+  css: String
   colors: ThemeColorsCreateOneInput!
 }
 
-input ThemeCreateOneWithoutGuildInput {
-  create: ThemeCreateWithoutGuildInput
+input ThemeCreateOneWithoutGuildsInput {
+  create: ThemeCreateWithoutGuildsInput
   connect: ThemeWhereUniqueInput
 }
 
-input ThemeCreateWithoutGuildInput {
-  css: String!
+input ThemeCreateWithoutGuildsInput {
+  css: String
   colors: ThemeColorsCreateOneInput!
 }
 
@@ -1022,7 +1052,7 @@ enum ThemeOrderByInput {
 
 type ThemePreviousValues {
   id: ID!
-  css: String!
+  css: String
 }
 
 type ThemeSubscriptionPayload {
@@ -1044,7 +1074,7 @@ input ThemeSubscriptionWhereInput {
 }
 
 input ThemeUpdateInput {
-  guild: GuildUpdateOneRequiredWithoutThemeInput
+  guilds: GuildUpdateManyWithoutThemeInput
   css: String
   colors: ThemeColorsUpdateOneRequiredInput
 }
@@ -1053,23 +1083,23 @@ input ThemeUpdateManyMutationInput {
   css: String
 }
 
-input ThemeUpdateOneWithoutGuildInput {
-  create: ThemeCreateWithoutGuildInput
-  update: ThemeUpdateWithoutGuildDataInput
-  upsert: ThemeUpsertWithoutGuildInput
+input ThemeUpdateOneWithoutGuildsInput {
+  create: ThemeCreateWithoutGuildsInput
+  update: ThemeUpdateWithoutGuildsDataInput
+  upsert: ThemeUpsertWithoutGuildsInput
   delete: Boolean
   disconnect: Boolean
   connect: ThemeWhereUniqueInput
 }
 
-input ThemeUpdateWithoutGuildDataInput {
+input ThemeUpdateWithoutGuildsDataInput {
   css: String
   colors: ThemeColorsUpdateOneRequiredInput
 }
 
-input ThemeUpsertWithoutGuildInput {
-  update: ThemeUpdateWithoutGuildDataInput!
-  create: ThemeCreateWithoutGuildInput!
+input ThemeUpsertWithoutGuildsInput {
+  update: ThemeUpdateWithoutGuildsDataInput!
+  create: ThemeCreateWithoutGuildsInput!
 }
 
 input ThemeWhereInput {
@@ -1087,7 +1117,9 @@ input ThemeWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  guild: GuildWhereInput
+  guilds_every: GuildWhereInput
+  guilds_some: GuildWhereInput
+  guilds_none: GuildWhereInput
   css: String
   css_not: String
   css_in: [String!]

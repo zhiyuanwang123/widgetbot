@@ -7,8 +7,10 @@ import { BansService } from '@services/Guild'
 import MessagingService from '@services/Messaging'
 import ProfilesService from '@services/Profiles'
 
-import Guild, { GuildGuest } from '@entities/Guild'
 import DatabaseService from '@services/Database'
+import { GuildGuest } from '@widgetbot/database'
+
+const gql = String.raw
 
 @Service('guild.guests')
 export class GuestsService {
@@ -27,10 +29,10 @@ export class GuestsService {
   /**
    * Gets a guest by their ID from a guild
    */
-  public async get(id: Snowflake, guest: string): Promise<GuildGuest> {
+  public async get(id: Snowflake, profile: string) {
     const [guildGuest] = await this.databaseService.connection
       .guild({ id })
-      .guests<GuildGuest[]>({ where: { id: guest } })
+      .guests<GuildGuest[]>({ where: { profile: { id: profile } } })
 
     return guildGuest
   }
@@ -38,12 +40,10 @@ export class GuestsService {
   /**
    * Gets all the guests in the guild
    */
-  public async getAll(id: string): Promise<GuildGuest[]> {
+  public async getAll(id: string) {
     const guests = await this.databaseService.connection.guildGuests({
       where: {
-        guild: {
-          id
-        }
+        guild: { id }
       }
     })
 
@@ -66,18 +66,23 @@ export class GuestsService {
   /**
    * Clears the guest from a guild, resets nickname, total message count etc.
    */
-  public async remove(id: Snowflake, guest: string) {
-    await this.guildRepo.updateOne({ id }, { $pull: { guests: { id: guest } } })
+  public async remove(id: Snowflake, profile: string) {
+    await this.databaseService.connection.deleteManyGuildGuests({
+      guild: { id },
+      profile: { id: profile }
+    })
   }
 
   public async setNickname(id: Snowflake, profile: string, nickname: string) {
     if (!nickname) nickname = null
-    // await this.add(id, guest)
 
-    await this.guildRepo.updateOne(
-      { id, 'guests.id': guest },
-      { $set: { 'guests.$.nickname': nickname } }
-    )
+    await this.databaseService.connection.updateManyGuildGuests({
+      where: {
+        guild: { id },
+        profile: { id: profile }
+      },
+      data: { nickname }
+    })
   }
 
   /**
@@ -99,9 +104,9 @@ export class GuestsService {
    */
   public async sendMessage(channelID: Snowflake, user: User, content: string) {
     const guild = getGuildFromChannel(channelID)
-    const banned = await this.bansService.isUserBanned(guild, user.id, user.ip)
+    const ban = await this.bansService.checkBanned(guild, user.id, user.ip)
 
-    if (banned) throw `You have been banned!`
+    if (ban) throw `You have been banned!`
 
     const message = await this.messagingService.sendMessage(
       channelID,

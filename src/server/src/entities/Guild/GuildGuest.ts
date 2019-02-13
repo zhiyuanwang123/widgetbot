@@ -1,10 +1,10 @@
 import { Field, ObjectType } from 'type-graphql'
-import { Snowflake } from '@utils/scalars'
+import Profile from '@entities/Profile'
 
 @ObjectType()
 export class GuildGuest {
-  @Field(type => Snowflake)
-  id: string
+  @Field(type => Profile)
+  profile: Profile
 
   @Field({ nullable: true })
   nickname?: string
