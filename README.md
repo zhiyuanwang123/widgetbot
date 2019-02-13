@@ -19,6 +19,28 @@
 - Node.js 10+
 - Yarn
 
+### Building sources
+
+```bash
+git clone https://github.com/widgetbot-io/widgetbot.git
+cd widgetbot
+
+# Install dependencies
+yarn
+
+# Build the server
+pushd src/server
+yarn build
+popd
+
+# Build the embed
+pushd src/embed
+yarn build
+popd
+```
+
+---
+
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
