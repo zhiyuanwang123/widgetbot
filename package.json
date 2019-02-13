@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "src/*"
+    "src/*",
+    "scripts"
   ],
   "scripts": {
     "pull": "git stash && git pull && yarn && yarn build",

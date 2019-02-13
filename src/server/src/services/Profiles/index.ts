@@ -1,29 +1,27 @@
 import { Service, Inject } from 'typedi'
-import { getRepository, DocResult } from '@services/Database'
-import Profile from '@entities/Profile'
 import { Snowflake } from '@widgetbot/discord.js'
+import DatabaseService from '@services/Database'
 
 @Service('profiles')
 class ProfilesService {
-  private profileRepo = getRepository(Profile)
+  @Inject(type => DatabaseService)
+  public databaseService: DatabaseService
 
   public async get(id: string) {
-    if (!id) return null
-    const profile = await this.profileRepo.findById(id)
-    return profile
+    return await this.databaseService.connection.profile({ id })
   }
 
   public async create(username = 'Guest') {
-    const profile = await this.profileRepo.create({
-      username,
-      connections: []
+    return await this.databaseService.connection.createProfile({
+      username
     })
-
-    return profile
   }
 
-  public async setUsername(id: Snowflake, username: string) {
-    await this.profileRepo.findByIdAndUpdate(id, { $set: { username } })
+  public async changeUsername(id: Snowflake, username: string) {
+    return await this.databaseService.connection.updateProfile({
+      data: { username },
+      where: { id }
+    })
   }
 }
 

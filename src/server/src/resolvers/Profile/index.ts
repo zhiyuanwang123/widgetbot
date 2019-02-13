@@ -62,11 +62,11 @@ export class ProfileResolver /*implements ResolverInterface<Profile>*/ {
 
   @Mutation(type => Profile)
   @Authorized()
-  async setUsername(
+  async changeUsername(
     @Args() { username }: SetUsernameArgs,
     @Ctx() { user }: Context
   ) {
-    await this.profilesService.setUsername(user.id, username)
+    await this.profilesService.changeUsername(user.id, username)
 
     const profile = await user.getProfile()
     return profile

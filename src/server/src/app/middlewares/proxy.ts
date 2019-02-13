@@ -17,7 +17,7 @@ if (!serveStatic) {
 
 @Middleware({ type: 'after' })
 export class CatchAllRoutes implements ExpressMiddlewareInterface {
-  use = serveStatic
+  public use = serveStatic
     ? express.static(configurator)
     : (req: Request, res: Response, next: (err?: any) => any) => {
         if (!res.headersSent) {

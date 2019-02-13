@@ -3,9 +3,8 @@ import { ObjectType, Field } from 'type-graphql'
 @ObjectType()
 class Profile {
   @Field() username: string
-
-  @Field() avatarURL: string
-
+  @Field({ nullable: true })
+  avatarURL?: string
   @Field() id: string
 }
 

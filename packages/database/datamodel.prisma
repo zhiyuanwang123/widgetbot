@@ -6,21 +6,21 @@ type Connection {
 type Profile {
   id: ID! @unique
   username: String!
-  avatarURL: String!
+  avatarURL: String
   connections: [Connection!]!
   email: String
 }
 
 type ThemeColors {
-  primary: String!
-  accent: String!
-  background: String!
+  primary: String @default(value: "white")
+  accent: String @default(value: "red")
+  background: String @default(value: "black")
 }
 
 type Theme {
   id: ID! @unique
-  guild: Guild!
-  css: String!
+  guilds: [Guild!]!
+  css: String @default(value: "")
   colors: ThemeColors!
 }
 

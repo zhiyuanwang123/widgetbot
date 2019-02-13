@@ -5,7 +5,7 @@ export type GuildBanData = string
 
 @ObjectType()
 export class GuildBan {
-  @Field() type: GuildBanType
+  @Field() type: string
 
-  @Field() data: GuildBanData
+  @Field() data: string
 }

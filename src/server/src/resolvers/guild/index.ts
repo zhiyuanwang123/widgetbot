@@ -78,14 +78,14 @@ export class GuildResolver implements ResolverInterface<Guild, Discord.Guild> {
   @FieldResolver()
   @Authorized()
   async me(@Root() guild: Discord.Guild, @Ctx() { user }: Context) {
-    const guest = await this.guildService.guests.get(guild.id, user.id)
+    const guest: any = await this.guildService.guests.get(guild.id, user.id)
 
     return guest
   }
 
   @FieldResolver()
   async guests(@Root() guild: Discord.Guild) {
-    const guests = await this.guildService.guests.getAll(guild.id)
+    const guests: any[] = await this.guildService.guests.getAll(guild.id)
     return guests
   }
 

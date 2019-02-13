@@ -5,7 +5,7 @@
       "name": "🌐	embed"
     },
     {
-      "path": "../server",
+      "path": "packages/server",
       "name": "🖥️	server"
     },
     {

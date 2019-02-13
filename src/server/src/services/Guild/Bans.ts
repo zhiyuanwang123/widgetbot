@@ -1,5 +1,5 @@
 import { Service, Inject } from 'typedi'
-import Guild, { GuildBanType, GuildBanData, GuildBan } from '@entities/Guild'
+import { GuildBanType, GuildBanData } from '@entities/Guild'
 import { Snowflake } from '@widgetbot/discord.js'
 import DatabaseService from '@services/Database'
 
@@ -8,13 +8,8 @@ export class BansService {
   @Inject(type => DatabaseService)
   private databaseService: DatabaseService
 
-  public async getAll(id: Snowflake): Promise<GuildBan[]> {
-    const bans: GuildBan[] = await this.databaseService.connection
-      .guild({ id })
-      .bans()
-
-    if (!bans) return []
-
+  public async getAll(id: Snowflake) {
+    const bans = await this.databaseService.connection.guild({ id }).bans()
     return bans
   }
 
@@ -65,22 +60,14 @@ export class BansService {
   /**
    * Checks if a user is banned
    */
-  public async isUserBanned(guildID: Snowflake, guest: string, ip: string) {
-    const bans = await this.getAll(guildID)
-
-    const ban = bans.find(ban => {
-      switch (ban.type) {
-        case 'ip':
-          if (ban.data === ip) return true
-
-        case 'id':
-          if (ban.data === guest) return true
-
-        default:
-          return false
+  public async checkBanned(guildID: Snowflake, profile: string, ip: string) {
+    const [ban] = await this.databaseService.connection.guildBans({
+      where: {
+        guild: { id: guildID },
+        OR: [{ type: 'id', data: profile }, { type: 'ip', data: ip }]
       }
     })
 
-    return !!ban
+    return ban
   }
 }
