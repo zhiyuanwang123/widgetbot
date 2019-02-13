@@ -39,6 +39,54 @@ yarn build
 popd
 ```
 
+## Development
+
+This project is structured in a monorepo format, using [lerna](https://lernajs.io).
+
+### Tooling
+
+All communication between the server & embed is performed over [GraphQL](https://graphql.com).
+
+**Database**
+
+[Prisma](https://www.prisma.io) provides a GraphQL API to query data from the database, and an auto-generated type-safe client.
+
+**Services**
+
+The server uses services and dependency injection, with [type-di](https://www.npmjs.com/package/typedi). Services can be found in `/src/server/src/services`
+
+**GraphQL**
+
+The GraphQL server uses [type-graphql](https://github.com/19majkel94/type-graphql) to describe the GraphQL API and resolve it. The models can be found in `/src/server/src/entities`, and the resolvers in `/src/server/src/resolvers`
+
+### Folder structure
+
+```bash
+ - packages # This folder contains modules that are used internally, and also
+               # published to NPM.
+
+ - src      # This folder contains sources for stuff that it doesn't make sense
+            # to publish on NPM. eg. the server & embed
+```
+
+```bash
+git clone https://github.com/widgetbot-io/widgetbot.git
+cd widgetbot
+
+# Install dependencies
+yarn
+
+# Build the server
+pushd src/server
+yarn build
+popd
+
+# Build the embed
+pushd src/embed
+yarn build
+popd
+```
+
 ---
 
 ## Contributors
