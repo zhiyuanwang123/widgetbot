@@ -20,7 +20,7 @@ class Panel extends React.PureComponent {
               overlay={<Trans id="Panel.settings">Settings</Trans>}
             >
               <Settings
-                onClick={_ =>
+                onClick={() =>
                   openModal({ variables: { type: 'settings', data: null } })
                 }
               />

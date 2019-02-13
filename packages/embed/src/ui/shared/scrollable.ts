@@ -8,20 +8,10 @@ export const ScrollVisible = styled(Scrollbars)`
   display: flex;
   height: 100%;
   width: 100%;
-  & > div {
+  > div {
     &:nth-child(1) {
       overflow-x: hidden !important;
       overflow-y: scroll !important;
-      & > div {
-        &:nth-child(1) {
-          margin-top: 15px;
-        }
-        &:last-child {
-          margin-bottom: 15px;
-          border-bottom: none;
-          outline: none;
-        }
-      }
     }
     &:nth-child(2) {
       display: none;
@@ -31,7 +21,7 @@ export const ScrollVisible = styled(Scrollbars)`
         theme.colors._background.darken(0.15).string()};
       border-radius: 50px !important;
       width: 8px !important;
-      & > div {
+      > div {
         cursor: default !important;
         background-color: ${({ theme }) =>
           theme.colors._background.darken(0.45).string()} !important;
@@ -44,12 +34,9 @@ export const ScrollVisible = styled(Scrollbars)`
   }
 `
 
-/**
- * Overlaid scrollbar
- */
 export const ScrollOverlay = styled(Scrollbars)`
-  & > div:nth-child(3) {
-    & > div {
+  > div:nth-child(3) {
+    > div {
       cursor: default !important;
       opacity: 0;
       transition: opacity 0.1s ease;
@@ -58,8 +45,8 @@ export const ScrollOverlay = styled(Scrollbars)`
       }
     }
   }
-  & > div:hover + div + div {
-    & > div {
+  > div:hover + div + div {
+    > div {
       opacity: 1;
     }
   }

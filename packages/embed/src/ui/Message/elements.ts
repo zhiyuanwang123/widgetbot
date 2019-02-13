@@ -3,8 +3,6 @@ import { MemberLink } from '@ui/shared/Member'
 import styled from './ThemeContext'
 
 export const Group = styled('div')`
-  border-bottom: 1px solid
-    ${({ theme }) => theme.colors._primary.fade(0.96).string()};
   box-sizing: border-box;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -13,8 +11,9 @@ export const Group = styled('div')`
   user-select: text;
   word-wrap: break-word;
 
-  &.join {
-    padding: 15px 0;
+  &:not(:nth-last-of-type(1)) {
+    border-bottom: 1px solid
+      ${({ theme }) => theme.colors._primary.fade(0.96).string()};
   }
 
   @media (max-width: 500px), (max-height: 370px) {
@@ -79,6 +78,7 @@ export namespace Secondary {
 export const Member = styled(MemberLink)`
   margin-right: 5px;
   cursor: pointer;
+
   &:hover {
     text-decoration: underline;
   }

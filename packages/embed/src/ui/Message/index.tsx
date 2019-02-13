@@ -105,14 +105,17 @@ class Message extends React.PureComponent<Props, any> {
               }
 
               case 'JoinMessage': {
+                const member = (
+                  <Member id={message.author.id}>
+                    {message.author.username}
+                  </Member>
+                )
+
                 return (
                   <React.Fragment key={message.id}>
                     <Secondary.Join>
                       <Trans id="Message.welcomeMessage">
-                        <Member id={message.author.id}>
-                          {message.author.username}
-                        </Member>
-                        has joined. Stay a while and listen!
+                        {member} has joined. Stay a while and listen!
                       </Trans>
                     </Secondary.Join>
                     <Timestamp time={message.createdAt} />

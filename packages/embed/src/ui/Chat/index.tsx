@@ -7,7 +7,9 @@ import { Query } from 'react-apollo'
 import { ChannelName, ThemeVariables, ChannelNameVariables } from '@generated'
 import GET_CHANNEL_NAME from './ChannelName.graphql'
 import { Route } from 'react-router'
+import autobind from 'autobind-decorator'
 
+@autobind
 class Chat extends React.PureComponent<withI18nProps> {
   state = {
     rows: 1
@@ -24,15 +26,11 @@ class Chat extends React.PureComponent<withI18nProps> {
   onSubmit(message: string) {
     if (message.length === 0) return
     // TODO: FIX
-    // const { sendMessage, activeChannel } = this.props
-
-    // sendMessage({
-    //   channel: activeChannel,
-    //   message
-    // })
 
     // TODO: Clear the input field only when the user is signed in.
     this.input.value = ''
+
+    console.log(message)
   }
 
   isTyping(typing: boolean) {
@@ -62,8 +60,8 @@ class Chat extends React.PureComponent<withI18nProps> {
 
                   return (
                     <Input
-                      onChange={this.onChange.bind(this)}
-                      onSubmit={this.onSubmit.bind(this)}
+                      onChange={this.onChange}
+                      onSubmit={this.onSubmit}
                       innerRef={ref => (this.input = ref)}
                       innerProps={{
                         // TODO: FIX
