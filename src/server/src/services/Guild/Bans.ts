@@ -1,17 +1,21 @@
-import { Service } from 'typedi'
-import { getRepository } from '@services/Database'
+import { Service, Inject } from 'typedi'
 import Guild, { GuildBanType, GuildBanData, GuildBan } from '@entities/Guild'
 import { Snowflake } from '@widgetbot/discord.js'
+import DatabaseService from '@services/Database'
 
 @Service('guild.bans')
 export class BansService {
-  private guildRepo = getRepository(Guild)
+  @Inject(type => DatabaseService)
+  private databaseService: DatabaseService
 
   public async getAll(id: Snowflake): Promise<GuildBan[]> {
-    const guild = await this.guildRepo.findOne({ id, bans: { $exists: true } })
-    if (!guild) return []
+    const bans: GuildBan[] = await this.databaseService.connection
+      .guild({ id })
+      .bans()
 
-    return guild.bans
+    if (!bans) return []
+
+    return bans
   }
 
   /**
@@ -22,12 +26,15 @@ export class BansService {
     ban: { [type in GuildBanType]?: GuildBanData }
   ) {
     for (const [type, data] of Object.entries(ban)) {
-      if (type && data)
-        await this.guildRepo.updateOne(
-          { id },
-          { $addToSet: { bans: { type, data } } },
-          { upsert: true }
-        )
+      if (!type || !data) continue
+
+      await this.databaseService.connection.upsertGuild({
+        where: { id },
+        update: { bans: { create: { type, data } } },
+        create: {
+          bans: { create: { type, data } }
+        }
+      })
     }
   }
 
@@ -39,11 +46,19 @@ export class BansService {
     ban: { [type in GuildBanType]?: GuildBanData }
   ) {
     for (const [type, data] of Object.entries(ban)) {
-      if (type && data)
-        await this.guildRepo.updateOne(
-          { id },
-          { $pull: { bans: { type, data } } }
-        )
+      if (!type || !data) continue
+
+      await this.databaseService.connection.updateGuild({
+        where: { id },
+        data: {
+          bans: {
+            deleteMany: {
+              type,
+              data
+            }
+          }
+        }
+      })
     }
   }
 

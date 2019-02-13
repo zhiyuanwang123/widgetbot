@@ -1,9 +1,8 @@
 {
-  "extends": "../scripts/tsconfig.json",
+  "extends": "../../scripts/tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
     "lib": ["es6", "dom", "esnext.asynciterable"],
-    "allowJs": false,
     "declaration": true
   }
 }

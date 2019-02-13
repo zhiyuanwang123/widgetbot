@@ -4,12 +4,10 @@ import GuildChannel from '@entities/GuildChannel'
 import TextChannel from '@entities/TextChannel'
 import { Snowflake } from '@utils/scalars'
 import Theme from '@entities/Theme'
-import { Column, Entity } from '@services/Database'
 import { GuildGuest } from './GuildGuest'
 import { GuildBan } from '@entities/Guild/GuildBans'
 
 @ObjectType()
-@Entity()
 export default class Guild {
   @Field() createdAt: Date
   @Field() available: boolean
@@ -27,7 +25,6 @@ export default class Guild {
   @Field() nameAcronym: string
 
   @Field(type => Snowflake)
-  @Column()
   id: string
 
   @Field(type => GuildChannel)
@@ -36,7 +33,6 @@ export default class Guild {
   // @Field(type => GuildMember) owner: GuildMember
 
   @Field(type => Theme)
-  @Column({ nullable: true })
   theme: Theme
 
   @Field(type => Snowflake)
@@ -46,11 +42,9 @@ export default class Guild {
   region: string
 
   @Field(type => [GuildGuest])
-  @Column(type => GuildGuest)
   guests: GuildGuest[]
 
   @Field(type => [GuildBan])
-  @Column(type => GuildBan)
   bans: GuildBan[]
 
   @Field(type => GuildGuest, { nullable: true })

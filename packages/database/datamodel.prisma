@@ -1,0 +1,44 @@
+type Connection {
+  type: String!
+  data: String!
+}
+
+type Profile {
+  username: String!
+  avatarURL: String!
+  connections: [Connection!]!
+  email: String
+}
+
+type ThemeColors {
+  primary: String!
+  accent: String!
+  background: String!
+}
+
+type Theme {
+  guild: Guild!
+  css: String!
+  colors: ThemeColors!
+}
+
+type GuildGuest {
+  guild: Guild!
+  id: ID! @unique
+  nickname: String
+}
+
+type GuildBan {
+  guild: Guild!
+  type: String!
+  data: String!
+}
+
+type Guild {
+  id: ID! @unique
+  theme: Theme
+  guests: [GuildGuest!]!
+  bans: [GuildBan!]!
+}
+
+

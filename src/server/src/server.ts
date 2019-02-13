@@ -3,7 +3,7 @@ import './utils/polyfills'
 import App from '@app'
 import config from '@lib/config'
 import { raven } from '@lib/logger'
-import Database from '@services/Database'
+import DatabaseService from '@services/Database'
 import Metrics from '@services/Metrics'
 import Discord from 'engine'
 import { Container, Inject, Service } from 'typedi'
@@ -14,8 +14,8 @@ class Server {
   @Inject(type => App)
   private appService: App
 
-  @Inject(type => Database)
-  private databaseService: Database
+  @Inject(type => DatabaseService)
+  private databaseService: DatabaseService
 
   @Inject(type => Discord)
   private discordService: Discord
@@ -24,10 +24,7 @@ class Server {
   private metricsService: Metrics
 
   public async start() {
-    await Promise.all([
-      this.databaseService.createConnection(),
-      this.discordService.login(config.discord.token)
-    ])
+    await this.discordService.login(config.discord.token)
 
     this.metricsService.startProbing()
 

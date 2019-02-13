@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "."
+  },
+  "references": [
+    { "path": "./packages/react-embed" },
+    { "path": "./packages/crate" },
+    { "path": "./packages/crate-cloudflare" },
+    { "path": "./packages/embed-api" },
+    { "path": "./packages/database" },
+    { "path": "./packages/html-embed" },
+    { "path": "./packages/react-embed" },
+    { "path": "./src/embed" },
+    { "path": "./src/server" }
+  ]
+}

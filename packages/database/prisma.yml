@@ -1,0 +1,7 @@
+datamodel: datamodel.prisma
+
+generate:
+  - generator: typescript-client
+    output: ./src/prisma-client/
+
+endpoint: https://eu1.prisma.sh/sam-denty-1336dd/widgetbot/dev

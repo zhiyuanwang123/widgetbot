@@ -1,4 +1,4 @@
-const baseConfig = require('@widgetbot/scripts/nwb.config')
+const baseConfig = require('../../scripts/nwb.config')
 
 const config = baseConfig()
 config.npm.umd.global = 'widgetbot'
