@@ -17,6 +17,6 @@ if (serveStatic) {
     meta('configurator')
   )
   app.use('/', (req, res) =>
-    request(`https://widgetbot.io/${req.path}`).pipe(res)
+    request(`https://cl2.widgetbot.io/${req.path}`).pipe(res)
   )
 }
