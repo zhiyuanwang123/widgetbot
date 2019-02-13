@@ -43,9 +43,20 @@ popd
 
 This project is structured in a monorepo format, using [lerna](https://lernajs.io).
 
-### Tooling
+## Embed
 
-All communication between the server & embed is performed over [GraphQL](https://graphql.com).
+The embed is mostly React.JS with Typescript.
+
+- [React.js](https://reactjs.org) for describing the UI
+- [apollo-client](npmjs.com/package/apollo-client) and GraphQL for data fetching
+- [Mobx](https://mobx.js.org/) for state management
+- [Emotion](https://emotion.sh) for styling components
+
+## Server
+
+The server uses Node.JS with Typescript.
+
+The server is responsible for providing a [GraphQL API](https://graphql.com) to interact with the Discord API.
 
 **Database**
 
