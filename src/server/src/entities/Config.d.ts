@@ -95,10 +95,6 @@ export interface UserConfig {
        * max number of connections during windowMs before starting to delay responses.
        */
       delayAfter: number
-      /**
-       * how long to delay the response, multiplied by number of recent hits
-       */
-      delayMs: number
     }
   }
 

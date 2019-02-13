@@ -11,7 +11,7 @@ import {
 import Stats from '@entities/Stats'
 
 @Resolver(of => Stats)
-class StatsResolver implements ResolverInterface<Stats> {
+export class StatsResolver implements ResolverInterface<Stats> {
   @Query(returns => Stats)
   stats() {
     return {}
@@ -50,5 +50,3 @@ class StatsResolver implements ResolverInterface<Stats> {
     return 1 /*(<any>io.engine).clientsCount*/
   }
 }
-
-export default StatsResolver

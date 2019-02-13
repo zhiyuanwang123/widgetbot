@@ -17,7 +17,7 @@ import Profile, {
 import GuildService from '@services/Guild'
 
 @Resolver(of => Profile)
-class ProfileResolver /*implements ResolverInterface<Profile>*/ {
+export class ProfileResolver /*implements ResolverInterface<Profile>*/ {
   @Inject() private profilesService: ProfilesService
 
   @Inject() private guildService: GuildService
@@ -90,5 +90,3 @@ class ProfileResolver /*implements ResolverInterface<Profile>*/ {
     return true
   }
 }
-
-export default ProfileResolver

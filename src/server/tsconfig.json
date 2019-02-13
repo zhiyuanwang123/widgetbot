@@ -15,7 +15,7 @@
     "paths": {
       "@services/*": ["src/services/*"],
       "@entities/*": ["src/entities/*"],
-      "@resolvers/*": ["src/resolvers/*"],
+      "@resolvers": ["src/resolvers/index"],
       "@models/*": ["src/models/*"],
       "@utils/*": ["src/utils/*"],
       "@utils": ["src/utils/index"],

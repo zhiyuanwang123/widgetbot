@@ -1,8 +1,7 @@
 import config from '@lib/config'
-import { crunch } from 'graphql-crunch'
 import { Config } from 'apollo-server-core'
 import { Service, Inject } from 'typedi'
-import SessionStore from '@app/middlewares/session-store'
+import { SessionStore } from '@app/middlewares'
 import autobind from 'autobind-decorator'
 import { ConnectionContext } from 'subscriptions-transport-ws'
 import WebSocket from 'ws'
@@ -74,15 +73,6 @@ class Apollo {
     },
 
     formatResponse(response, { request }) {
-      if (
-        response.data &&
-        !response.data.__schema &&
-        // Don't bother to parse the URL
-        request.url.includes('crunch')
-      ) {
-        response.data = crunch(response.data)
-      }
-
       return response
     },
 

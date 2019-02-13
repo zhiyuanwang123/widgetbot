@@ -27,13 +27,17 @@ const parse = R.pipe(
   toLowercase
 )
 const getHandler = (command): ((payload: IArgs) => void) => {
-  // prettier-ignore
   switch (command) {
-    case 'show': return Show
-    case 'sudo': return Sudo
-    case 'help': return Help
-    case 'invite': return Invite
-    default: return null
+    case 'show':
+      return Show
+    case 'sudo':
+      return Sudo
+    case 'help':
+      return Help
+    case 'invite':
+      return Invite
+    default:
+      return null
   }
 }
 

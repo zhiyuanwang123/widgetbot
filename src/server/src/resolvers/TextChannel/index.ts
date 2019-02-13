@@ -6,7 +6,7 @@ import TextChannel, { MessagesArgs } from '@entities/TextChannel'
 import { Inject } from 'typedi'
 
 @Resolver(of => TextChannel)
-class TextChannelResolver
+export class TextChannelResolver
   implements ResolverInterface<TextChannel, Discord.TextChannel> {
   @Inject() private cacheService: CacheService
 
@@ -21,5 +21,3 @@ class TextChannelResolver
     return messages
   }
 }
-
-export default TextChannelResolver

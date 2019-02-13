@@ -22,7 +22,7 @@ import GuildService from '@services/Guild'
 import { CacheService } from '@services/Messaging'
 
 @Resolver()
-class MessageResolver {
+export class MessageResolver {
   @Inject() private guildService: GuildService
 
   @Inject() private cacheService: CacheService
@@ -72,5 +72,3 @@ class MessageResolver {
     return this.cacheService.parse(message)
   }
 }
-
-export default MessageResolver

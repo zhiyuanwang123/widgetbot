@@ -2,9 +2,9 @@ import { MessageOptions } from '@widgetbot/discord.js'
 import { branding } from 'engine/commands'
 
 import { IArgs } from '../types'
-import commands, { Command } from './commands'
-import parseArgs from './parseArgs'
-import parseExamples from './parseExamples'
+import { commands, Command } from './commands'
+import { parseArgs } from './parseArgs'
+import { parseExamples } from './parseExamples'
 
 const parseCommand = ([name, help]: Command) => ({
   name: `:gear: ${name}: ${help.info}`,

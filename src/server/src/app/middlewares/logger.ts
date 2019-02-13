@@ -3,7 +3,7 @@ import expressWinston from 'express-winston'
 import { ExpressMiddlewareInterface, Middleware } from 'routing-controllers'
 
 @Middleware({ type: 'after' })
-class Logger implements ExpressMiddlewareInterface {
+export class Logger implements ExpressMiddlewareInterface {
   public use = ['debug', 'silly'].includes(logger.level)
     ? expressWinston.logger({
         winstonInstance: logger,
@@ -14,5 +14,3 @@ class Logger implements ExpressMiddlewareInterface {
       })
     : null
 }
-
-export default Logger

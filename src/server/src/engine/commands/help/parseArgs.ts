@@ -6,9 +6,7 @@ const mergeArgs = (args: (string | string[])[]) =>
 const prettifyArgs = (args: string[]) =>
   `__(__${args.join('__)__ __(__)')}__)__`
 
-const parseArgs = R.pipe(
+export const parseArgs = R.pipe(
   mergeArgs,
   prettifyArgs
 )
-
-export default parseArgs

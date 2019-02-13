@@ -7,9 +7,7 @@ const prettifyExamples = (command, examples) =>
   )
 const joinExamples = examples => examples.join('\n')
 
-const parseExamples = R.pipe(
+export const parseExamples = R.pipe(
   prettifyExamples,
   joinExamples
 )
-
-export default parseExamples

@@ -19,7 +19,7 @@ if (!serveStatic) {
 }
 
 @Service('embed.controller')
-export default class EmbedController {
+export class EmbedController {
   @Inject(type => App)
   private appService: App
 

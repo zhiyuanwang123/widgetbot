@@ -10,7 +10,7 @@ import CategoryChannel from '@entities/CategoryChannel'
 import VoiceChannel from '@entities/VoiceChannel'
 
 @Resolver(of => Channel)
-class ChannelResolver /*implements ResolverInterface<Channel>*/ {
+export class ChannelResolver /*implements ResolverInterface<Channel>*/ {
   static resolve(channel: Discord.Channel) {
     const resolved = typify(
       {
@@ -37,5 +37,3 @@ class ChannelResolver /*implements ResolverInterface<Channel>*/ {
     return ChannelResolver.resolve(channel)
   }
 }
-
-export default ChannelResolver

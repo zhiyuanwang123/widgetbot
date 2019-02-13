@@ -1,7 +1,10 @@
-import EmbedController from '@app/controllers/Embed'
+import * as middlewaresExports from './middlewares'
+import * as controllersExports from './controllers'
+import * as resolversExports from '../resolvers'
+
+import { EmbedController } from '@app/controllers'
 import config from '@lib/config'
 import logger, { Meta } from '@lib/logger'
-import RequireAll from '@utils/requireAll'
 import { ApolloServer, PubSub } from 'apollo-server-express'
 import async from 'doasync'
 import * as http from 'http'
@@ -12,17 +15,9 @@ import Container, { Service, Inject } from 'typedi'
 import Apollo from './apollo'
 import authChecker from '@app/authChecker'
 
-const controllers: Constructable[] = new RequireAll(
-  require.context('./controllers', true, /\.\/([^\/\.])+(\.ts|\/index)$/)
-).exports()
-
-const middlewares: Constructable[] = new RequireAll(
-  require.context('./middlewares', true, /\.\/([^\/\.])+(\.ts|\/index)$/)
-).exports()
-
-const resolvers: Constructable[] = new RequireAll(
-  require.context('../resolvers', true, /\.\/([^\/\.])+(\.ts|\/index)$/)
-).exports()
+const controllers = Object.values(controllersExports)
+const middlewares = Object.values(middlewaresExports)
+const resolvers = Object.values(resolversExports)
 
 const meta = Meta('Express')
 

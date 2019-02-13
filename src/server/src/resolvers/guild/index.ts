@@ -17,13 +17,13 @@ import Guild, {
   GuildChannelArgs,
   GuildBanArgs
 } from '@entities/Guild'
-import ChannelResolver from '@resolvers/Channel'
+import { ChannelResolver } from '@resolvers'
 import ImageOptions from '@entities/InputTypes/ImageOptions'
 import GuildService from '@services/Guild'
 import { Inject } from 'typedi'
 
 @Resolver(of => Guild)
-class GuildResolver implements ResolverInterface<Guild, Discord.Guild> {
+export class GuildResolver implements ResolverInterface<Guild, Discord.Guild> {
   @Inject() private guildService: GuildService
 
   @Mutation(type => Boolean)
@@ -95,5 +95,3 @@ class GuildResolver implements ResolverInterface<Guild, Discord.Guild> {
     return bans
   }
 }
-
-export default GuildResolver

@@ -6,7 +6,7 @@ import { ExpressMiddlewareInterface, Middleware } from 'routing-controllers'
 const MongoStore = connectMongo(session)
 
 @Middleware({ type: 'before' })
-class SessionStore implements ExpressMiddlewareInterface {
+export class SessionStore implements ExpressMiddlewareInterface {
   public store = new MongoStore({
     mongooseConnection: mongoose.connection
   })
@@ -19,5 +19,3 @@ class SessionStore implements ExpressMiddlewareInterface {
     name: 'widgetbot.token'
   })
 }
-
-export default SessionStore

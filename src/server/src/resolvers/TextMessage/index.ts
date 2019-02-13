@@ -1,9 +1,9 @@
 import { Resolver, FieldResolver, Root } from 'type-graphql'
 import { TextMessage } from '@entities/Message'
-import EmojiResolver from '@resolvers/Emoji'
+import { EmojiResolver } from '@resolvers'
 
 @Resolver(of => TextMessage)
-class TextMessageResolver {
+export class TextMessageResolver {
   @FieldResolver()
   reactions(@Root() root) {
     const reactions = root.reactions.array()
@@ -12,5 +12,3 @@ class TextMessageResolver {
     return resolved
   }
 }
-
-export default TextMessageResolver

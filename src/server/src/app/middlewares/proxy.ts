@@ -16,7 +16,7 @@ if (!serveStatic) {
 }
 
 @Middleware({ type: 'after' })
-class CatchAllRoutes implements ExpressMiddlewareInterface {
+export class CatchAllRoutes implements ExpressMiddlewareInterface {
   use = serveStatic
     ? express.static(configurator)
     : (req: Request, res: Response, next: (err?: any) => any) => {
@@ -29,5 +29,3 @@ class CatchAllRoutes implements ExpressMiddlewareInterface {
         next()
       }
 }
-
-export default CatchAllRoutes

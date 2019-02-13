@@ -4,7 +4,7 @@ import typify from '@utils/typify'
 import { TextEmoji, CustomEmoji } from '@entities/Emoji'
 
 @Resolver()
-class EmojiResolver {
+export class EmojiResolver {
   static resolve(emoji: Discord.Emoji) {
     const custom = !!emoji.id
     const resolved = typify(custom ? CustomEmoji : TextEmoji, emoji)
@@ -12,5 +12,3 @@ class EmojiResolver {
     return resolved
   }
 }
-
-export default EmojiResolver
