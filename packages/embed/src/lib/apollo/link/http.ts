@@ -1,5 +1,5 @@
 import { ApolloLink } from 'apollo-link'
-import { BatchHttpLink } from 'apollo-link-batch-http'
+import { HttpLink } from 'apollo-link-http'
 import { onError } from 'apollo-link-error'
 
 // const CRUNCH = false
@@ -22,10 +22,8 @@ const httpLink = ApolloLink.from([
     if (networkError) console.error(`[Network error]: ${networkError}`)
   }),
   // CRUNCH && uncruncher,
-  new BatchHttpLink({
-    uri: `/api/graphql` /*${CRUNCH ? '?crunch' : ''}`*/,
-    batchInterval: 20,
-    batchMax: 2
+  new HttpLink({
+    uri: `/api/graphql` /*${CRUNCH ? '?crunch' : ''}`*/
   })
 ].filter(Boolean) as any)
 
