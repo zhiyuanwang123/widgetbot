@@ -52,11 +52,23 @@ The embed is mostly React.JS with Typescript.
 - [Mobx](https://mobx.js.org/) for state management
 - [Emotion](https://emotion.sh) for styling components
 
+```bash
+cd src/embed
+yarn start
+# Embed is now available over at http://localhost:3000/channels/299881420891881473
+```
+
 ## Server
 
 The server uses Node.JS with Typescript.
 
 The server is responsible for providing a [GraphQL API](https://graphql.com) to interact with the Discord API.
+
+```bash
+cd src/server
+yarn start
+# Access the GraphQL API at http://localhost:7000/api/graphql
+```
 
 **Database**
 
