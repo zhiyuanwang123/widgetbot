@@ -25,6 +25,7 @@ type Theme {
 }
 
 type GuildGuest {
+  id: ID! @unique
   guild: Guild!
   profile: Profile!
   nickname: String
@@ -37,7 +38,7 @@ type GuildBan {
 }
 
 type Guild {
-  id: ID! @unique
+  snowflake: ID! @unique
   theme: Theme
   guests: [GuildGuest!]!
   bans: [GuildBan!]!

@@ -20,6 +20,7 @@ import { TextMessage } from '@entities/Message'
 import { Inject } from 'typedi'
 import GuildService from '@services/Guild'
 import { CacheService } from '@services/Messaging'
+import { Context } from '@app'
 
 @Resolver()
 export class MessageResolver {

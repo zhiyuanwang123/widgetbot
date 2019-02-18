@@ -9,6 +9,10 @@
       "name": "🖥️	server"
     },
     {
+      "path": "packages/database",
+      "name": "📕	database"
+    },
+    {
       "path": "packages/crate",
       "name": "☄️	crate"
     },

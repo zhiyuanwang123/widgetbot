@@ -15,6 +15,7 @@ import Profile, {
   SetUsernameArgs
 } from '@entities/Profile'
 import GuildService from '@services/Guild'
+import { Context } from '@app'
 
 @Resolver(of => Profile)
 export class ProfileResolver /*implements ResolverInterface<Profile>*/ {
@@ -24,15 +25,15 @@ export class ProfileResolver /*implements ResolverInterface<Profile>*/ {
 
   @FieldResolver()
   id(@Ctx() { user }: Context): string {
-    return user.id
+    return user.profileId
   }
 
   @Query(type => Profile, { nullable: true })
   async me(@Ctx() { user, session }: Context) {
     // Not signed in
-    if (!user.id) return null
+    if (!user.profileId) return null
 
-    const profile = await user.getProfile()
+    const profile = await this.profilesService.get(user.profileId)
 
     // Profile doesn't exist, sign them out
     if (!profile) session.profileID = null
@@ -66,10 +67,9 @@ export class ProfileResolver /*implements ResolverInterface<Profile>*/ {
     @Args() { username }: SetUsernameArgs,
     @Ctx() { user }: Context
   ) {
-    await this.profilesService.changeUsername(user.id, username)
+    await this.profilesService.changeUsername(user.profileId, username)
 
-    const profile = await user.getProfile()
-    return profile
+    return await this.profilesService.get(user.profileId)
   }
 
   @Mutation(type => Boolean)
@@ -78,9 +78,9 @@ export class ProfileResolver /*implements ResolverInterface<Profile>*/ {
     @Args() { nickname, guest, guild }: SetNicknameArgs,
     @Ctx() { user }: Context
   ) {
-    if (!guest) guest = user.id
+    if (!guest) guest = user.profileId
 
-    if (guest !== user.id) {
+    if (guest !== user.profileId) {
       // TODO: Trying to set nickname of other guest
       return false
     }

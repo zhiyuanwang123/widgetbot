@@ -4,6 +4,7 @@ import * as Discord from '@widgetbot/discord.js'
 import { Args, FieldResolver, Resolver, Root, Ctx } from 'type-graphql'
 import TextChannel, { MessagesArgs } from '@entities/TextChannel'
 import { Inject } from 'typedi'
+import { Context } from '@app'
 
 @Resolver(of => TextChannel)
 export class TextChannelResolver

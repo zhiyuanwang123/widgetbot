@@ -11,14 +11,14 @@
     "precommit": "pretty-quick --staged"
   },
   "dependencies": {
-    "react": "^16.8.1",
-    "react-dom": "^16.8.1"
+    "react": "^16.8.2",
+    "react-dom": "^16.8.2"
   },
   "resolutions": {
     "**/apollo-link": "1.2.8",
     "**/@types/graphql": "14.0.6"
   },
   "devDependencies": {
-    "lerna": "^3.11.1"
+    "lerna": "^3.13.0"
   }
 }

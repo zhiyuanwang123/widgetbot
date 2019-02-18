@@ -181,7 +181,7 @@ input ConnectionWhereInput {
 }
 
 type Guild {
-  id: ID!
+  snowflake: ID!
   theme: Theme
   guests(where: GuildGuestWhereInput, orderBy: GuildGuestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GuildGuest!]
   bans(where: GuildBanWhereInput, orderBy: GuildBanOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GuildBan!]
@@ -352,6 +352,7 @@ type GuildConnection {
 }
 
 input GuildCreateInput {
+  snowflake: ID!
   theme: ThemeCreateOneWithoutGuildsInput
   guests: GuildGuestCreateManyWithoutGuildInput
   bans: GuildBanCreateManyWithoutGuildInput
@@ -373,16 +374,19 @@ input GuildCreateOneWithoutGuestsInput {
 }
 
 input GuildCreateWithoutBansInput {
+  snowflake: ID!
   theme: ThemeCreateOneWithoutGuildsInput
   guests: GuildGuestCreateManyWithoutGuildInput
 }
 
 input GuildCreateWithoutGuestsInput {
+  snowflake: ID!
   theme: ThemeCreateOneWithoutGuildsInput
   bans: GuildBanCreateManyWithoutGuildInput
 }
 
 input GuildCreateWithoutThemeInput {
+  snowflake: ID!
   guests: GuildGuestCreateManyWithoutGuildInput
   bans: GuildBanCreateManyWithoutGuildInput
 }
@@ -393,6 +397,7 @@ type GuildEdge {
 }
 
 type GuildGuest {
+  id: ID!
   guild: Guild!
   profile: Profile!
   nickname: String
@@ -412,6 +417,7 @@ input GuildGuestCreateInput {
 
 input GuildGuestCreateManyWithoutGuildInput {
   create: [GuildGuestCreateWithoutGuildInput!]
+  connect: [GuildGuestWhereUniqueInput!]
 }
 
 input GuildGuestCreateWithoutGuildInput {
@@ -425,10 +431,10 @@ type GuildGuestEdge {
 }
 
 enum GuildGuestOrderByInput {
-  nickname_ASC
-  nickname_DESC
   id_ASC
   id_DESC
+  nickname_ASC
+  nickname_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -436,10 +442,25 @@ enum GuildGuestOrderByInput {
 }
 
 type GuildGuestPreviousValues {
+  id: ID!
   nickname: String
 }
 
 input GuildGuestScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
   nickname: String
   nickname_not: String
   nickname_in: [String!]
@@ -477,6 +498,12 @@ input GuildGuestSubscriptionWhereInput {
   NOT: [GuildGuestSubscriptionWhereInput!]
 }
 
+input GuildGuestUpdateInput {
+  guild: GuildUpdateOneRequiredWithoutGuestsInput
+  profile: ProfileUpdateOneRequiredInput
+  nickname: String
+}
+
 input GuildGuestUpdateManyDataInput {
   nickname: String
 }
@@ -487,6 +514,12 @@ input GuildGuestUpdateManyMutationInput {
 
 input GuildGuestUpdateManyWithoutGuildInput {
   create: [GuildGuestCreateWithoutGuildInput!]
+  delete: [GuildGuestWhereUniqueInput!]
+  connect: [GuildGuestWhereUniqueInput!]
+  set: [GuildGuestWhereUniqueInput!]
+  disconnect: [GuildGuestWhereUniqueInput!]
+  update: [GuildGuestUpdateWithWhereUniqueWithoutGuildInput!]
+  upsert: [GuildGuestUpsertWithWhereUniqueWithoutGuildInput!]
   deleteMany: [GuildGuestScalarWhereInput!]
   updateMany: [GuildGuestUpdateManyWithWhereNestedInput!]
 }
@@ -496,7 +529,37 @@ input GuildGuestUpdateManyWithWhereNestedInput {
   data: GuildGuestUpdateManyDataInput!
 }
 
+input GuildGuestUpdateWithoutGuildDataInput {
+  profile: ProfileUpdateOneRequiredInput
+  nickname: String
+}
+
+input GuildGuestUpdateWithWhereUniqueWithoutGuildInput {
+  where: GuildGuestWhereUniqueInput!
+  data: GuildGuestUpdateWithoutGuildDataInput!
+}
+
+input GuildGuestUpsertWithWhereUniqueWithoutGuildInput {
+  where: GuildGuestWhereUniqueInput!
+  update: GuildGuestUpdateWithoutGuildDataInput!
+  create: GuildGuestCreateWithoutGuildInput!
+}
+
 input GuildGuestWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
   guild: GuildWhereInput
   profile: ProfileWhereInput
   nickname: String
@@ -518,7 +581,13 @@ input GuildGuestWhereInput {
   NOT: [GuildGuestWhereInput!]
 }
 
+input GuildGuestWhereUniqueInput {
+  id: ID
+}
+
 enum GuildOrderByInput {
+  snowflake_ASC
+  snowflake_DESC
   id_ASC
   id_DESC
   createdAt_ASC
@@ -528,24 +597,24 @@ enum GuildOrderByInput {
 }
 
 type GuildPreviousValues {
-  id: ID!
+  snowflake: ID!
 }
 
 input GuildScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
+  snowflake: ID
+  snowflake_not: ID
+  snowflake_in: [ID!]
+  snowflake_not_in: [ID!]
+  snowflake_lt: ID
+  snowflake_lte: ID
+  snowflake_gt: ID
+  snowflake_gte: ID
+  snowflake_contains: ID
+  snowflake_not_contains: ID
+  snowflake_starts_with: ID
+  snowflake_not_starts_with: ID
+  snowflake_ends_with: ID
+  snowflake_not_ends_with: ID
   AND: [GuildScalarWhereInput!]
   OR: [GuildScalarWhereInput!]
   NOT: [GuildScalarWhereInput!]
@@ -570,9 +639,18 @@ input GuildSubscriptionWhereInput {
 }
 
 input GuildUpdateInput {
+  snowflake: ID
   theme: ThemeUpdateOneWithoutGuildsInput
   guests: GuildGuestUpdateManyWithoutGuildInput
   bans: GuildBanUpdateManyWithoutGuildInput
+}
+
+input GuildUpdateManyDataInput {
+  snowflake: ID
+}
+
+input GuildUpdateManyMutationInput {
+  snowflake: ID
 }
 
 input GuildUpdateManyWithoutThemeInput {
@@ -584,9 +662,29 @@ input GuildUpdateManyWithoutThemeInput {
   update: [GuildUpdateWithWhereUniqueWithoutThemeInput!]
   upsert: [GuildUpsertWithWhereUniqueWithoutThemeInput!]
   deleteMany: [GuildScalarWhereInput!]
+  updateMany: [GuildUpdateManyWithWhereNestedInput!]
+}
+
+input GuildUpdateManyWithWhereNestedInput {
+  where: GuildScalarWhereInput!
+  data: GuildUpdateManyDataInput!
+}
+
+input GuildUpdateOneRequiredWithoutGuestsInput {
+  create: GuildCreateWithoutGuestsInput
+  update: GuildUpdateWithoutGuestsDataInput
+  upsert: GuildUpsertWithoutGuestsInput
+  connect: GuildWhereUniqueInput
+}
+
+input GuildUpdateWithoutGuestsDataInput {
+  snowflake: ID
+  theme: ThemeUpdateOneWithoutGuildsInput
+  bans: GuildBanUpdateManyWithoutGuildInput
 }
 
 input GuildUpdateWithoutThemeDataInput {
+  snowflake: ID
   guests: GuildGuestUpdateManyWithoutGuildInput
   bans: GuildBanUpdateManyWithoutGuildInput
 }
@@ -596,6 +694,11 @@ input GuildUpdateWithWhereUniqueWithoutThemeInput {
   data: GuildUpdateWithoutThemeDataInput!
 }
 
+input GuildUpsertWithoutGuestsInput {
+  update: GuildUpdateWithoutGuestsDataInput!
+  create: GuildCreateWithoutGuestsInput!
+}
+
 input GuildUpsertWithWhereUniqueWithoutThemeInput {
   where: GuildWhereUniqueInput!
   update: GuildUpdateWithoutThemeDataInput!
@@ -603,20 +706,20 @@ input GuildUpsertWithWhereUniqueWithoutThemeInput {
 }
 
 input GuildWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
+  snowflake: ID
+  snowflake_not: ID
+  snowflake_in: [ID!]
+  snowflake_not_in: [ID!]
+  snowflake_lt: ID
+  snowflake_lte: ID
+  snowflake_gt: ID
+  snowflake_gte: ID
+  snowflake_contains: ID
+  snowflake_not_contains: ID
+  snowflake_starts_with: ID
+  snowflake_not_starts_with: ID
+  snowflake_ends_with: ID
+  snowflake_not_ends_with: ID
   theme: ThemeWhereInput
   guests_every: GuildGuestWhereInput
   guests_some: GuildGuestWhereInput
@@ -630,7 +733,7 @@ input GuildWhereInput {
 }
 
 input GuildWhereUniqueInput {
-  id: ID
+  snowflake: ID
 }
 
 scalar Long
@@ -641,6 +744,7 @@ type Mutation {
   deleteManyConnections(where: ConnectionWhereInput): BatchPayload!
   createGuild(data: GuildCreateInput!): Guild!
   updateGuild(data: GuildUpdateInput!, where: GuildWhereUniqueInput!): Guild
+  updateManyGuilds(data: GuildUpdateManyMutationInput!, where: GuildWhereInput): BatchPayload!
   upsertGuild(where: GuildWhereUniqueInput!, create: GuildCreateInput!, update: GuildUpdateInput!): Guild!
   deleteGuild(where: GuildWhereUniqueInput!): Guild
   deleteManyGuilds(where: GuildWhereInput): BatchPayload!
@@ -648,7 +752,10 @@ type Mutation {
   updateManyGuildBans(data: GuildBanUpdateManyMutationInput!, where: GuildBanWhereInput): BatchPayload!
   deleteManyGuildBans(where: GuildBanWhereInput): BatchPayload!
   createGuildGuest(data: GuildGuestCreateInput!): GuildGuest!
+  updateGuildGuest(data: GuildGuestUpdateInput!, where: GuildGuestWhereUniqueInput!): GuildGuest
   updateManyGuildGuests(data: GuildGuestUpdateManyMutationInput!, where: GuildGuestWhereInput): BatchPayload!
+  upsertGuildGuest(where: GuildGuestWhereUniqueInput!, create: GuildGuestCreateInput!, update: GuildGuestUpdateInput!): GuildGuest!
+  deleteGuildGuest(where: GuildGuestWhereUniqueInput!): GuildGuest
   deleteManyGuildGuests(where: GuildGuestWhereInput): BatchPayload!
   createProfile(data: ProfileCreateInput!): Profile!
   updateProfile(data: ProfileUpdateInput!, where: ProfileWhereUniqueInput!): Profile
@@ -755,6 +862,13 @@ input ProfileSubscriptionWhereInput {
   NOT: [ProfileSubscriptionWhereInput!]
 }
 
+input ProfileUpdateDataInput {
+  username: String
+  avatarURL: String
+  connections: ConnectionUpdateManyInput
+  email: String
+}
+
 input ProfileUpdateInput {
   username: String
   avatarURL: String
@@ -766,6 +880,18 @@ input ProfileUpdateManyMutationInput {
   username: String
   avatarURL: String
   email: String
+}
+
+input ProfileUpdateOneRequiredInput {
+  create: ProfileCreateInput
+  update: ProfileUpdateDataInput
+  upsert: ProfileUpsertNestedInput
+  connect: ProfileWhereUniqueInput
+}
+
+input ProfileUpsertNestedInput {
+  update: ProfileUpdateDataInput!
+  create: ProfileCreateInput!
 }
 
 input ProfileWhereInput {
@@ -845,6 +971,7 @@ type Query {
   guildsConnection(where: GuildWhereInput, orderBy: GuildOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GuildConnection!
   guildBans(where: GuildBanWhereInput, orderBy: GuildBanOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GuildBan]!
   guildBansConnection(where: GuildBanWhereInput, orderBy: GuildBanOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GuildBanConnection!
+  guildGuest(where: GuildGuestWhereUniqueInput!): GuildGuest
   guildGuests(where: GuildGuestWhereInput, orderBy: GuildGuestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [GuildGuest]!
   guildGuestsConnection(where: GuildGuestWhereInput, orderBy: GuildGuestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GuildGuestConnection!
   profile(where: ProfileWhereUniqueInput!): Profile

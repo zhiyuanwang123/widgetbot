@@ -1,18 +1,9 @@
-import Container from 'typedi'
-import ProfilesService from '@services/Profiles'
 import autobind from 'autobind-decorator'
 import { Snowflake } from '@widgetbot/discord.js'
 import WebSocket from 'ws'
 
 export class User {
-  private profilesService = Container.get(ProfilesService)
-
-  constructor(public id: Snowflake, public ip: string) {}
-
-  public async getProfile() {
-    const profile = await this.profilesService.get(this.id)
-    return profile
-  }
+  constructor(public profileId: Snowflake, public ip: string) {}
 }
 
 @autobind
@@ -37,3 +28,9 @@ export class Context {
     return realIP || address
   }
 }
+
+export interface Session {
+  profileID?: string
+}
+
+export type Req = import('http').IncomingMessage & { session: Session }

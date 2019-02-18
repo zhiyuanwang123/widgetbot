@@ -1,7 +1,5 @@
 import { Service, Inject } from 'typedi'
-import Theme from '@entities/Theme'
 import DatabaseService from '@services/Database'
-import Guild from '@entities/Guild'
 import { GuestsService } from './Guests'
 import { BansService } from './Bans'
 import { Snowflake } from '@widgetbot/discord.js'
@@ -12,21 +10,19 @@ class GuildService {
   public databaseService: DatabaseService
 
   @Inject() public bans: BansService
-
   @Inject() public guests: GuestsService
 
-  public async get(id: Snowflake) {
-    const guild = await this.databaseService.connection.guild({ id })
-
-    return guild
+  public async get(snowflake: Snowflake) {
+    return await this.databaseService.connection.guild({ snowflake })
   }
 
-  /**
-   * Overwrites the theme for the guild
-   */
-  public async setTheme(id: Snowflake, theme: string) {
-    await this.databaseService.connection.updateGuild({
-      where: { id },
+  public async getTheme(snowflake: Snowflake) {
+    return await this.databaseService.connection.guild({ snowflake }).theme()
+  }
+
+  public async setTheme(snowflake: Snowflake, theme: string) {
+    return await this.databaseService.connection.updateGuild({
+      where: { snowflake },
       data: { theme: { connect: { id: theme } } }
     })
   }

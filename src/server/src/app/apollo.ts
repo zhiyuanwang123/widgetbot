@@ -5,7 +5,7 @@ import { SessionStore } from '@app/middlewares'
 import autobind from 'autobind-decorator'
 import { ConnectionContext } from 'subscriptions-transport-ws'
 import WebSocket from 'ws'
-import { Context } from './context'
+import { Context, Req } from './context'
 import { ServerResponse } from 'http'
 
 @Service('apollo')

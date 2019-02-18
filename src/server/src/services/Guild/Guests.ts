@@ -29,9 +29,9 @@ export class GuestsService {
   /**
    * Gets a guest by their ID from a guild
    */
-  public async get(id: Snowflake, profile: string) {
+  public async get(snowflake: Snowflake, profile: string) {
     const [guildGuest] = await this.databaseService.connection
-      .guild({ id })
+      .guild({ snowflake })
       .guests<GuildGuest[]>({ where: { profile: { id: profile } } })
 
     return guildGuest
@@ -40,10 +40,10 @@ export class GuestsService {
   /**
    * Gets all the guests in the guild
    */
-  public async getAll(id: string) {
+  public async getAll(snowflake: string) {
     const guests = await this.databaseService.connection.guildGuests({
       where: {
-        guild: { id }
+        guild: { snowflake }
       }
     })
 
@@ -53,32 +53,42 @@ export class GuestsService {
   /**
    * Adds a profile to a guild
    */
-  public async add(id: Snowflake, profile: string) {
-    await this.databaseService.connection.createGuildGuest({
+  public async joinGuild(snowflake: Snowflake, profile: string) {
+    const [existingGuest] = await this.databaseService.connection.guildGuests({
+      where: { guild: { snowflake }, profile: { id: profile } }
+    })
+
+    if (existingGuest) return existingGuest
+
+    return await this.databaseService.connection.createGuildGuest({
       profile: {
         connect: { id: profile }
       },
       nickname: null,
-      guild: { connect: { id } }
+      guild: { connect: { snowflake } }
     })
   }
 
   /**
    * Clears the guest from a guild, resets nickname, total message count etc.
    */
-  public async remove(id: Snowflake, profile: string) {
+  public async leaveGuild(snowflake: Snowflake, profile: string) {
     await this.databaseService.connection.deleteManyGuildGuests({
-      guild: { id },
+      guild: { snowflake },
       profile: { id: profile }
     })
   }
 
-  public async setNickname(id: Snowflake, profile: string, nickname: string) {
+  public async setNickname(
+    snowflake: Snowflake,
+    profile: string,
+    nickname: string
+  ) {
     if (!nickname) nickname = null
 
     await this.databaseService.connection.updateManyGuildGuests({
       where: {
-        guild: { id },
+        guild: { snowflake },
         profile: { id: profile }
       },
       data: { nickname }
@@ -88,8 +98,8 @@ export class GuestsService {
   /**
    * Guest's nickname if they have one, or their username
    */
-  public async getName(id: Snowflake, guest: string) {
-    const guildGuest = await this.get(id, guest)
+  public async getName(snowflake: Snowflake, guest: string) {
+    const guildGuest = await this.get(snowflake, guest)
 
     if (guildGuest) {
       if (guildGuest.nickname !== null) return guildGuest.nickname
@@ -104,13 +114,17 @@ export class GuestsService {
    */
   public async sendMessage(channelID: Snowflake, user: User, content: string) {
     const guild = getGuildFromChannel(channelID)
-    const ban = await this.bansService.checkBanned(guild, user.id, user.ip)
+    const ban = await this.bansService.checkBanned(
+      guild,
+      user.profileId,
+      user.ip
+    )
 
     if (ban) throw `You have been banned!`
 
     const message = await this.messagingService.sendMessage(
       channelID,
-      user.id,
+      user.profileId,
       content
     )
 

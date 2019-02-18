@@ -21,6 +21,7 @@ import { ChannelResolver } from '@resolvers'
 import ImageOptions from '@entities/InputTypes/ImageOptions'
 import GuildService from '@services/Guild'
 import { Inject } from 'typedi'
+import { Context } from '@app'
 
 @Resolver(of => Guild)
 export class GuildResolver implements ResolverInterface<Guild, Discord.Guild> {
@@ -64,21 +65,19 @@ export class GuildResolver implements ResolverInterface<Guild, Discord.Guild> {
   }
 
   @FieldResolver()
-  theme() {
-    return {
-      css: '',
-      colors: {
-        primary: 'white',
-        accent: 'cyan',
-        background: 'black'
-      }
-    }
+  async theme(@Root() guild) {
+    const theme: any = await this.guildService.getTheme(guild.id)
+
+    return theme
   }
 
   @FieldResolver()
   @Authorized()
   async me(@Root() guild: Discord.Guild, @Ctx() { user }: Context) {
-    const guest: any = await this.guildService.guests.get(guild.id, user.id)
+    const guest: any = await this.guildService.guests.get(
+      guild.id,
+      user.profileId
+    )
 
     return guest
   }

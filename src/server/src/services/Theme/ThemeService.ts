@@ -15,6 +15,10 @@ export class ThemeService {
     return theme
   }
 
+  public async getColors(id: string) {
+    return await this.databaseService.connection.theme({ id }).colors()
+  }
+
   public async updateColors(id: string, colors: ThemeColorsUpdateDataInput) {
     return await this.databaseService.connection.updateTheme({
       where: { id },

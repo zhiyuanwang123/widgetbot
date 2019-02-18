@@ -1,0 +1,40 @@
+mutation {
+  guildone: createGuild(
+    data: {
+      snowflake: "299881420891881473"
+      theme: {
+        create: {
+          css: "test"
+          colors: { create: { primary: "a", accent: "a", background: "a" } }
+        }
+      }
+    }
+  ) {
+    id
+  }
+  guildtwo: createGuild(
+    data: {
+      snowflake: "guildtwo"
+      theme: {
+        create: {
+          css: "test2"
+          colors: { create: { primary: "b", accent: "b", background: "b" } }
+        }
+      }
+    }
+  ) {
+    id
+  }
+
+  profileone: createProfile(data: { username: "samdd" }) {
+    id
+  }
+
+  profiletwo: createProfile(data: { username: "samdd2" }) {
+    id
+  }
+
+  profilethree: createProfile(data: { username: "samdd3" }) {
+    id
+  }
+}

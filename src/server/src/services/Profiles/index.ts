@@ -11,6 +11,12 @@ class ProfilesService {
     return await this.databaseService.connection.profile({ id })
   }
 
+  public async getGuestProfile(guestId: string) {
+    return await this.databaseService.connection
+      .guildGuest({ id: guestId })
+      .profile()
+  }
+
   public async create(username = 'Guest') {
     return await this.databaseService.connection.createProfile({
       username

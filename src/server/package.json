@@ -5,7 +5,7 @@
   "repository": "https://github.com/widgetbot-io/server.git",
   "author": "samdd <sam@samdd.me>",
   "scripts": {
-    "start": "ts-node -r tsconfig-paths/register src/server.ts",
+    "start": "ts-node-dev -r tsconfig-paths/register src/server.ts",
     "pull": "git stash && git pull && yarn && yarn build",
     "build": "rm -rf dist; tsc && ef-tspm && node ./scripts/package",
     "test": "jest",

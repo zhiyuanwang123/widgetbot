@@ -29,14 +29,8 @@ cd widgetbot
 yarn
 
 # Build the server
-pushd src/server
-yarn build
-popd
-
-# Build the embed
-pushd src/embed
-yarn build
-popd
+yarn workspace server build
+yarn workspace embed build
 
 # WidgetBot has now been built at src/server/dist
 # simply edit & copy over data/config.template.yml to data/config.yml
@@ -57,8 +51,7 @@ The embed is mostly React.JS with Typescript.
 - [Emotion](https://emotion.sh) for styling components
 
 ```bash
-cd src/embed
-yarn start
+yarn workspace embed start
 # Embed is now available over at http://localhost:3000/channels/299881420891881473
 ```
 
@@ -69,9 +62,9 @@ The server uses Node.JS with Typescript.
 The server is responsible for providing a [GraphQL API](https://graphql.com) to interact with the Discord API.
 
 ```bash
-cd src/server
-yarn start
+yarn workspace server start
 # Access the GraphQL API at http://localhost:7000/api/graphql
+# Server will automatically restart on changes
 ```
 
 **Database**

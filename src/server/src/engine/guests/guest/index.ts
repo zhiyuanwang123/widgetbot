@@ -48,10 +48,8 @@ class Guest {
     this.avatar = user.avatar
     this.id = user.id
 
-    // TODO :Fix
-    // @ts-ignore
     this.metadata = this.metadataService.serialize({
-      type: this.type,
+      type: this.type as any,
       ...user
     })
   }

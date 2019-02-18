@@ -8,8 +8,10 @@ export class BansService {
   @Inject(type => DatabaseService)
   private databaseService: DatabaseService
 
-  public async getAll(id: Snowflake) {
-    const bans = await this.databaseService.connection.guild({ id }).bans()
+  public async getAll(snowflake: Snowflake) {
+    const bans = await this.databaseService.connection
+      .guild({ snowflake })
+      .bans()
     return bans
   }
 
@@ -17,16 +19,17 @@ export class BansService {
    * Bans a guest
    */
   public async add(
-    id: Snowflake,
+    snowflake: Snowflake,
     ban: { [type in GuildBanType]?: GuildBanData }
   ) {
     for (const [type, data] of Object.entries(ban)) {
       if (!type || !data) continue
 
       await this.databaseService.connection.upsertGuild({
-        where: { id },
+        where: { snowflake },
         update: { bans: { create: { type, data } } },
         create: {
+          snowflake,
           bans: { create: { type, data } }
         }
       })
@@ -37,14 +40,14 @@ export class BansService {
    * Unbans a guest
    */
   public async remove(
-    id: Snowflake,
+    snowflake: Snowflake,
     ban: { [type in GuildBanType]?: GuildBanData }
   ) {
     for (const [type, data] of Object.entries(ban)) {
       if (!type || !data) continue
 
       await this.databaseService.connection.updateGuild({
-        where: { id },
+        where: { snowflake },
         data: {
           bans: {
             deleteMany: {
@@ -60,10 +63,10 @@ export class BansService {
   /**
    * Checks if a user is banned
    */
-  public async checkBanned(guildID: Snowflake, profile: string, ip: string) {
+  public async checkBanned(snowflake: Snowflake, profile: string, ip: string) {
     const [ban] = await this.databaseService.connection.guildBans({
       where: {
-        guild: { id: guildID },
+        guild: { snowflake },
         OR: [{ type: 'id', data: profile }, { type: 'ip', data: ip }]
       }
     })
