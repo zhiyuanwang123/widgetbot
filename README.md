@@ -1,6 +1,6 @@
 # [WidgetBot](https://widgetbot.io) ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg) [![](https://data.jsdelivr.com/v1/package/npm/@widgetbot/crate/badge?style=rounded)](https://www.jsdelivr.com/package/npm/@widgetbot/crate) [![](https://data.jsdelivr.com/v1/package/npm/@widgetbot/html-embed/badge?style=rounded)](https://www.jsdelivr.com/package/npm/@widgetbot/html-embed)
 
-> Discord chat widgets for your website
+> WidgetBot is a pixel-perfect open-source Discord chat widget for your website. It is distributed and developed under the [GNU General Public License v3 (GPL-3) Open Source License](https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3)).
 
 [![Banner](./.github/banner.png)](https://widgetbot.io)
 
