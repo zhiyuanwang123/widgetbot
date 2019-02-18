@@ -5,7 +5,8 @@ import {
   Ctx,
   Mutation,
   Args,
-  Authorized
+  Authorized,
+  ResolverInterface
 } from 'type-graphql'
 import ProfilesService from '@services/Profiles'
 import { Inject } from 'typedi'
@@ -20,13 +21,7 @@ import { Context } from '@app'
 @Resolver(of => Profile)
 export class ProfileResolver /*implements ResolverInterface<Profile>*/ {
   @Inject() private profilesService: ProfilesService
-
   @Inject() private guildService: GuildService
-
-  @FieldResolver()
-  id(@Ctx() { user }: Context): string {
-    return user.profileId
-  }
 
   @Query(type => Profile, { nullable: true })
   async me(@Ctx() { user, session }: Context) {
