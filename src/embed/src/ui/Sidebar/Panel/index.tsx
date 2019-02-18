@@ -1,31 +1,22 @@
-import { OpenModal, OpenModalVariables } from '@generated'
-import OPEN_MODAL from '@queries/OpenModal.graphql'
 import Tooltip from 'rc-tooltip'
 import * as React from 'react'
-import { Mutation } from 'react-apollo'
 
 import { Root, Settings, Version } from './elements'
 import { Trans } from '@lingui/react'
+import { store } from '@models'
 
 const { version } = require('../../../../package.json')
 
-class Panel extends React.PureComponent {
-  render() {
-    return (
-      <Mutation<OpenModal, OpenModalVariables> mutation={OPEN_MODAL}>
-        {openModal => (
-          <Root className="panel">
-            <Tooltip
-              placement="top"
-              overlay={<Trans id="Panel.settings">Settings</Trans>}
-            >
-              <Settings
-                onClick={() =>
-                  openModal({ variables: { type: 'settings', data: null } })
-                }
-              />
-            </Tooltip>
-            {/* <Tooltip
+const Panel = () => {
+  return (
+    <Root className="panel">
+      <Tooltip
+        placement="top"
+        overlay={<Trans id="Panel.settings">Settings</Trans>}
+      >
+        <Settings onClick={store.modal.openSettings} />
+      </Tooltip>
+      {/* <Tooltip
               placement="top"
               overlay={<Trans id="Panel.about">About</Trans>}
             >
@@ -40,11 +31,8 @@ class Panel extends React.PureComponent {
                 {`v${version}`}
               </Version>
             </Tooltip> */}
-          </Root>
-        )}
-      </Mutation>
-    )
-  }
+    </Root>
+  )
 }
 
 export default Panel

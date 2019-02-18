@@ -1,11 +1,10 @@
-import { OpenModal, OpenModalVariables } from '@generated'
-import OPEN_MODAL from '@queries/OpenModal.graphql'
 import optimize from '@ui/shared/ExpandableImage/optimize'
 import { Scale } from '@ui/shared/ScaledImage'
 import * as React from 'react'
-import { Mutation } from 'react-apollo'
+import { useState, useEffect } from 'react'
 
 import { Image, Loader, Root } from './elements'
+import { store } from '@models'
 
 interface Props {
   src: string
@@ -17,54 +16,37 @@ interface Props {
   maxHeight?: number
 }
 
-class ExpandableImage extends React.PureComponent<Props> {
-  state = {
-    type: null
-  }
+const ExpandableImage = (props: Props) => {
+  const { className, src: url } = props
+  const scale = new Scale(props)
+  const [loadState, setLoadState] = useState<'loaded' | 'error' | 'loading'>(
+    null
+  )
 
-  private mounted = true
+  useEffect(() => {
+    const timer = setTimeout(() => !loadState && setLoadState('loading'), 100)
 
-  componentDidMount() {
-    setTimeout(() => {
-      if (!this.mounted || this.state.type !== null) return
+    return () => clearTimeout(timer)
+  }, [])
 
-      this.setState({ type: 'loading' })
-    }, 100)
-  }
-
-  componentWillUnmount() {
-    this.mounted = false
-  }
-
-  render() {
-    const { className, src: url } = this.props
-    const scale = new Scale(this.props)
-
-    return (
-      <Mutation<OpenModal, OpenModalVariables> mutation={OPEN_MODAL}>
-        {openModal => (
-          <Root
-            className={className || null}
-            scale={scale}
-            onClick={() =>
-              openModal({ variables: { type: 'image', data: url } })
-            }
-          >
-            <Image
-              src={optimize({
-                width: scale.width,
-                height: scale.height,
-                url
-              })}
-              onLoad={() => this.setState({ type: 'loaded' })}
-              onError={() => this.setState({ type: 'error' })}
-            />
-            {this.state.type === 'loading' && <Loader />}
-          </Root>
-        )}
-      </Mutation>
-    )
-  }
+  return (
+    <Root
+      className={className || null}
+      scale={scale}
+      onClick={() => store.modal.openImage(url)}
+    >
+      <Image
+        src={optimize({
+          width: scale.width,
+          height: scale.height,
+          url
+        })}
+        onLoad={() => setLoadState('loaded')}
+        onError={() => setLoadState('error')}
+      />
+      {loadState === 'loading' && <Loader />}
+    </Root>
+  )
 }
 
 export default ExpandableImage

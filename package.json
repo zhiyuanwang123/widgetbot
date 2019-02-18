@@ -15,6 +15,7 @@
     "react-dom": "^16.8.2"
   },
   "resolutions": {
+    "**/@types/react": "16.8.3",
     "**/apollo-link": "1.2.8",
     "**/@types/graphql": "14.0.6"
   },

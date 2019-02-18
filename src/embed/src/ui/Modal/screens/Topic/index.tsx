@@ -1,22 +1,20 @@
 import * as React from 'react'
 import Markdown from '@ui/shared/markdown/render'
 
-import { Box, Close, IScreenProps } from '@ui/Modal'
+import { Box, Close } from '@ui/Modal'
 import { Content } from './elements'
+import { observer } from 'mobx-react-lite'
+import { store } from '@models'
 
-class Topic extends React.PureComponent<IScreenProps> {
-  render() {
-    const { modal, close } = this.props
-
-    return (
-      <Box>
-        <Close onClick={() => close()} />
-        <Content>
-          <Markdown>{modal.data}</Markdown>
-        </Content>
-      </Box>
-    )
-  }
-}
+const Topic = observer(() => {
+  return (
+    <Box>
+      <Close onClick={store.modal.close} />
+      <Content>
+        <Markdown>{store.modal.data}</Markdown>
+      </Content>
+    </Box>
+  )
+})
 
 export default Topic

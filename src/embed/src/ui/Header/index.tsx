@@ -2,30 +2,16 @@ import * as React from 'react'
 
 import { Root } from './elements'
 import Hamburger from './Hamburger'
+import { store } from '@models'
+import { observer } from 'mobx-react-lite'
 
-import {
-  SidebarVisibility,
-  ToggleSidebarVariables,
-  ToggleSidebar
-} from '@generated'
-import SIDEBAR_VISIBILITY from '@queries/SidebarVisibility.graphql'
-import TOGGLE_SIDEBAR from '@queries/ToggleSidebar.graphql'
-import { Query, Mutation } from 'react-apollo'
+const Header = observer(({ children }) => (
+  <Root className="header">
+    <Hamburger onClick={store.sidebar.toggle} open={store.sidebar.isOpen} />
 
-const Header = ({ children }) => (
-  <Query<SidebarVisibility> query={SIDEBAR_VISIBILITY}>
-    {({ data }) => (
-      <Root className="header">
-        <Mutation<ToggleSidebar, ToggleSidebarVariables>
-          mutation={TOGGLE_SIDEBAR}
-        >
-          {toggle => <Hamburger onClick={toggle} open={data.sidebar.open} />}
-        </Mutation>
-        {children}
-      </Root>
-    )}
-  </Query>
-)
+    {children}
+  </Root>
+))
 
 export default Header
 

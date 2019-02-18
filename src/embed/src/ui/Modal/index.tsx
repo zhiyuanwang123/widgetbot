@@ -1,52 +1,38 @@
+import { observer } from 'mobx-react-lite'
 import * as _ from 'lodash'
 import Spinner from 'react-spinkit'
 import Loadable from 'react-loadable'
-import autobind from 'autobind-decorator'
-import GET_MODAL from '@queries/ModalInfo.graphql'
-import CLOSE_MODAL from '@queries/CloseModal.graphql'
+import { store } from '@models'
 
 import * as React from 'react'
-import { DataProps, graphql, Mutation } from 'react-apollo'
 import Hotkeys from 'react-hot-keys'
 
 import { Root } from './elements'
-import { ModalInfo, CloseModal } from '@generated'
 
-export interface IScreenProps extends ModalInfo {
-  close: () => void
-}
+const Modal = observer(() => {
+  const Screen: any = Loadable({
+    loader: () =>
+      import(/* webpackMode: "lazy", webpackChunkName: "modal-screen-[index]" */ `./screens/${_.capitalize(
+        store.modal.type
+      )}`),
+    loading: props =>
+      props.pastDelay ? <Spinner name="ball-clip-rotate-multiple" /> : null
+  })
 
-@autobind
-class Modal extends React.PureComponent<DataProps<ModalInfo>> {
-  render() {
-    const { modal } = this.props.data
+  return (
+    <Hotkeys keyName="escape" onKeyDown={store.modal.close}>
+      <Root
+        onClick={e =>
+          e.target === e.currentTarget ? store.modal.close() : null
+        }
+        open={store.modal.isOpen}
+        className="modal"
+      >
+        <Screen modal={store.modal} close={store.modal.close} />
+      </Root>
+    </Hotkeys>
+  )
+})
 
-    const Screen: any = Loadable({
-      loader: () =>
-        import(/* webpackMode: "lazy", webpackChunkName: "modal-screen-[index]" */ `./screens/${_.capitalize(
-          modal.type
-        )}`),
-      loading: props =>
-        props.pastDelay ? <Spinner name="ball-clip-rotate-multiple" /> : null
-    })
-
-    return (
-      <Mutation<CloseModal> mutation={CLOSE_MODAL}>
-        {close => (
-          <Hotkeys keyName="escape" onKeyDown={close}>
-            <Root
-              onClick={e => (e.target === e.currentTarget ? close() : null)}
-              open={modal.open}
-              className="modal"
-            >
-              <Screen modal={modal} close={close} />
-            </Root>
-          </Hotkeys>
-        )}
-      </Mutation>
-    )
-  }
-}
-
-export default graphql(GET_MODAL)(Modal)
+export default Modal
 export { Box, Close, Content } from './elements'

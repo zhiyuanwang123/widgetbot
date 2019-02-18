@@ -1,5 +1,3 @@
-import { SidebarVisibility } from '@generated'
-import SIDEBAR_VISIBILITY from '@queries/SidebarVisibility.graphql'
 import * as React from 'react'
 import { Query } from 'react-apollo'
 
@@ -7,17 +5,17 @@ import Channels from './Channels'
 import { Root } from './elements'
 import Header from './Header'
 import Panel from './Panel'
+import { observer } from 'mobx-react-lite'
+import { store } from '@models'
 
-const Sidebar = () => (
-  <Query<SidebarVisibility> query={SIDEBAR_VISIBILITY}>
-    {({ data }) => (
-      <Root visible={data.sidebar.open} className="sidebar">
-        <Header />
-        <Channels />
-        <Panel />
-      </Root>
-    )}
-  </Query>
-)
+const Sidebar = observer(() => {
+  return (
+    <Root visible={store.sidebar.isOpen} className="sidebar">
+      <Header />
+      <Channels />
+      <Panel />
+    </Root>
+  )
+})
 
 export default Sidebar

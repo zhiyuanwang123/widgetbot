@@ -1,18 +1,13 @@
 import * as React from 'react'
 import { Query, Mutation } from 'react-apollo'
-import {
-  Channel,
-  ChannelVariables,
-  OpenModal,
-  OpenModalVariables
-} from '@generated'
+import { Channel, ChannelVariables } from '@generated'
 import Tooltip from 'rc-tooltip'
 import CHANNEL from './Channel.graphql'
-import OPEN_MODAL from '@queries/OpenModal.graphql'
 import { Name, Topic, Join, Stretch } from '@ui/Header'
 
 import { Root } from './elements'
 import { Trans } from '@lingui/react'
+import { store } from '@models'
 
 const defaultInvite = 'https://discord.gg/mpMQCuj'
 
@@ -38,22 +33,12 @@ class Header extends React.PureComponent<HeaderProps> {
               <Stretch>
                 <Name>{name}</Name>
                 {topic && (
-                  <Mutation<OpenModal, OpenModalVariables>
-                    mutation={OPEN_MODAL}
+                  <Topic
+                    onClick={() => store.modal.openTopic(topic)}
+                    className="topic"
                   >
-                    {openModal => (
-                      <Topic
-                        onClick={() => {
-                          openModal({
-                            variables: { type: 'topic', data: topic }
-                          })
-                        }}
-                        className="topic"
-                      >
-                        {topic}
-                      </Topic>
-                    )}
-                  </Mutation>
+                    {topic}
+                  </Topic>
                 )}
               </Stretch>
               <Tooltip placement="bottom" overlay="Open in Discord app">
