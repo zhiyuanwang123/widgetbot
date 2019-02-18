@@ -25,26 +25,3 @@ export const Snowflake = new GraphQLScalarType({
     return undefined
   }
 })
-
-export const GuestSnowflake = new GraphQLScalarType({
-  name: 'GuestSnowflake',
-  description: 'String representation of a MongoDB ObjectID.',
-  parseValue(value: string) {
-    if (typeof value === 'string') return value
-    throw new TypeError(
-      `GuestSnowflake cannot represent value: ${inspect(value)}`
-    )
-  },
-  serialize(value: string) {
-    if (typeof value === 'string') return value
-    throw new TypeError(
-      `GuestSnowflake cannot represent value: ${inspect(value)}`
-    )
-  },
-  parseLiteral: ast => {
-    if (ast.kind === Kind.STRING) {
-      return ast.value.toString()
-    }
-    return undefined
-  }
-})

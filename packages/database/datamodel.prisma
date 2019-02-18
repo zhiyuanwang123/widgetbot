@@ -33,8 +33,8 @@ type GuildGuest {
 
 type GuildBan {
   guild: Guild!
-  type: String!
-  data: String!
+  ip: String
+  profile: Profile
 }
 
 type Guild {

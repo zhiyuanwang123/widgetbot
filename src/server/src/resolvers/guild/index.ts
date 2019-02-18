@@ -12,11 +12,7 @@ import {
   Mutation,
   Arg
 } from 'type-graphql'
-import Guild, {
-  GuildArgs,
-  GuildChannelArgs,
-  GuildBanArgs
-} from '@entities/Guild'
+import Guild, { GuildArgs, GuildChannelArgs } from '@entities/Guild'
 import { ChannelResolver } from '@resolvers'
 import ImageOptions from '@entities/InputTypes/ImageOptions'
 import GuildService from '@services/Guild'
@@ -26,20 +22,6 @@ import { Context } from '@app'
 @Resolver(of => Guild)
 export class GuildResolver implements ResolverInterface<Guild, Discord.Guild> {
   @Inject() private guildService: GuildService
-
-  @Mutation(type => Boolean)
-  async banGuest(@Args() { guild, id, ip }: GuildBanArgs) {
-    await this.guildService.bans.add(guild, { ip, id })
-
-    return true
-  }
-
-  @Mutation(type => Boolean)
-  async unbanGuest(@Args() { guild, id, ip }: GuildBanArgs) {
-    await this.guildService.bans.remove(guild, { ip, id })
-
-    return true
-  }
 
   @Query(returns => Guild, { nullable: true })
   guild(@Args() { id }: GuildArgs) {

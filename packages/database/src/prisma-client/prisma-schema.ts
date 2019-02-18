@@ -189,8 +189,8 @@ type Guild {
 
 type GuildBan {
   guild: Guild!
-  type: String!
-  data: String!
+  ip: String
+  profile: Profile
 }
 
 type GuildBanConnection {
@@ -201,8 +201,8 @@ type GuildBanConnection {
 
 input GuildBanCreateInput {
   guild: GuildCreateOneWithoutBansInput!
-  type: String!
-  data: String!
+  ip: String
+  profile: ProfileCreateOneInput
 }
 
 input GuildBanCreateManyWithoutGuildInput {
@@ -210,8 +210,8 @@ input GuildBanCreateManyWithoutGuildInput {
 }
 
 input GuildBanCreateWithoutGuildInput {
-  type: String!
-  data: String!
+  ip: String
+  profile: ProfileCreateOneInput
 }
 
 type GuildBanEdge {
@@ -220,10 +220,8 @@ type GuildBanEdge {
 }
 
 enum GuildBanOrderByInput {
-  type_ASC
-  type_DESC
-  data_ASC
-  data_DESC
+  ip_ASC
+  ip_DESC
   id_ASC
   id_DESC
   createdAt_ASC
@@ -233,39 +231,24 @@ enum GuildBanOrderByInput {
 }
 
 type GuildBanPreviousValues {
-  type: String!
-  data: String!
+  ip: String
 }
 
 input GuildBanScalarWhereInput {
-  type: String
-  type_not: String
-  type_in: [String!]
-  type_not_in: [String!]
-  type_lt: String
-  type_lte: String
-  type_gt: String
-  type_gte: String
-  type_contains: String
-  type_not_contains: String
-  type_starts_with: String
-  type_not_starts_with: String
-  type_ends_with: String
-  type_not_ends_with: String
-  data: String
-  data_not: String
-  data_in: [String!]
-  data_not_in: [String!]
-  data_lt: String
-  data_lte: String
-  data_gt: String
-  data_gte: String
-  data_contains: String
-  data_not_contains: String
-  data_starts_with: String
-  data_not_starts_with: String
-  data_ends_with: String
-  data_not_ends_with: String
+  ip: String
+  ip_not: String
+  ip_in: [String!]
+  ip_not_in: [String!]
+  ip_lt: String
+  ip_lte: String
+  ip_gt: String
+  ip_gte: String
+  ip_contains: String
+  ip_not_contains: String
+  ip_starts_with: String
+  ip_not_starts_with: String
+  ip_ends_with: String
+  ip_not_ends_with: String
   AND: [GuildBanScalarWhereInput!]
   OR: [GuildBanScalarWhereInput!]
   NOT: [GuildBanScalarWhereInput!]
@@ -290,13 +273,11 @@ input GuildBanSubscriptionWhereInput {
 }
 
 input GuildBanUpdateManyDataInput {
-  type: String
-  data: String
+  ip: String
 }
 
 input GuildBanUpdateManyMutationInput {
-  type: String
-  data: String
+  ip: String
 }
 
 input GuildBanUpdateManyWithoutGuildInput {
@@ -312,34 +293,21 @@ input GuildBanUpdateManyWithWhereNestedInput {
 
 input GuildBanWhereInput {
   guild: GuildWhereInput
-  type: String
-  type_not: String
-  type_in: [String!]
-  type_not_in: [String!]
-  type_lt: String
-  type_lte: String
-  type_gt: String
-  type_gte: String
-  type_contains: String
-  type_not_contains: String
-  type_starts_with: String
-  type_not_starts_with: String
-  type_ends_with: String
-  type_not_ends_with: String
-  data: String
-  data_not: String
-  data_in: [String!]
-  data_not_in: [String!]
-  data_lt: String
-  data_lte: String
-  data_gt: String
-  data_gte: String
-  data_contains: String
-  data_not_contains: String
-  data_starts_with: String
-  data_not_starts_with: String
-  data_ends_with: String
-  data_not_ends_with: String
+  ip: String
+  ip_not: String
+  ip_in: [String!]
+  ip_not_in: [String!]
+  ip_lt: String
+  ip_lte: String
+  ip_gt: String
+  ip_gte: String
+  ip_contains: String
+  ip_not_contains: String
+  ip_starts_with: String
+  ip_not_starts_with: String
+  ip_ends_with: String
+  ip_not_ends_with: String
+  profile: ProfileWhereInput
   AND: [GuildBanWhereInput!]
   OR: [GuildBanWhereInput!]
   NOT: [GuildBanWhereInput!]

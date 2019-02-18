@@ -1,7 +1,19 @@
 import { Service, Inject } from 'typedi'
-import { GuildBanType, GuildBanData } from '@entities/Guild'
 import { Snowflake } from '@widgetbot/discord.js'
 import DatabaseService from '@services/Database'
+
+const gql = String.raw
+
+const BanFragment = gql`
+  fragment BanFragment on GuildBan {
+    profile {
+      id
+    }
+    ip
+  }
+`
+
+type BanData = { profileId?: string; ip?: string }
 
 @Service('guild.bans')
 export class BansService {
@@ -9,67 +21,49 @@ export class BansService {
   private databaseService: DatabaseService
 
   public async getAll(snowflake: Snowflake) {
-    const bans = await this.databaseService.connection
+    return await this.databaseService.connection
       .guild({ snowflake })
       .bans()
-    return bans
+      .$fragment<any>(BanFragment)
   }
 
   /**
    * Bans a guest
    */
-  public async add(
-    snowflake: Snowflake,
-    ban: { [type in GuildBanType]?: GuildBanData }
-  ) {
-    for (const [type, data] of Object.entries(ban)) {
-      if (!type || !data) continue
+  public async add(snowflake: Snowflake, { profileId, ip }: BanData) {
+    if (!profileId && !ip) throw `Profile or IP is required to ban guest!`
 
-      await this.databaseService.connection.upsertGuild({
-        where: { snowflake },
-        update: { bans: { create: { type, data } } },
-        create: {
-          snowflake,
-          bans: { create: { type, data } }
-        }
+    return await this.databaseService.connection
+      .createGuildBan({
+        guild: { connect: { snowflake } },
+        ...(profileId && { profile: { connect: { id: profileId } } }),
+        ip
       })
-    }
+      .$fragment<any>(BanFragment)
   }
 
   /**
    * Unbans a guest
    */
-  public async remove(
-    snowflake: Snowflake,
-    ban: { [type in GuildBanType]?: GuildBanData }
-  ) {
-    for (const [type, data] of Object.entries(ban)) {
-      if (!type || !data) continue
-
-      await this.databaseService.connection.updateGuild({
-        where: { snowflake },
-        data: {
-          bans: {
-            deleteMany: {
-              type,
-              data
-            }
-          }
-        }
-      })
-    }
+  public async remove(snowflake: Snowflake, { profileId, ip }: BanData) {
+    await this.databaseService.connection.deleteManyGuildBans({
+      guild: { snowflake },
+      OR: [{ ip }, { profile: { id: profileId } }]
+    })
   }
 
   /**
    * Checks if a user is banned
    */
-  public async checkBanned(snowflake: Snowflake, profile: string, ip: string) {
-    const [ban] = await this.databaseService.connection.guildBans({
-      where: {
-        guild: { snowflake },
-        OR: [{ type: 'id', data: profile }, { type: 'ip', data: ip }]
-      }
-    })
+  public async checkBanned(snowflake: Snowflake, profile: string, ip?: string) {
+    const [ban] = await this.databaseService.connection
+      .guildBans({
+        where: {
+          guild: { snowflake },
+          OR: [{ profile: { id: profile } }, { ip }]
+        }
+      })
+      .$fragment<any>(BanFragment)
 
     return ban
   }

@@ -25,8 +25,8 @@ class ProfilesService {
 
   public async changeUsername(id: Snowflake, username: string) {
     return await this.databaseService.connection.updateProfile({
-      data: { username },
-      where: { id }
+      where: { id },
+      data: { username }
     })
   }
 }

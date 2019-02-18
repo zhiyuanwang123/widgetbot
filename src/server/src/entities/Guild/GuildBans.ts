@@ -1,11 +1,10 @@
 import { Field, ObjectType } from 'type-graphql'
-
-export type GuildBanType = 'id' | 'ip'
-export type GuildBanData = string
+import Profile from '@entities/Profile'
 
 @ObjectType()
 export class GuildBan {
-  @Field() type: string
-
-  @Field() data: string
+  @Field({ nullable: true })
+  profile?: Profile
+  @Field({ nullable: true })
+  ip?: string
 }

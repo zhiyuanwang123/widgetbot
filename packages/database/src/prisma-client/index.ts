@@ -381,10 +381,8 @@ export type GuildGuestOrderByInput =
   | 'updatedAt_DESC'
 
 export type GuildBanOrderByInput =
-  | 'type_ASC'
-  | 'type_DESC'
-  | 'data_ASC'
-  | 'data_DESC'
+  | 'ip_ASC'
+  | 'ip_DESC'
   | 'id_ASC'
   | 'id_DESC'
   | 'createdAt_ASC'
@@ -500,8 +498,8 @@ export interface GuildCreateOneWithoutGuestsInput {
 
 export interface GuildBanCreateInput {
   guild: GuildCreateOneWithoutBansInput
-  type: String
-  data: String
+  ip?: String
+  profile?: ProfileCreateOneInput
 }
 
 export interface GuildGuestCreateInput {
@@ -608,34 +606,21 @@ export interface ThemeCreateWithoutGuildsInput {
 
 export interface GuildBanWhereInput {
   guild?: GuildWhereInput
-  type?: String
-  type_not?: String
-  type_in?: String[] | String
-  type_not_in?: String[] | String
-  type_lt?: String
-  type_lte?: String
-  type_gt?: String
-  type_gte?: String
-  type_contains?: String
-  type_not_contains?: String
-  type_starts_with?: String
-  type_not_starts_with?: String
-  type_ends_with?: String
-  type_not_ends_with?: String
-  data?: String
-  data_not?: String
-  data_in?: String[] | String
-  data_not_in?: String[] | String
-  data_lt?: String
-  data_lte?: String
-  data_gt?: String
-  data_gte?: String
-  data_contains?: String
-  data_not_contains?: String
-  data_starts_with?: String
-  data_not_starts_with?: String
-  data_ends_with?: String
-  data_not_ends_with?: String
+  ip?: String
+  ip_not?: String
+  ip_in?: String[] | String
+  ip_not_in?: String[] | String
+  ip_lt?: String
+  ip_lte?: String
+  ip_gt?: String
+  ip_gte?: String
+  ip_contains?: String
+  ip_not_contains?: String
+  ip_starts_with?: String
+  ip_not_starts_with?: String
+  ip_ends_with?: String
+  ip_not_ends_with?: String
+  profile?: ProfileWhereInput
   AND?: GuildBanWhereInput[] | GuildBanWhereInput
   OR?: GuildBanWhereInput[] | GuildBanWhereInput
   NOT?: GuildBanWhereInput[] | GuildBanWhereInput
@@ -756,8 +741,8 @@ export interface GuildUpdateWithWhereUniqueWithoutThemeInput {
 }
 
 export interface GuildBanCreateWithoutGuildInput {
-  type: String
-  data: String
+  ip?: String
+  profile?: ProfileCreateOneInput
 }
 
 export type ProfileWhereUniqueInput = AtLeastOne<{
@@ -804,8 +789,7 @@ export interface ProfileUpdateManyMutationInput {
 }
 
 export interface GuildBanUpdateManyMutationInput {
-  type?: String
-  data?: String
+  ip?: String
 }
 
 export interface GuildGuestUpdateManyMutationInput {
@@ -1223,8 +1207,7 @@ export interface GuildUpdateManyMutationInput {
 }
 
 export interface GuildBanUpdateManyDataInput {
-  type?: String
-  data?: String
+  ip?: String
 }
 
 export interface GuildBanUpdateManyWithWhereNestedInput {
@@ -1233,34 +1216,20 @@ export interface GuildBanUpdateManyWithWhereNestedInput {
 }
 
 export interface GuildBanScalarWhereInput {
-  type?: String
-  type_not?: String
-  type_in?: String[] | String
-  type_not_in?: String[] | String
-  type_lt?: String
-  type_lte?: String
-  type_gt?: String
-  type_gte?: String
-  type_contains?: String
-  type_not_contains?: String
-  type_starts_with?: String
-  type_not_starts_with?: String
-  type_ends_with?: String
-  type_not_ends_with?: String
-  data?: String
-  data_not?: String
-  data_in?: String[] | String
-  data_not_in?: String[] | String
-  data_lt?: String
-  data_lte?: String
-  data_gt?: String
-  data_gte?: String
-  data_contains?: String
-  data_not_contains?: String
-  data_starts_with?: String
-  data_not_starts_with?: String
-  data_ends_with?: String
-  data_not_ends_with?: String
+  ip?: String
+  ip_not?: String
+  ip_in?: String[] | String
+  ip_not_in?: String[] | String
+  ip_lt?: String
+  ip_lte?: String
+  ip_gt?: String
+  ip_gte?: String
+  ip_contains?: String
+  ip_not_contains?: String
+  ip_starts_with?: String
+  ip_not_starts_with?: String
+  ip_ends_with?: String
+  ip_not_ends_with?: String
   AND?: GuildBanScalarWhereInput[] | GuildBanScalarWhereInput
   OR?: GuildBanScalarWhereInput[] | GuildBanScalarWhereInput
   NOT?: GuildBanScalarWhereInput[] | GuildBanScalarWhereInput
@@ -1486,22 +1455,21 @@ export interface ThemeSubscription
 }
 
 export interface GuildBan {
-  type: String
-  data: String
+  ip?: String
 }
 
 export interface GuildBanPromise extends Promise<GuildBan>, Fragmentable {
   guild: <T = GuildPromise>() => T
-  type: () => Promise<String>
-  data: () => Promise<String>
+  ip: () => Promise<String>
+  profile: <T = ProfilePromise>() => T
 }
 
 export interface GuildBanSubscription
   extends Promise<AsyncIterator<GuildBan>>,
     Fragmentable {
   guild: <T = GuildSubscription>() => T
-  type: () => Promise<AsyncIterator<String>>
-  data: () => Promise<AsyncIterator<String>>
+  ip: () => Promise<AsyncIterator<String>>
+  profile: <T = ProfileSubscription>() => T
 }
 
 export interface BatchPayload {
@@ -1938,22 +1906,19 @@ export interface AggregateGuildSubscription
 }
 
 export interface GuildBanPreviousValues {
-  type: String
-  data: String
+  ip?: String
 }
 
 export interface GuildBanPreviousValuesPromise
   extends Promise<GuildBanPreviousValues>,
     Fragmentable {
-  type: () => Promise<String>
-  data: () => Promise<String>
+  ip: () => Promise<String>
 }
 
 export interface GuildBanPreviousValuesSubscription
   extends Promise<AsyncIterator<GuildBanPreviousValues>>,
     Fragmentable {
-  type: () => Promise<AsyncIterator<String>>
-  data: () => Promise<AsyncIterator<String>>
+  ip: () => Promise<AsyncIterator<String>>
 }
 
 export interface Connection {

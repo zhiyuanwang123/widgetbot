@@ -24,3 +24,10 @@ export const defaultConfig: OptionalConfig = {
 const config = { ...defaultConfig, ...userConfig } as Config
 
 export default config
+
+export const isSilly = config.log_level === 'silly'
+export const isDebug = isSilly || config.log_level === 'debug'
+export const isVerbose = isDebug || config.log_level === 'verbose'
+export const isInfo = isVerbose || config.log_level === 'info'
+export const isWarn = isInfo || config.log_level === 'warn'
+export const isError = isWarn || config.log_level === 'error'
