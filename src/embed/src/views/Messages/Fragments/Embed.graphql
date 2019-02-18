@@ -1,4 +1,4 @@
-fragment Embed on MessageEmbed {
+fragment Embed on Embed {
   title
   description
   url

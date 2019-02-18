@@ -10,7 +10,7 @@ import Hotkeys from 'react-hot-keys'
 import { Root } from './elements'
 
 const Modal = observer(() => {
-  const Screen: any = Loadable({
+  const Screen = Loadable({
     loader: () =>
       import(/* webpackMode: "lazy", webpackChunkName: "modal-screen-[index]" */ `./screens/${_.capitalize(
         store.modal.type
