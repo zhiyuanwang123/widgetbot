@@ -9,6 +9,6 @@ export class GuildGuest {
   @Field({ nullable: true })
   nickname?: string
 
-  // @Field()
-  // online: boolean
+  @Field({ nullable: true })
+  displayName: string
 }

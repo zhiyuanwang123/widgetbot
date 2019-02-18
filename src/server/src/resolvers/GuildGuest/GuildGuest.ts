@@ -33,12 +33,19 @@ export class LeaveGuildArgs {
 @Resolver(of => GuildGuest)
 export class GuildGuestResolver implements ResolverInterface<GuildGuest> {
   @Inject() private profilesService: ProfilesService
-
   @Inject() private guestsService: GuestsService
 
   @FieldResolver()
   async profile(@Root() guildGuest) {
     return await this.profilesService.getGuestProfile(guildGuest.id)
+  }
+
+  @FieldResolver()
+  async displayName(@Root() guildGuest) {
+    if (guildGuest.nickname) return guildGuest.nickname
+
+    const profile = await this.profilesService.getGuestProfile(guildGuest.id)
+    return profile.username
   }
 
   @Authorized()

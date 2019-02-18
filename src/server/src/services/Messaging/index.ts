@@ -37,7 +37,7 @@ class MessagingService {
     const guild = getGuildFromChannel(channelID)
 
     const profile = await this.profilesService.get(guest)
-    const name = await this.guildService.guests.getName(guild, guest)
+    const name = await this.guildService.guests.displayName(guild, guest)
     if (!profile) throw `Couldn't find user!`
 
     // Attempt to send via webhook

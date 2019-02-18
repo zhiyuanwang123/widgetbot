@@ -29,10 +29,10 @@ export class GuestsService {
   /**
    * Gets a guest by their ID from a guild
    */
-  public async get(snowflake: Snowflake, profile: string) {
+  public async get(snowflake: Snowflake, profileId: string) {
     const [guildGuest] = await this.databaseService.connection
       .guild({ snowflake })
-      .guests<GuildGuest[]>({ where: { profile: { id: profile } } })
+      .guests<GuildGuest[]>({ where: { profile: { id: profileId } } })
 
     return guildGuest
   }
@@ -98,14 +98,14 @@ export class GuestsService {
   /**
    * Guest's nickname if they have one, or their username
    */
-  public async getName(snowflake: Snowflake, guest: string) {
-    const guildGuest = await this.get(snowflake, guest)
+  public async displayName(snowflake: Snowflake, profileId: string) {
+    const guildGuest = await this.get(snowflake, profileId)
 
     if (guildGuest) {
       if (guildGuest.nickname !== null) return guildGuest.nickname
     }
 
-    const profile = await this.profilesService.get(guest)
+    const profile = await this.profilesService.get(profileId)
     return profile ? profile.username : null
   }
 

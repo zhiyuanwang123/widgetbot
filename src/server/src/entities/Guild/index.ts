@@ -44,11 +44,11 @@ export default class Guild {
   @Field(type => [GuildGuest])
   guests: GuildGuest[]
 
-  @Field(type => [GuildBan])
-  bans: GuildBan[]
-
   @Field(type => GuildGuest, { nullable: true })
   me?: GuildGuest
+
+  @Field(type => [GuildBan])
+  bans: GuildBan[]
 }
 
 export * from './args'
