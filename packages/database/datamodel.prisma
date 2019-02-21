@@ -1,45 +1,49 @@
 type Connection {
   type: String!
   data: String!
+  profile: Profile! @relation(name: "ProfileToConnections")
 }
 
 type Profile {
   id: ID! @unique
-  username: String!
+  username: String! @unique
   avatarURL: String
-  connections: [Connection!]!
+  connections: [Connection!]! @relation(name: "ProfileToConnections")
+  guilds: [GuildGuest!]! @relation(name: "ProfileToGuilds")
   email: String
+  bans: [GuildBan!]! @relation(name: "GuildBanToProfile")
 }
 
 type ThemeColors {
   primary: String @default(value: "white")
   accent: String @default(value: "red")
   background: String @default(value: "black")
+  theme: Theme! @relation(name: "ThemeColorsToTheme")
 }
 
 type Theme {
   id: ID! @unique
-  guilds: [Guild!]!
+  guilds: [Guild!]! @relation(name: "ThemeToGuilds")
   css: String @default(value: "")
-  colors: ThemeColors!
+  colors: ThemeColors! @relation(name: "ThemeColorsToTheme")
 }
 
 type GuildGuest {
   id: ID! @unique
-  guild: Guild!
-  profile: Profile!
+  guild: Guild! @relation(name: "GuildToGuests")
+  profile: Profile! @relation(name: "ProfileToGuilds")
   nickname: String
 }
 
 type GuildBan {
-  guild: Guild!
+  guild: Guild! @relation(name: "GuildToGuildBans")
   ip: String
-  profile: Profile
+  profile: Profile @relation(name: "GuildBanToProfile")
 }
 
 type Guild {
   snowflake: ID! @unique
-  theme: Theme
-  guests: [GuildGuest!]!
-  bans: [GuildBan!]!
+  theme: Theme @relation(name: "ThemeToGuilds")
+  guests: [GuildGuest!]! @relation(name: "GuildToGuests")
+  bans: [GuildBan!]! @relation(name: "GuildToGuildBans")
 }

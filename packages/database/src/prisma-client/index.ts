@@ -360,9 +360,11 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type GuildOrderByInput =
-  | 'snowflake_ASC'
-  | 'snowflake_DESC'
+export type ConnectionOrderByInput =
+  | 'type_ASC'
+  | 'type_DESC'
+  | 'data_ASC'
+  | 'data_DESC'
   | 'id_ASC'
   | 'id_DESC'
   | 'createdAt_ASC'
@@ -375,6 +377,16 @@ export type GuildGuestOrderByInput =
   | 'id_DESC'
   | 'nickname_ASC'
   | 'nickname_DESC'
+  | 'createdAt_ASC'
+  | 'createdAt_DESC'
+  | 'updatedAt_ASC'
+  | 'updatedAt_DESC'
+
+export type GuildOrderByInput =
+  | 'snowflake_ASC'
+  | 'snowflake_DESC'
+  | 'id_ASC'
+  | 'id_DESC'
   | 'createdAt_ASC'
   | 'createdAt_DESC'
   | 'updatedAt_ASC'
@@ -430,22 +442,11 @@ export type ThemeColorsOrderByInput =
 
 export type MutationType = 'CREATED' | 'UPDATED' | 'DELETED'
 
-export type ConnectionOrderByInput =
-  | 'type_ASC'
-  | 'type_DESC'
-  | 'data_ASC'
-  | 'data_DESC'
-  | 'id_ASC'
-  | 'id_DESC'
-  | 'createdAt_ASC'
-  | 'createdAt_DESC'
-  | 'updatedAt_ASC'
-  | 'updatedAt_DESC'
-
-export interface ThemeColorsUpdateOneRequiredInput {
-  create?: ThemeColorsCreateInput
-  update?: ThemeColorsUpdateDataInput
-  upsert?: ThemeColorsUpsertNestedInput
+export interface GuildCreateInput {
+  snowflake: ID_Input
+  theme?: ThemeCreateOneWithoutGuildsInput
+  guests?: GuildGuestCreateManyWithoutGuildInput
+  bans?: GuildBanCreateManyWithoutGuildInput
 }
 
 export interface ConnectionWhereInput {
@@ -477,131 +478,38 @@ export interface ConnectionWhereInput {
   data_not_starts_with?: String
   data_ends_with?: String
   data_not_ends_with?: String
+  profile?: ProfileWhereInput
   AND?: ConnectionWhereInput[] | ConnectionWhereInput
   OR?: ConnectionWhereInput[] | ConnectionWhereInput
   NOT?: ConnectionWhereInput[] | ConnectionWhereInput
 }
 
-export interface GuildGuestUpdateWithWhereUniqueWithoutGuildInput {
-  where: GuildGuestWhereUniqueInput
-  data: GuildGuestUpdateWithoutGuildDataInput
+export interface ThemeColorsCreateWithoutThemeInput {
+  primary?: String
+  accent?: String
+  background?: String
 }
 
-export type GuildWhereUniqueInput = AtLeastOne<{
-  snowflake: ID_Input
-}>
-
-export interface GuildCreateOneWithoutGuestsInput {
+export interface GuildUpdateOneRequiredWithoutGuestsInput {
   create?: GuildCreateWithoutGuestsInput
+  update?: GuildUpdateWithoutGuestsDataInput
+  upsert?: GuildUpsertWithoutGuestsInput
   connect?: GuildWhereUniqueInput
 }
 
-export interface GuildBanCreateInput {
-  guild: GuildCreateOneWithoutBansInput
+export interface GuildBanCreateManyWithoutGuildInput {
+  create?: GuildBanCreateWithoutGuildInput[] | GuildBanCreateWithoutGuildInput
+}
+
+export interface ThemeColorsUpdateWithoutThemeDataInput {
+  primary?: String
+  accent?: String
+  background?: String
+}
+
+export interface GuildBanCreateWithoutGuildInput {
   ip?: String
-  profile?: ProfileCreateOneInput
-}
-
-export interface GuildGuestCreateInput {
-  guild: GuildCreateOneWithoutGuestsInput
-  profile: ProfileCreateOneInput
-  nickname?: String
-}
-
-export interface GuildGuestUpdateWithoutGuildDataInput {
-  profile?: ProfileUpdateOneRequiredInput
-  nickname?: String
-}
-
-export interface GuildCreateInput {
-  snowflake: ID_Input
-  theme?: ThemeCreateOneWithoutGuildsInput
-  guests?: GuildGuestCreateManyWithoutGuildInput
-  bans?: GuildBanCreateManyWithoutGuildInput
-}
-
-export interface ThemeWhereInput {
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: ID_Input[] | ID_Input
-  id_not_in?: ID_Input[] | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  guilds_every?: GuildWhereInput
-  guilds_some?: GuildWhereInput
-  guilds_none?: GuildWhereInput
-  css?: String
-  css_not?: String
-  css_in?: String[] | String
-  css_not_in?: String[] | String
-  css_lt?: String
-  css_lte?: String
-  css_gt?: String
-  css_gte?: String
-  css_contains?: String
-  css_not_contains?: String
-  css_starts_with?: String
-  css_not_starts_with?: String
-  css_ends_with?: String
-  css_not_ends_with?: String
-  colors?: ThemeColorsWhereInput
-  AND?: ThemeWhereInput[] | ThemeWhereInput
-  OR?: ThemeWhereInput[] | ThemeWhereInput
-  NOT?: ThemeWhereInput[] | ThemeWhereInput
-}
-
-export interface ThemeCreateOneWithoutGuildsInput {
-  create?: ThemeCreateWithoutGuildsInput
-  connect?: ThemeWhereUniqueInput
-}
-
-export interface GuildGuestWhereInput {
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: ID_Input[] | ID_Input
-  id_not_in?: ID_Input[] | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  guild?: GuildWhereInput
-  profile?: ProfileWhereInput
-  nickname?: String
-  nickname_not?: String
-  nickname_in?: String[] | String
-  nickname_not_in?: String[] | String
-  nickname_lt?: String
-  nickname_lte?: String
-  nickname_gt?: String
-  nickname_gte?: String
-  nickname_contains?: String
-  nickname_not_contains?: String
-  nickname_starts_with?: String
-  nickname_not_starts_with?: String
-  nickname_ends_with?: String
-  nickname_not_ends_with?: String
-  AND?: GuildGuestWhereInput[] | GuildGuestWhereInput
-  OR?: GuildGuestWhereInput[] | GuildGuestWhereInput
-  NOT?: GuildGuestWhereInput[] | GuildGuestWhereInput
-}
-
-export interface ThemeCreateWithoutGuildsInput {
-  css?: String
-  colors: ThemeColorsCreateOneInput
+  profile?: ProfileCreateOneWithoutBansInput
 }
 
 export interface GuildBanWhereInput {
@@ -626,227 +534,28 @@ export interface GuildBanWhereInput {
   NOT?: GuildBanWhereInput[] | GuildBanWhereInput
 }
 
-export interface ThemeColorsCreateOneInput {
-  create?: ThemeColorsCreateInput
-}
-
-export interface ThemeSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: ThemeWhereInput
-  AND?: ThemeSubscriptionWhereInput[] | ThemeSubscriptionWhereInput
-  OR?: ThemeSubscriptionWhereInput[] | ThemeSubscriptionWhereInput
-  NOT?: ThemeSubscriptionWhereInput[] | ThemeSubscriptionWhereInput
-}
-
-export interface ThemeColorsCreateInput {
-  primary?: String
-  accent?: String
-  background?: String
-}
-
-export interface GuildGuestSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: GuildGuestWhereInput
-  AND?: GuildGuestSubscriptionWhereInput[] | GuildGuestSubscriptionWhereInput
-  OR?: GuildGuestSubscriptionWhereInput[] | GuildGuestSubscriptionWhereInput
-  NOT?: GuildGuestSubscriptionWhereInput[] | GuildGuestSubscriptionWhereInput
-}
-
-export interface GuildGuestCreateManyWithoutGuildInput {
-  create?:
-    | GuildGuestCreateWithoutGuildInput[]
-    | GuildGuestCreateWithoutGuildInput
-  connect?: GuildGuestWhereUniqueInput[] | GuildGuestWhereUniqueInput
-}
-
-export interface GuildSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: GuildWhereInput
-  AND?: GuildSubscriptionWhereInput[] | GuildSubscriptionWhereInput
-  OR?: GuildSubscriptionWhereInput[] | GuildSubscriptionWhereInput
-  NOT?: GuildSubscriptionWhereInput[] | GuildSubscriptionWhereInput
-}
-
-export interface GuildGuestCreateWithoutGuildInput {
-  profile: ProfileCreateOneInput
-  nickname?: String
-}
-
-export interface ThemeColorsUpdateManyMutationInput {
-  primary?: String
-  accent?: String
-  background?: String
-}
-
-export interface ProfileCreateOneInput {
-  create?: ProfileCreateInput
+export interface ProfileCreateOneWithoutBansInput {
+  create?: ProfileCreateWithoutBansInput
   connect?: ProfileWhereUniqueInput
 }
 
-export interface GuildUpdateManyDataInput {
-  snowflake?: ID_Input
+export interface ProfileSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: ProfileWhereInput
+  AND?: ProfileSubscriptionWhereInput[] | ProfileSubscriptionWhereInput
+  OR?: ProfileSubscriptionWhereInput[] | ProfileSubscriptionWhereInput
+  NOT?: ProfileSubscriptionWhereInput[] | ProfileSubscriptionWhereInput
 }
 
-export interface ProfileCreateInput {
+export interface ProfileCreateWithoutBansInput {
   username: String
   avatarURL?: String
-  connections?: ConnectionCreateManyInput
+  connections?: ConnectionCreateManyWithoutProfileInput
+  guilds?: GuildGuestCreateManyWithoutProfileInput
   email?: String
-}
-
-export interface GuildScalarWhereInput {
-  snowflake?: ID_Input
-  snowflake_not?: ID_Input
-  snowflake_in?: ID_Input[] | ID_Input
-  snowflake_not_in?: ID_Input[] | ID_Input
-  snowflake_lt?: ID_Input
-  snowflake_lte?: ID_Input
-  snowflake_gt?: ID_Input
-  snowflake_gte?: ID_Input
-  snowflake_contains?: ID_Input
-  snowflake_not_contains?: ID_Input
-  snowflake_starts_with?: ID_Input
-  snowflake_not_starts_with?: ID_Input
-  snowflake_ends_with?: ID_Input
-  snowflake_not_ends_with?: ID_Input
-  AND?: GuildScalarWhereInput[] | GuildScalarWhereInput
-  OR?: GuildScalarWhereInput[] | GuildScalarWhereInput
-  NOT?: GuildScalarWhereInput[] | GuildScalarWhereInput
-}
-
-export interface ConnectionCreateManyInput {
-  create?: ConnectionCreateInput[] | ConnectionCreateInput
-}
-
-export type GuildGuestWhereUniqueInput = AtLeastOne<{
-  id: ID_Input
-}>
-
-export interface GuildBanCreateManyWithoutGuildInput {
-  create?: GuildBanCreateWithoutGuildInput[] | GuildBanCreateWithoutGuildInput
-}
-
-export interface GuildUpdateWithWhereUniqueWithoutThemeInput {
-  where: GuildWhereUniqueInput
-  data: GuildUpdateWithoutThemeDataInput
-}
-
-export interface GuildBanCreateWithoutGuildInput {
-  ip?: String
-  profile?: ProfileCreateOneInput
-}
-
-export type ProfileWhereUniqueInput = AtLeastOne<{
-  id: ID_Input
-}>
-
-export interface GuildUpdateInput {
-  snowflake?: ID_Input
-  theme?: ThemeUpdateOneWithoutGuildsInput
-  guests?: GuildGuestUpdateManyWithoutGuildInput
-  bans?: GuildBanUpdateManyWithoutGuildInput
-}
-
-export interface GuildCreateWithoutThemeInput {
-  snowflake: ID_Input
-  guests?: GuildGuestCreateManyWithoutGuildInput
-  bans?: GuildBanCreateManyWithoutGuildInput
-}
-
-export interface ThemeUpdateOneWithoutGuildsInput {
-  create?: ThemeCreateWithoutGuildsInput
-  update?: ThemeUpdateWithoutGuildsDataInput
-  upsert?: ThemeUpsertWithoutGuildsInput
-  delete?: Boolean
-  disconnect?: Boolean
-  connect?: ThemeWhereUniqueInput
-}
-
-export interface ThemeCreateInput {
-  guilds?: GuildCreateManyWithoutThemeInput
-  css?: String
-  colors: ThemeColorsCreateOneInput
-}
-
-export interface ThemeUpdateWithoutGuildsDataInput {
-  css?: String
-  colors?: ThemeColorsUpdateOneRequiredInput
-}
-
-export interface ProfileUpdateManyMutationInput {
-  username?: String
-  avatarURL?: String
-  email?: String
-}
-
-export interface GuildBanUpdateManyMutationInput {
-  ip?: String
-}
-
-export interface GuildGuestUpdateManyMutationInput {
-  nickname?: String
-}
-
-export interface ThemeColorsUpdateDataInput {
-  primary?: String
-  accent?: String
-  background?: String
-}
-
-export interface GuildUpdateWithoutGuestsDataInput {
-  snowflake?: ID_Input
-  theme?: ThemeUpdateOneWithoutGuildsInput
-  bans?: GuildBanUpdateManyWithoutGuildInput
-}
-
-export interface ThemeColorsUpsertNestedInput {
-  update: ThemeColorsUpdateDataInput
-  create: ThemeColorsCreateInput
-}
-
-export interface GuildGuestUpdateInput {
-  guild?: GuildUpdateOneRequiredWithoutGuestsInput
-  profile?: ProfileUpdateOneRequiredInput
-  nickname?: String
-}
-
-export interface ThemeUpsertWithoutGuildsInput {
-  update: ThemeUpdateWithoutGuildsDataInput
-  create: ThemeCreateWithoutGuildsInput
-}
-
-export interface ConnectionUpdateManyMutationInput {
-  type?: String
-  data?: String
-}
-
-export interface GuildGuestUpdateManyWithoutGuildInput {
-  create?:
-    | GuildGuestCreateWithoutGuildInput[]
-    | GuildGuestCreateWithoutGuildInput
-  delete?: GuildGuestWhereUniqueInput[] | GuildGuestWhereUniqueInput
-  connect?: GuildGuestWhereUniqueInput[] | GuildGuestWhereUniqueInput
-  set?: GuildGuestWhereUniqueInput[] | GuildGuestWhereUniqueInput
-  disconnect?: GuildGuestWhereUniqueInput[] | GuildGuestWhereUniqueInput
-  update?:
-    | GuildGuestUpdateWithWhereUniqueWithoutGuildInput[]
-    | GuildGuestUpdateWithWhereUniqueWithoutGuildInput
-  upsert?:
-    | GuildGuestUpsertWithWhereUniqueWithoutGuildInput[]
-    | GuildGuestUpsertWithWhereUniqueWithoutGuildInput
-  deleteMany?: GuildGuestScalarWhereInput[] | GuildGuestScalarWhereInput
-  updateMany?:
-    | GuildGuestUpdateManyWithWhereNestedInput[]
-    | GuildGuestUpdateManyWithWhereNestedInput
 }
 
 export interface ThemeColorsWhereInput {
@@ -892,171 +601,59 @@ export interface ThemeColorsWhereInput {
   background_not_starts_with?: String
   background_ends_with?: String
   background_not_ends_with?: String
+  theme?: ThemeWhereInput
   AND?: ThemeColorsWhereInput[] | ThemeColorsWhereInput
   OR?: ThemeColorsWhereInput[] | ThemeColorsWhereInput
   NOT?: ThemeColorsWhereInput[] | ThemeColorsWhereInput
 }
 
-export interface GuildCreateWithoutBansInput {
-  snowflake: ID_Input
-  theme?: ThemeCreateOneWithoutGuildsInput
-  guests?: GuildGuestCreateManyWithoutGuildInput
+export interface ConnectionCreateManyWithoutProfileInput {
+  create?:
+    | ConnectionCreateWithoutProfileInput[]
+    | ConnectionCreateWithoutProfileInput
 }
 
-export interface ThemeColorsSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: ThemeColorsWhereInput
-  AND?: ThemeColorsSubscriptionWhereInput[] | ThemeColorsSubscriptionWhereInput
-  OR?: ThemeColorsSubscriptionWhereInput[] | ThemeColorsSubscriptionWhereInput
-  NOT?: ThemeColorsSubscriptionWhereInput[] | ThemeColorsSubscriptionWhereInput
-}
-
-export interface GuildCreateOneWithoutBansInput {
-  create?: GuildCreateWithoutBansInput
-  connect?: GuildWhereUniqueInput
-}
-
-export interface GuildBanSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: GuildBanWhereInput
-  AND?: GuildBanSubscriptionWhereInput[] | GuildBanSubscriptionWhereInput
-  OR?: GuildBanSubscriptionWhereInput[] | GuildBanSubscriptionWhereInput
-  NOT?: GuildBanSubscriptionWhereInput[] | GuildBanSubscriptionWhereInput
-}
-
-export interface ProfileUpdateOneRequiredInput {
-  create?: ProfileCreateInput
-  update?: ProfileUpdateDataInput
-  upsert?: ProfileUpsertNestedInput
-  connect?: ProfileWhereUniqueInput
-}
-
-export interface ThemeUpdateManyMutationInput {
+export interface ThemeWhereInput {
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  guilds_every?: GuildWhereInput
+  guilds_some?: GuildWhereInput
+  guilds_none?: GuildWhereInput
   css?: String
+  css_not?: String
+  css_in?: String[] | String
+  css_not_in?: String[] | String
+  css_lt?: String
+  css_lte?: String
+  css_gt?: String
+  css_gte?: String
+  css_contains?: String
+  css_not_contains?: String
+  css_starts_with?: String
+  css_not_starts_with?: String
+  css_ends_with?: String
+  css_not_ends_with?: String
+  colors?: ThemeColorsWhereInput
+  AND?: ThemeWhereInput[] | ThemeWhereInput
+  OR?: ThemeWhereInput[] | ThemeWhereInput
+  NOT?: ThemeWhereInput[] | ThemeWhereInput
 }
 
-export interface ProfileUpdateDataInput {
-  username?: String
-  avatarURL?: String
-  connections?: ConnectionUpdateManyInput
-  email?: String
-}
-
-export interface GuildUpsertWithWhereUniqueWithoutThemeInput {
-  where: GuildWhereUniqueInput
-  update: GuildUpdateWithoutThemeDataInput
-  create: GuildCreateWithoutThemeInput
-}
-
-export interface ConnectionUpdateManyInput {
-  create?: ConnectionCreateInput[] | ConnectionCreateInput
-  deleteMany?: ConnectionScalarWhereInput[] | ConnectionScalarWhereInput
-  updateMany?:
-    | ConnectionUpdateManyWithWhereNestedInput[]
-    | ConnectionUpdateManyWithWhereNestedInput
-}
-
-export interface GuildUpdateManyWithoutThemeInput {
-  create?: GuildCreateWithoutThemeInput[] | GuildCreateWithoutThemeInput
-  delete?: GuildWhereUniqueInput[] | GuildWhereUniqueInput
-  connect?: GuildWhereUniqueInput[] | GuildWhereUniqueInput
-  set?: GuildWhereUniqueInput[] | GuildWhereUniqueInput
-  disconnect?: GuildWhereUniqueInput[] | GuildWhereUniqueInput
-  update?:
-    | GuildUpdateWithWhereUniqueWithoutThemeInput[]
-    | GuildUpdateWithWhereUniqueWithoutThemeInput
-  upsert?:
-    | GuildUpsertWithWhereUniqueWithoutThemeInput[]
-    | GuildUpsertWithWhereUniqueWithoutThemeInput
-  deleteMany?: GuildScalarWhereInput[] | GuildScalarWhereInput
-  updateMany?:
-    | GuildUpdateManyWithWhereNestedInput[]
-    | GuildUpdateManyWithWhereNestedInput
-}
-
-export interface ConnectionScalarWhereInput {
-  type?: String
-  type_not?: String
-  type_in?: String[] | String
-  type_not_in?: String[] | String
-  type_lt?: String
-  type_lte?: String
-  type_gt?: String
-  type_gte?: String
-  type_contains?: String
-  type_not_contains?: String
-  type_starts_with?: String
-  type_not_starts_with?: String
-  type_ends_with?: String
-  type_not_ends_with?: String
-  data?: String
-  data_not?: String
-  data_in?: String[] | String
-  data_not_in?: String[] | String
-  data_lt?: String
-  data_lte?: String
-  data_gt?: String
-  data_gte?: String
-  data_contains?: String
-  data_not_contains?: String
-  data_starts_with?: String
-  data_not_starts_with?: String
-  data_ends_with?: String
-  data_not_ends_with?: String
-  AND?: ConnectionScalarWhereInput[] | ConnectionScalarWhereInput
-  OR?: ConnectionScalarWhereInput[] | ConnectionScalarWhereInput
-  NOT?: ConnectionScalarWhereInput[] | ConnectionScalarWhereInput
-}
-
-export interface GuildCreateManyWithoutThemeInput {
-  create?: GuildCreateWithoutThemeInput[] | GuildCreateWithoutThemeInput
-  connect?: GuildWhereUniqueInput[] | GuildWhereUniqueInput
-}
-
-export interface ConnectionUpdateManyWithWhereNestedInput {
-  where: ConnectionScalarWhereInput
-  data: ConnectionUpdateManyDataInput
-}
-
-export interface ProfileUpdateInput {
-  username?: String
-  avatarURL?: String
-  connections?: ConnectionUpdateManyInput
-  email?: String
-}
-
-export interface ConnectionUpdateManyDataInput {
-  type?: String
-  data?: String
-}
-
-export interface GuildUpdateOneRequiredWithoutGuestsInput {
-  create?: GuildCreateWithoutGuestsInput
-  update?: GuildUpdateWithoutGuestsDataInput
-  upsert?: GuildUpsertWithoutGuestsInput
-  connect?: GuildWhereUniqueInput
-}
-
-export interface ProfileUpsertNestedInput {
-  update: ProfileUpdateDataInput
-  create: ProfileCreateInput
-}
-
-export interface ConnectionCreateInput {
+export interface ConnectionCreateWithoutProfileInput {
   type: String
   data: String
-}
-
-export interface GuildGuestUpsertWithWhereUniqueWithoutGuildInput {
-  where: GuildGuestWhereUniqueInput
-  update: GuildGuestUpdateWithoutGuildDataInput
-  create: GuildGuestCreateWithoutGuildInput
 }
 
 export interface ProfileWhereInput {
@@ -1105,6 +702,9 @@ export interface ProfileWhereInput {
   connections_every?: ConnectionWhereInput
   connections_some?: ConnectionWhereInput
   connections_none?: ConnectionWhereInput
+  guilds_every?: GuildGuestWhereInput
+  guilds_some?: GuildGuestWhereInput
+  guilds_none?: GuildGuestWhereInput
   email?: String
   email_not?: String
   email_in?: String[] | String
@@ -1119,9 +719,568 @@ export interface ProfileWhereInput {
   email_not_starts_with?: String
   email_ends_with?: String
   email_not_ends_with?: String
+  bans_every?: GuildBanWhereInput
+  bans_some?: GuildBanWhereInput
+  bans_none?: GuildBanWhereInput
   AND?: ProfileWhereInput[] | ProfileWhereInput
   OR?: ProfileWhereInput[] | ProfileWhereInput
   NOT?: ProfileWhereInput[] | ProfileWhereInput
+}
+
+export interface GuildBanCreateManyWithoutProfileInput {
+  create?:
+    | GuildBanCreateWithoutProfileInput[]
+    | GuildBanCreateWithoutProfileInput
+}
+
+export interface ThemeColorsUpdateManyMutationInput {
+  primary?: String
+  accent?: String
+  background?: String
+}
+
+export interface GuildBanCreateWithoutProfileInput {
+  guild: GuildCreateOneWithoutBansInput
+  ip?: String
+}
+
+export interface ThemeCreateOneWithoutColorsInput {
+  create?: ThemeCreateWithoutColorsInput
+  connect?: ThemeWhereUniqueInput
+}
+
+export interface GuildCreateOneWithoutBansInput {
+  create?: GuildCreateWithoutBansInput
+  connect?: GuildWhereUniqueInput
+}
+
+export interface ThemeColorsCreateInput {
+  primary?: String
+  accent?: String
+  background?: String
+  theme: ThemeCreateOneWithoutColorsInput
+}
+
+export interface GuildCreateWithoutBansInput {
+  snowflake: ID_Input
+  theme?: ThemeCreateOneWithoutGuildsInput
+  guests?: GuildGuestCreateManyWithoutGuildInput
+}
+
+export interface GuildUpdateManyDataInput {
+  snowflake?: ID_Input
+}
+
+export interface GuildGuestCreateManyWithoutGuildInput {
+  create?:
+    | GuildGuestCreateWithoutGuildInput[]
+    | GuildGuestCreateWithoutGuildInput
+  connect?: GuildGuestWhereUniqueInput[] | GuildGuestWhereUniqueInput
+}
+
+export interface GuildScalarWhereInput {
+  snowflake?: ID_Input
+  snowflake_not?: ID_Input
+  snowflake_in?: ID_Input[] | ID_Input
+  snowflake_not_in?: ID_Input[] | ID_Input
+  snowflake_lt?: ID_Input
+  snowflake_lte?: ID_Input
+  snowflake_gt?: ID_Input
+  snowflake_gte?: ID_Input
+  snowflake_contains?: ID_Input
+  snowflake_not_contains?: ID_Input
+  snowflake_starts_with?: ID_Input
+  snowflake_not_starts_with?: ID_Input
+  snowflake_ends_with?: ID_Input
+  snowflake_not_ends_with?: ID_Input
+  AND?: GuildScalarWhereInput[] | GuildScalarWhereInput
+  OR?: GuildScalarWhereInput[] | GuildScalarWhereInput
+  NOT?: GuildScalarWhereInput[] | GuildScalarWhereInput
+}
+
+export interface GuildGuestCreateWithoutGuildInput {
+  profile: ProfileCreateOneWithoutGuildsInput
+  nickname?: String
+}
+
+export type GuildGuestWhereUniqueInput = AtLeastOne<{
+  id: ID_Input
+}>
+
+export interface ProfileCreateOneWithoutGuildsInput {
+  create?: ProfileCreateWithoutGuildsInput
+  connect?: ProfileWhereUniqueInput
+}
+
+export interface GuildUpdateWithWhereUniqueWithoutThemeInput {
+  where: GuildWhereUniqueInput
+  data: GuildUpdateWithoutThemeDataInput
+}
+
+export interface ProfileCreateWithoutGuildsInput {
+  username: String
+  avatarURL?: String
+  connections?: ConnectionCreateManyWithoutProfileInput
+  email?: String
+  bans?: GuildBanCreateManyWithoutProfileInput
+}
+
+export type ProfileWhereUniqueInput = AtLeastOne<{
+  id: ID_Input
+  username?: String
+}>
+
+export interface ConnectionUpdateManyMutationInput {
+  type?: String
+  data?: String
+}
+
+export interface ThemeUpdateInput {
+  guilds?: GuildUpdateManyWithoutThemeInput
+  css?: String
+  colors?: ThemeColorsUpdateOneRequiredWithoutThemeInput
+}
+
+export interface ProfileCreateInput {
+  username: String
+  avatarURL?: String
+  connections?: ConnectionCreateManyWithoutProfileInput
+  guilds?: GuildGuestCreateManyWithoutProfileInput
+  email?: String
+  bans?: GuildBanCreateManyWithoutProfileInput
+}
+
+export interface GuildCreateManyWithoutThemeInput {
+  create?: GuildCreateWithoutThemeInput[] | GuildCreateWithoutThemeInput
+  connect?: GuildWhereUniqueInput[] | GuildWhereUniqueInput
+}
+
+export interface GuildGuestUpdateManyMutationInput {
+  nickname?: String
+}
+
+export interface GuildGuestWhereInput {
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  guild?: GuildWhereInput
+  profile?: ProfileWhereInput
+  nickname?: String
+  nickname_not?: String
+  nickname_in?: String[] | String
+  nickname_not_in?: String[] | String
+  nickname_lt?: String
+  nickname_lte?: String
+  nickname_gt?: String
+  nickname_gte?: String
+  nickname_contains?: String
+  nickname_not_contains?: String
+  nickname_starts_with?: String
+  nickname_not_starts_with?: String
+  nickname_ends_with?: String
+  nickname_not_ends_with?: String
+  AND?: GuildGuestWhereInput[] | GuildGuestWhereInput
+  OR?: GuildGuestWhereInput[] | GuildGuestWhereInput
+  NOT?: GuildGuestWhereInput[] | GuildGuestWhereInput
+}
+
+export interface GuildUpsertWithoutGuestsInput {
+  update: GuildUpdateWithoutGuestsDataInput
+  create: GuildCreateWithoutGuestsInput
+}
+
+export interface ProfileUpdateManyMutationInput {
+  username?: String
+  avatarURL?: String
+  email?: String
+}
+
+export interface GuildUpdateInput {
+  snowflake?: ID_Input
+  theme?: ThemeUpdateOneWithoutGuildsInput
+  guests?: GuildGuestUpdateManyWithoutGuildInput
+  bans?: GuildBanUpdateManyWithoutGuildInput
+}
+
+export interface GuildGuestUpdateWithoutProfileDataInput {
+  guild?: GuildUpdateOneRequiredWithoutGuestsInput
+  nickname?: String
+}
+
+export interface ThemeUpdateOneWithoutGuildsInput {
+  create?: ThemeCreateWithoutGuildsInput
+  update?: ThemeUpdateWithoutGuildsDataInput
+  upsert?: ThemeUpsertWithoutGuildsInput
+  delete?: Boolean
+  disconnect?: Boolean
+  connect?: ThemeWhereUniqueInput
+}
+
+export interface GuildGuestUpdateManyWithoutProfileInput {
+  create?:
+    | GuildGuestCreateWithoutProfileInput[]
+    | GuildGuestCreateWithoutProfileInput
+  delete?: GuildGuestWhereUniqueInput[] | GuildGuestWhereUniqueInput
+  connect?: GuildGuestWhereUniqueInput[] | GuildGuestWhereUniqueInput
+  set?: GuildGuestWhereUniqueInput[] | GuildGuestWhereUniqueInput
+  disconnect?: GuildGuestWhereUniqueInput[] | GuildGuestWhereUniqueInput
+  update?:
+    | GuildGuestUpdateWithWhereUniqueWithoutProfileInput[]
+    | GuildGuestUpdateWithWhereUniqueWithoutProfileInput
+  upsert?:
+    | GuildGuestUpsertWithWhereUniqueWithoutProfileInput[]
+    | GuildGuestUpsertWithWhereUniqueWithoutProfileInput
+  deleteMany?: GuildGuestScalarWhereInput[] | GuildGuestScalarWhereInput
+  updateMany?:
+    | GuildGuestUpdateManyWithWhereNestedInput[]
+    | GuildGuestUpdateManyWithWhereNestedInput
+}
+
+export interface ThemeUpdateWithoutGuildsDataInput {
+  css?: String
+  colors?: ThemeColorsUpdateOneRequiredWithoutThemeInput
+}
+
+export interface ProfileCreateOneWithoutConnectionsInput {
+  create?: ProfileCreateWithoutConnectionsInput
+  connect?: ProfileWhereUniqueInput
+}
+
+export interface ThemeColorsUpdateOneRequiredWithoutThemeInput {
+  create?: ThemeColorsCreateWithoutThemeInput
+  update?: ThemeColorsUpdateWithoutThemeDataInput
+  upsert?: ThemeColorsUpsertWithoutThemeInput
+}
+
+export interface GuildGuestCreateManyWithoutProfileInput {
+  create?:
+    | GuildGuestCreateWithoutProfileInput[]
+    | GuildGuestCreateWithoutProfileInput
+  connect?: GuildGuestWhereUniqueInput[] | GuildGuestWhereUniqueInput
+}
+
+export interface GuildUpdateWithoutGuestsDataInput {
+  snowflake?: ID_Input
+  theme?: ThemeUpdateOneWithoutGuildsInput
+  bans?: GuildBanUpdateManyWithoutGuildInput
+}
+
+export interface GuildCreateOneWithoutGuestsInput {
+  create?: GuildCreateWithoutGuestsInput
+  connect?: GuildWhereUniqueInput
+}
+
+export interface ThemeColorsUpsertWithoutThemeInput {
+  update: ThemeColorsUpdateWithoutThemeDataInput
+  create: ThemeColorsCreateWithoutThemeInput
+}
+
+export interface ThemeCreateOneWithoutGuildsInput {
+  create?: ThemeCreateWithoutGuildsInput
+  connect?: ThemeWhereUniqueInput
+}
+
+export interface ThemeUpsertWithoutGuildsInput {
+  update: ThemeUpdateWithoutGuildsDataInput
+  create: ThemeCreateWithoutGuildsInput
+}
+
+export interface ThemeColorsCreateOneWithoutThemeInput {
+  create?: ThemeColorsCreateWithoutThemeInput
+}
+
+export interface GuildGuestUpdateManyWithoutGuildInput {
+  create?:
+    | GuildGuestCreateWithoutGuildInput[]
+    | GuildGuestCreateWithoutGuildInput
+  delete?: GuildGuestWhereUniqueInput[] | GuildGuestWhereUniqueInput
+  connect?: GuildGuestWhereUniqueInput[] | GuildGuestWhereUniqueInput
+  set?: GuildGuestWhereUniqueInput[] | GuildGuestWhereUniqueInput
+  disconnect?: GuildGuestWhereUniqueInput[] | GuildGuestWhereUniqueInput
+  update?:
+    | GuildGuestUpdateWithWhereUniqueWithoutGuildInput[]
+    | GuildGuestUpdateWithWhereUniqueWithoutGuildInput
+  upsert?:
+    | GuildGuestUpsertWithWhereUniqueWithoutGuildInput[]
+    | GuildGuestUpsertWithWhereUniqueWithoutGuildInput
+  deleteMany?: GuildGuestScalarWhereInput[] | GuildGuestScalarWhereInput
+  updateMany?:
+    | GuildGuestUpdateManyWithWhereNestedInput[]
+    | GuildGuestUpdateManyWithWhereNestedInput
+}
+
+export interface ThemeSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: ThemeWhereInput
+  AND?: ThemeSubscriptionWhereInput[] | ThemeSubscriptionWhereInput
+  OR?: ThemeSubscriptionWhereInput[] | ThemeSubscriptionWhereInput
+  NOT?: ThemeSubscriptionWhereInput[] | ThemeSubscriptionWhereInput
+}
+
+export interface GuildGuestUpdateWithWhereUniqueWithoutGuildInput {
+  where: GuildGuestWhereUniqueInput
+  data: GuildGuestUpdateWithoutGuildDataInput
+}
+
+export interface GuildBanSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: GuildBanWhereInput
+  AND?: GuildBanSubscriptionWhereInput[] | GuildBanSubscriptionWhereInput
+  OR?: GuildBanSubscriptionWhereInput[] | GuildBanSubscriptionWhereInput
+  NOT?: GuildBanSubscriptionWhereInput[] | GuildBanSubscriptionWhereInput
+}
+
+export interface GuildGuestUpdateWithoutGuildDataInput {
+  profile?: ProfileUpdateOneRequiredWithoutGuildsInput
+  nickname?: String
+}
+
+export interface ConnectionSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: ConnectionWhereInput
+  AND?: ConnectionSubscriptionWhereInput[] | ConnectionSubscriptionWhereInput
+  OR?: ConnectionSubscriptionWhereInput[] | ConnectionSubscriptionWhereInput
+  NOT?: ConnectionSubscriptionWhereInput[] | ConnectionSubscriptionWhereInput
+}
+
+export interface ProfileUpdateOneRequiredWithoutGuildsInput {
+  create?: ProfileCreateWithoutGuildsInput
+  update?: ProfileUpdateWithoutGuildsDataInput
+  upsert?: ProfileUpsertWithoutGuildsInput
+  connect?: ProfileWhereUniqueInput
+}
+
+export type GuildWhereUniqueInput = AtLeastOne<{
+  snowflake: ID_Input
+}>
+
+export interface ProfileUpdateWithoutGuildsDataInput {
+  username?: String
+  avatarURL?: String
+  connections?: ConnectionUpdateManyWithoutProfileInput
+  email?: String
+  bans?: GuildBanUpdateManyWithoutProfileInput
+}
+
+export interface GuildUpdateManyWithWhereNestedInput {
+  where: GuildScalarWhereInput
+  data: GuildUpdateManyDataInput
+}
+
+export interface ConnectionUpdateManyWithoutProfileInput {
+  create?:
+    | ConnectionCreateWithoutProfileInput[]
+    | ConnectionCreateWithoutProfileInput
+  deleteMany?: ConnectionScalarWhereInput[] | ConnectionScalarWhereInput
+  updateMany?:
+    | ConnectionUpdateManyWithWhereNestedInput[]
+    | ConnectionUpdateManyWithWhereNestedInput
+}
+
+export interface GuildUpdateWithoutThemeDataInput {
+  snowflake?: ID_Input
+  guests?: GuildGuestUpdateManyWithoutGuildInput
+  bans?: GuildBanUpdateManyWithoutGuildInput
+}
+
+export interface ConnectionScalarWhereInput {
+  type?: String
+  type_not?: String
+  type_in?: String[] | String
+  type_not_in?: String[] | String
+  type_lt?: String
+  type_lte?: String
+  type_gt?: String
+  type_gte?: String
+  type_contains?: String
+  type_not_contains?: String
+  type_starts_with?: String
+  type_not_starts_with?: String
+  type_ends_with?: String
+  type_not_ends_with?: String
+  data?: String
+  data_not?: String
+  data_in?: String[] | String
+  data_not_in?: String[] | String
+  data_lt?: String
+  data_lte?: String
+  data_gt?: String
+  data_gte?: String
+  data_contains?: String
+  data_not_contains?: String
+  data_starts_with?: String
+  data_not_starts_with?: String
+  data_ends_with?: String
+  data_not_ends_with?: String
+  AND?: ConnectionScalarWhereInput[] | ConnectionScalarWhereInput
+  OR?: ConnectionScalarWhereInput[] | ConnectionScalarWhereInput
+  NOT?: ConnectionScalarWhereInput[] | ConnectionScalarWhereInput
+}
+
+export interface GuildWhereInput {
+  snowflake?: ID_Input
+  snowflake_not?: ID_Input
+  snowflake_in?: ID_Input[] | ID_Input
+  snowflake_not_in?: ID_Input[] | ID_Input
+  snowflake_lt?: ID_Input
+  snowflake_lte?: ID_Input
+  snowflake_gt?: ID_Input
+  snowflake_gte?: ID_Input
+  snowflake_contains?: ID_Input
+  snowflake_not_contains?: ID_Input
+  snowflake_starts_with?: ID_Input
+  snowflake_not_starts_with?: ID_Input
+  snowflake_ends_with?: ID_Input
+  snowflake_not_ends_with?: ID_Input
+  theme?: ThemeWhereInput
+  guests_every?: GuildGuestWhereInput
+  guests_some?: GuildGuestWhereInput
+  guests_none?: GuildGuestWhereInput
+  bans_every?: GuildBanWhereInput
+  bans_some?: GuildBanWhereInput
+  bans_none?: GuildBanWhereInput
+  AND?: GuildWhereInput[] | GuildWhereInput
+  OR?: GuildWhereInput[] | GuildWhereInput
+  NOT?: GuildWhereInput[] | GuildWhereInput
+}
+
+export interface ConnectionUpdateManyWithWhereNestedInput {
+  where: ConnectionScalarWhereInput
+  data: ConnectionUpdateManyDataInput
+}
+
+export type ThemeWhereUniqueInput = AtLeastOne<{
+  id: ID_Input
+}>
+
+export interface ConnectionUpdateManyDataInput {
+  type?: String
+  data?: String
+}
+
+export interface GuildGuestUpsertWithWhereUniqueWithoutProfileInput {
+  where: GuildGuestWhereUniqueInput
+  update: GuildGuestUpdateWithoutProfileDataInput
+  create: GuildGuestCreateWithoutProfileInput
+}
+
+export interface GuildBanUpdateManyWithoutProfileInput {
+  create?:
+    | GuildBanCreateWithoutProfileInput[]
+    | GuildBanCreateWithoutProfileInput
+  deleteMany?: GuildBanScalarWhereInput[] | GuildBanScalarWhereInput
+  updateMany?:
+    | GuildBanUpdateManyWithWhereNestedInput[]
+    | GuildBanUpdateManyWithWhereNestedInput
+}
+
+export interface ProfileUpdateInput {
+  username?: String
+  avatarURL?: String
+  connections?: ConnectionUpdateManyWithoutProfileInput
+  guilds?: GuildGuestUpdateManyWithoutProfileInput
+  email?: String
+  bans?: GuildBanUpdateManyWithoutProfileInput
+}
+
+export interface GuildBanScalarWhereInput {
+  ip?: String
+  ip_not?: String
+  ip_in?: String[] | String
+  ip_not_in?: String[] | String
+  ip_lt?: String
+  ip_lte?: String
+  ip_gt?: String
+  ip_gte?: String
+  ip_contains?: String
+  ip_not_contains?: String
+  ip_starts_with?: String
+  ip_not_starts_with?: String
+  ip_ends_with?: String
+  ip_not_ends_with?: String
+  AND?: GuildBanScalarWhereInput[] | GuildBanScalarWhereInput
+  OR?: GuildBanScalarWhereInput[] | GuildBanScalarWhereInput
+  NOT?: GuildBanScalarWhereInput[] | GuildBanScalarWhereInput
+}
+
+export interface ProfileCreateWithoutConnectionsInput {
+  username: String
+  avatarURL?: String
+  guilds?: GuildGuestCreateManyWithoutProfileInput
+  email?: String
+  bans?: GuildBanCreateManyWithoutProfileInput
+}
+
+export interface GuildBanUpdateManyWithWhereNestedInput {
+  where: GuildBanScalarWhereInput
+  data: GuildBanUpdateManyDataInput
+}
+
+export interface GuildCreateWithoutGuestsInput {
+  snowflake: ID_Input
+  theme?: ThemeCreateOneWithoutGuildsInput
+  bans?: GuildBanCreateManyWithoutGuildInput
+}
+
+export interface GuildBanUpdateManyDataInput {
+  ip?: String
+}
+
+export interface ThemeColorsSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: ThemeColorsWhereInput
+  AND?: ThemeColorsSubscriptionWhereInput[] | ThemeColorsSubscriptionWhereInput
+  OR?: ThemeColorsSubscriptionWhereInput[] | ThemeColorsSubscriptionWhereInput
+  NOT?: ThemeColorsSubscriptionWhereInput[] | ThemeColorsSubscriptionWhereInput
+}
+
+export interface ProfileUpsertWithoutGuildsInput {
+  update: ProfileUpdateWithoutGuildsDataInput
+  create: ProfileCreateWithoutGuildsInput
+}
+
+export interface GuildSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: GuildWhereInput
+  AND?: GuildSubscriptionWhereInput[] | GuildSubscriptionWhereInput
+  OR?: GuildSubscriptionWhereInput[] | GuildSubscriptionWhereInput
+  NOT?: GuildSubscriptionWhereInput[] | GuildSubscriptionWhereInput
+}
+
+export interface GuildGuestUpsertWithWhereUniqueWithoutGuildInput {
+  where: GuildGuestWhereUniqueInput
+  update: GuildGuestUpdateWithoutGuildDataInput
+  create: GuildGuestCreateWithoutGuildInput
+}
+
+export interface ThemeUpdateManyMutationInput {
+  css?: String
 }
 
 export interface GuildGuestScalarWhereInput {
@@ -1158,15 +1317,22 @@ export interface GuildGuestScalarWhereInput {
   NOT?: GuildGuestScalarWhereInput[] | GuildGuestScalarWhereInput
 }
 
-export interface ConnectionSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: ConnectionWhereInput
-  AND?: ConnectionSubscriptionWhereInput[] | ConnectionSubscriptionWhereInput
-  OR?: ConnectionSubscriptionWhereInput[] | ConnectionSubscriptionWhereInput
-  NOT?: ConnectionSubscriptionWhereInput[] | ConnectionSubscriptionWhereInput
+export interface GuildUpdateManyWithoutThemeInput {
+  create?: GuildCreateWithoutThemeInput[] | GuildCreateWithoutThemeInput
+  delete?: GuildWhereUniqueInput[] | GuildWhereUniqueInput
+  connect?: GuildWhereUniqueInput[] | GuildWhereUniqueInput
+  set?: GuildWhereUniqueInput[] | GuildWhereUniqueInput
+  disconnect?: GuildWhereUniqueInput[] | GuildWhereUniqueInput
+  update?:
+    | GuildUpdateWithWhereUniqueWithoutThemeInput[]
+    | GuildUpdateWithWhereUniqueWithoutThemeInput
+  upsert?:
+    | GuildUpsertWithWhereUniqueWithoutThemeInput[]
+    | GuildUpsertWithWhereUniqueWithoutThemeInput
+  deleteMany?: GuildScalarWhereInput[] | GuildScalarWhereInput
+  updateMany?:
+    | GuildUpdateManyWithWhereNestedInput[]
+    | GuildUpdateManyWithWhereNestedInput
 }
 
 export interface GuildGuestUpdateManyWithWhereNestedInput {
@@ -1174,19 +1340,21 @@ export interface GuildGuestUpdateManyWithWhereNestedInput {
   data: GuildGuestUpdateManyDataInput
 }
 
-export interface GuildUpdateWithoutThemeDataInput {
-  snowflake?: ID_Input
-  guests?: GuildGuestUpdateManyWithoutGuildInput
-  bans?: GuildBanUpdateManyWithoutGuildInput
+export interface ThemeCreateInput {
+  guilds?: GuildCreateManyWithoutThemeInput
+  css?: String
+  colors: ThemeColorsCreateOneWithoutThemeInput
 }
 
 export interface GuildGuestUpdateManyDataInput {
   nickname?: String
 }
 
-export type ThemeWhereUniqueInput = AtLeastOne<{
-  id: ID_Input
-}>
+export interface ConnectionCreateInput {
+  type: String
+  data: String
+  profile: ProfileCreateOneWithoutConnectionsInput
+}
 
 export interface GuildBanUpdateManyWithoutGuildInput {
   create?: GuildBanCreateWithoutGuildInput[] | GuildBanCreateWithoutGuildInput
@@ -1196,97 +1364,73 @@ export interface GuildBanUpdateManyWithoutGuildInput {
     | GuildBanUpdateManyWithWhereNestedInput
 }
 
-export interface GuildCreateWithoutGuestsInput {
-  snowflake: ID_Input
-  theme?: ThemeCreateOneWithoutGuildsInput
-  bans?: GuildBanCreateManyWithoutGuildInput
+export interface ThemeCreateWithoutGuildsInput {
+  css?: String
+  colors: ThemeColorsCreateOneWithoutThemeInput
 }
 
 export interface GuildUpdateManyMutationInput {
   snowflake?: ID_Input
 }
 
-export interface GuildBanUpdateManyDataInput {
-  ip?: String
-}
-
-export interface GuildBanUpdateManyWithWhereNestedInput {
-  where: GuildBanScalarWhereInput
-  data: GuildBanUpdateManyDataInput
-}
-
-export interface GuildBanScalarWhereInput {
-  ip?: String
-  ip_not?: String
-  ip_in?: String[] | String
-  ip_not_in?: String[] | String
-  ip_lt?: String
-  ip_lte?: String
-  ip_gt?: String
-  ip_gte?: String
-  ip_contains?: String
-  ip_not_contains?: String
-  ip_starts_with?: String
-  ip_not_starts_with?: String
-  ip_ends_with?: String
-  ip_not_ends_with?: String
-  AND?: GuildBanScalarWhereInput[] | GuildBanScalarWhereInput
-  OR?: GuildBanScalarWhereInput[] | GuildBanScalarWhereInput
-  NOT?: GuildBanScalarWhereInput[] | GuildBanScalarWhereInput
-}
-
-export interface GuildWhereInput {
-  snowflake?: ID_Input
-  snowflake_not?: ID_Input
-  snowflake_in?: ID_Input[] | ID_Input
-  snowflake_not_in?: ID_Input[] | ID_Input
-  snowflake_lt?: ID_Input
-  snowflake_lte?: ID_Input
-  snowflake_gt?: ID_Input
-  snowflake_gte?: ID_Input
-  snowflake_contains?: ID_Input
-  snowflake_not_contains?: ID_Input
-  snowflake_starts_with?: ID_Input
-  snowflake_not_starts_with?: ID_Input
-  snowflake_ends_with?: ID_Input
-  snowflake_not_ends_with?: ID_Input
-  theme?: ThemeWhereInput
-  guests_every?: GuildGuestWhereInput
-  guests_some?: GuildGuestWhereInput
-  guests_none?: GuildGuestWhereInput
-  bans_every?: GuildBanWhereInput
-  bans_some?: GuildBanWhereInput
-  bans_none?: GuildBanWhereInput
-  AND?: GuildWhereInput[] | GuildWhereInput
-  OR?: GuildWhereInput[] | GuildWhereInput
-  NOT?: GuildWhereInput[] | GuildWhereInput
-}
-
-export interface GuildUpsertWithoutGuestsInput {
-  update: GuildUpdateWithoutGuestsDataInput
-  create: GuildCreateWithoutGuestsInput
-}
-
-export interface ThemeUpdateInput {
-  guilds?: GuildUpdateManyWithoutThemeInput
+export interface ThemeCreateWithoutColorsInput {
+  guilds?: GuildCreateManyWithoutThemeInput
   css?: String
-  colors?: ThemeColorsUpdateOneRequiredInput
 }
 
-export interface GuildUpdateManyWithWhereNestedInput {
-  where: GuildScalarWhereInput
-  data: GuildUpdateManyDataInput
+export interface GuildGuestUpdateInput {
+  guild?: GuildUpdateOneRequiredWithoutGuestsInput
+  profile?: ProfileUpdateOneRequiredWithoutGuildsInput
+  nickname?: String
 }
 
-export interface ProfileSubscriptionWhereInput {
+export interface GuildGuestCreateInput {
+  guild: GuildCreateOneWithoutGuestsInput
+  profile: ProfileCreateOneWithoutGuildsInput
+  nickname?: String
+}
+
+export interface GuildBanUpdateManyMutationInput {
+  ip?: String
+}
+
+export interface GuildBanCreateInput {
+  guild: GuildCreateOneWithoutBansInput
+  ip?: String
+  profile?: ProfileCreateOneWithoutBansInput
+}
+
+export interface GuildUpsertWithWhereUniqueWithoutThemeInput {
+  where: GuildWhereUniqueInput
+  update: GuildUpdateWithoutThemeDataInput
+  create: GuildCreateWithoutThemeInput
+}
+
+export interface GuildGuestSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType
   updatedFields_contains?: String
   updatedFields_contains_every?: String[] | String
   updatedFields_contains_some?: String[] | String
-  node?: ProfileWhereInput
-  AND?: ProfileSubscriptionWhereInput[] | ProfileSubscriptionWhereInput
-  OR?: ProfileSubscriptionWhereInput[] | ProfileSubscriptionWhereInput
-  NOT?: ProfileSubscriptionWhereInput[] | ProfileSubscriptionWhereInput
+  node?: GuildGuestWhereInput
+  AND?: GuildGuestSubscriptionWhereInput[] | GuildGuestSubscriptionWhereInput
+  OR?: GuildGuestSubscriptionWhereInput[] | GuildGuestSubscriptionWhereInput
+  NOT?: GuildGuestSubscriptionWhereInput[] | GuildGuestSubscriptionWhereInput
+}
+
+export interface GuildGuestCreateWithoutProfileInput {
+  guild: GuildCreateOneWithoutGuestsInput
+  nickname?: String
+}
+
+export interface GuildGuestUpdateWithWhereUniqueWithoutProfileInput {
+  where: GuildGuestWhereUniqueInput
+  data: GuildGuestUpdateWithoutProfileDataInput
+}
+
+export interface GuildCreateWithoutThemeInput {
+  snowflake: ID_Input
+  guests?: GuildGuestCreateManyWithoutGuildInput
+  bans?: GuildBanCreateManyWithoutGuildInput
 }
 
 export interface NodeNode {
@@ -1315,6 +1459,491 @@ export interface ThemeColorsPreviousValuesSubscription
   background: () => Promise<AsyncIterator<String>>
 }
 
+export interface ConnectionEdge {
+  node: Connection
+  cursor: String
+}
+
+export interface ConnectionEdgePromise
+  extends Promise<ConnectionEdge>,
+    Fragmentable {
+  node: <T = ConnectionPromise>() => T
+  cursor: () => Promise<String>
+}
+
+export interface ConnectionEdgeSubscription
+  extends Promise<AsyncIterator<ConnectionEdge>>,
+    Fragmentable {
+  node: <T = ConnectionSubscription>() => T
+  cursor: () => Promise<AsyncIterator<String>>
+}
+
+export interface Connection {
+  type: String
+  data: String
+}
+
+export interface ConnectionPromise extends Promise<Connection>, Fragmentable {
+  type: () => Promise<String>
+  data: () => Promise<String>
+  profile: <T = ProfilePromise>() => T
+}
+
+export interface ConnectionSubscription
+  extends Promise<AsyncIterator<Connection>>,
+    Fragmentable {
+  type: () => Promise<AsyncIterator<String>>
+  data: () => Promise<AsyncIterator<String>>
+  profile: <T = ProfileSubscription>() => T
+}
+
+export interface Profile {
+  id: ID_Output
+  username: String
+  avatarURL?: String
+  email?: String
+}
+
+export interface ProfilePromise extends Promise<Profile>, Fragmentable {
+  id: () => Promise<ID_Output>
+  username: () => Promise<String>
+  avatarURL: () => Promise<String>
+  connections: <T = FragmentableArray<Connection>>(
+    args?: {
+      where?: ConnectionWhereInput
+      orderBy?: ConnectionOrderByInput
+      skip?: Int
+      after?: String
+      before?: String
+      first?: Int
+      last?: Int
+    }
+  ) => T
+  guilds: <T = FragmentableArray<GuildGuest>>(
+    args?: {
+      where?: GuildGuestWhereInput
+      orderBy?: GuildGuestOrderByInput
+      skip?: Int
+      after?: String
+      before?: String
+      first?: Int
+      last?: Int
+    }
+  ) => T
+  email: () => Promise<String>
+  bans: <T = FragmentableArray<GuildBan>>(
+    args?: {
+      where?: GuildBanWhereInput
+      orderBy?: GuildBanOrderByInput
+      skip?: Int
+      after?: String
+      before?: String
+      first?: Int
+      last?: Int
+    }
+  ) => T
+}
+
+export interface ProfileSubscription
+  extends Promise<AsyncIterator<Profile>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>
+  username: () => Promise<AsyncIterator<String>>
+  avatarURL: () => Promise<AsyncIterator<String>>
+  connections: <T = Promise<AsyncIterator<ConnectionSubscription>>>(
+    args?: {
+      where?: ConnectionWhereInput
+      orderBy?: ConnectionOrderByInput
+      skip?: Int
+      after?: String
+      before?: String
+      first?: Int
+      last?: Int
+    }
+  ) => T
+  guilds: <T = Promise<AsyncIterator<GuildGuestSubscription>>>(
+    args?: {
+      where?: GuildGuestWhereInput
+      orderBy?: GuildGuestOrderByInput
+      skip?: Int
+      after?: String
+      before?: String
+      first?: Int
+      last?: Int
+    }
+  ) => T
+  email: () => Promise<AsyncIterator<String>>
+  bans: <T = Promise<AsyncIterator<GuildBanSubscription>>>(
+    args?: {
+      where?: GuildBanWhereInput
+      orderBy?: GuildBanOrderByInput
+      skip?: Int
+      after?: String
+      before?: String
+      first?: Int
+      last?: Int
+    }
+  ) => T
+}
+
+export interface ThemePreviousValues {
+  id: ID_Output
+  css?: String
+}
+
+export interface ThemePreviousValuesPromise
+  extends Promise<ThemePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>
+  css: () => Promise<String>
+}
+
+export interface ThemePreviousValuesSubscription
+  extends Promise<AsyncIterator<ThemePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>
+  css: () => Promise<AsyncIterator<String>>
+}
+
+export interface BatchPayload {
+  count: Long
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>
+}
+
+export interface ThemeColorsEdge {
+  node: ThemeColors
+  cursor: String
+}
+
+export interface ThemeColorsEdgePromise
+  extends Promise<ThemeColorsEdge>,
+    Fragmentable {
+  node: <T = ThemeColorsPromise>() => T
+  cursor: () => Promise<String>
+}
+
+export interface ThemeColorsEdgeSubscription
+  extends Promise<AsyncIterator<ThemeColorsEdge>>,
+    Fragmentable {
+  node: <T = ThemeColorsSubscription>() => T
+  cursor: () => Promise<AsyncIterator<String>>
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor?: String
+  endCursor?: String
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>
+  hasPreviousPage: () => Promise<Boolean>
+  startCursor: () => Promise<String>
+  endCursor: () => Promise<String>
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>
+  startCursor: () => Promise<AsyncIterator<String>>
+  endCursor: () => Promise<AsyncIterator<String>>
+}
+
+export interface ThemeColorsSubscriptionPayload {
+  mutation: MutationType
+  node: ThemeColors
+  updatedFields: String[]
+  previousValues: ThemeColorsPreviousValues
+}
+
+export interface ThemeColorsSubscriptionPayloadPromise
+  extends Promise<ThemeColorsSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>
+  node: <T = ThemeColorsPromise>() => T
+  updatedFields: () => Promise<String[]>
+  previousValues: <T = ThemeColorsPreviousValuesPromise>() => T
+}
+
+export interface ThemeColorsSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ThemeColorsSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>
+  node: <T = ThemeColorsSubscription>() => T
+  updatedFields: () => Promise<AsyncIterator<String[]>>
+  previousValues: <T = ThemeColorsPreviousValuesSubscription>() => T
+}
+
+export interface ConnectionConnection {
+  pageInfo: PageInfo
+  edges: ConnectionEdge[]
+}
+
+export interface ConnectionConnectionPromise
+  extends Promise<ConnectionConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T
+  edges: <T = FragmentableArray<ConnectionEdge>>() => T
+  aggregate: <T = AggregateConnectionPromise>() => T
+}
+
+export interface ConnectionConnectionSubscription
+  extends Promise<AsyncIterator<ConnectionConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T
+  edges: <T = Promise<AsyncIterator<ConnectionEdgeSubscription>>>() => T
+  aggregate: <T = AggregateConnectionSubscription>() => T
+}
+
+export interface ThemeEdge {
+  node: Theme
+  cursor: String
+}
+
+export interface ThemeEdgePromise extends Promise<ThemeEdge>, Fragmentable {
+  node: <T = ThemePromise>() => T
+  cursor: () => Promise<String>
+}
+
+export interface ThemeEdgeSubscription
+  extends Promise<AsyncIterator<ThemeEdge>>,
+    Fragmentable {
+  node: <T = ThemeSubscription>() => T
+  cursor: () => Promise<AsyncIterator<String>>
+}
+
+export interface ConnectionSubscriptionPayload {
+  mutation: MutationType
+  node: Connection
+  updatedFields: String[]
+  previousValues: ConnectionPreviousValues
+}
+
+export interface ConnectionSubscriptionPayloadPromise
+  extends Promise<ConnectionSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>
+  node: <T = ConnectionPromise>() => T
+  updatedFields: () => Promise<String[]>
+  previousValues: <T = ConnectionPreviousValuesPromise>() => T
+}
+
+export interface ConnectionSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ConnectionSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>
+  node: <T = ConnectionSubscription>() => T
+  updatedFields: () => Promise<AsyncIterator<String[]>>
+  previousValues: <T = ConnectionPreviousValuesSubscription>() => T
+}
+
+export interface AggregateProfile {
+  count: Int
+}
+
+export interface AggregateProfilePromise
+  extends Promise<AggregateProfile>,
+    Fragmentable {
+  count: () => Promise<Int>
+}
+
+export interface AggregateProfileSubscription
+  extends Promise<AsyncIterator<AggregateProfile>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>
+}
+
+export interface ConnectionPreviousValues {
+  type: String
+  data: String
+}
+
+export interface ConnectionPreviousValuesPromise
+  extends Promise<ConnectionPreviousValues>,
+    Fragmentable {
+  type: () => Promise<String>
+  data: () => Promise<String>
+}
+
+export interface ConnectionPreviousValuesSubscription
+  extends Promise<AsyncIterator<ConnectionPreviousValues>>,
+    Fragmentable {
+  type: () => Promise<AsyncIterator<String>>
+  data: () => Promise<AsyncIterator<String>>
+}
+
+export interface ProfileConnection {
+  pageInfo: PageInfo
+  edges: ProfileEdge[]
+}
+
+export interface ProfileConnectionPromise
+  extends Promise<ProfileConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T
+  edges: <T = FragmentableArray<ProfileEdge>>() => T
+  aggregate: <T = AggregateProfilePromise>() => T
+}
+
+export interface ProfileConnectionSubscription
+  extends Promise<AsyncIterator<ProfileConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T
+  edges: <T = Promise<AsyncIterator<ProfileEdgeSubscription>>>() => T
+  aggregate: <T = AggregateProfileSubscription>() => T
+}
+
+export interface GuildBan {
+  ip?: String
+}
+
+export interface GuildBanPromise extends Promise<GuildBan>, Fragmentable {
+  guild: <T = GuildPromise>() => T
+  ip: () => Promise<String>
+  profile: <T = ProfilePromise>() => T
+}
+
+export interface GuildBanSubscription
+  extends Promise<AsyncIterator<GuildBan>>,
+    Fragmentable {
+  guild: <T = GuildSubscription>() => T
+  ip: () => Promise<AsyncIterator<String>>
+  profile: <T = ProfileSubscription>() => T
+}
+
+export interface GuildGuestEdge {
+  node: GuildGuest
+  cursor: String
+}
+
+export interface GuildGuestEdgePromise
+  extends Promise<GuildGuestEdge>,
+    Fragmentable {
+  node: <T = GuildGuestPromise>() => T
+  cursor: () => Promise<String>
+}
+
+export interface GuildGuestEdgeSubscription
+  extends Promise<AsyncIterator<GuildGuestEdge>>,
+    Fragmentable {
+  node: <T = GuildGuestSubscription>() => T
+  cursor: () => Promise<AsyncIterator<String>>
+}
+
+export interface GuildSubscriptionPayload {
+  mutation: MutationType
+  node: Guild
+  updatedFields: String[]
+  previousValues: GuildPreviousValues
+}
+
+export interface GuildSubscriptionPayloadPromise
+  extends Promise<GuildSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>
+  node: <T = GuildPromise>() => T
+  updatedFields: () => Promise<String[]>
+  previousValues: <T = GuildPreviousValuesPromise>() => T
+}
+
+export interface GuildSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<GuildSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>
+  node: <T = GuildSubscription>() => T
+  updatedFields: () => Promise<AsyncIterator<String[]>>
+  previousValues: <T = GuildPreviousValuesSubscription>() => T
+}
+
+export interface AggregateGuildBan {
+  count: Int
+}
+
+export interface AggregateGuildBanPromise
+  extends Promise<AggregateGuildBan>,
+    Fragmentable {
+  count: () => Promise<Int>
+}
+
+export interface AggregateGuildBanSubscription
+  extends Promise<AsyncIterator<AggregateGuildBan>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>
+}
+
+export interface GuildPreviousValues {
+  snowflake: ID_Output
+}
+
+export interface GuildPreviousValuesPromise
+  extends Promise<GuildPreviousValues>,
+    Fragmentable {
+  snowflake: () => Promise<ID_Output>
+}
+
+export interface GuildPreviousValuesSubscription
+  extends Promise<AsyncIterator<GuildPreviousValues>>,
+    Fragmentable {
+  snowflake: () => Promise<AsyncIterator<ID_Output>>
+}
+
+export interface GuildBanConnection {
+  pageInfo: PageInfo
+  edges: GuildBanEdge[]
+}
+
+export interface GuildBanConnectionPromise
+  extends Promise<GuildBanConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T
+  edges: <T = FragmentableArray<GuildBanEdge>>() => T
+  aggregate: <T = AggregateGuildBanPromise>() => T
+}
+
+export interface GuildBanConnectionSubscription
+  extends Promise<AsyncIterator<GuildBanConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T
+  edges: <T = Promise<AsyncIterator<GuildBanEdgeSubscription>>>() => T
+  aggregate: <T = AggregateGuildBanSubscription>() => T
+}
+
+export interface ThemeColors {
+  primary?: String
+  accent?: String
+  background?: String
+}
+
+export interface ThemeColorsPromise extends Promise<ThemeColors>, Fragmentable {
+  primary: () => Promise<String>
+  accent: () => Promise<String>
+  background: () => Promise<String>
+  theme: <T = ThemePromise>() => T
+}
+
+export interface ThemeColorsSubscription
+  extends Promise<AsyncIterator<ThemeColors>>,
+    Fragmentable {
+  primary: () => Promise<AsyncIterator<String>>
+  accent: () => Promise<AsyncIterator<String>>
+  background: () => Promise<AsyncIterator<String>>
+  theme: <T = ThemeSubscription>() => T
+}
+
 export interface GuildEdge {
   node: Guild
   cursor: String
@@ -1329,6 +1958,225 @@ export interface GuildEdgeSubscription
   extends Promise<AsyncIterator<GuildEdge>>,
     Fragmentable {
   node: <T = GuildSubscription>() => T
+  cursor: () => Promise<AsyncIterator<String>>
+}
+
+export interface GuildBanSubscriptionPayload {
+  mutation: MutationType
+  node: GuildBan
+  updatedFields: String[]
+  previousValues: GuildBanPreviousValues
+}
+
+export interface GuildBanSubscriptionPayloadPromise
+  extends Promise<GuildBanSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>
+  node: <T = GuildBanPromise>() => T
+  updatedFields: () => Promise<String[]>
+  previousValues: <T = GuildBanPreviousValuesPromise>() => T
+}
+
+export interface GuildBanSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<GuildBanSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>
+  node: <T = GuildBanSubscription>() => T
+  updatedFields: () => Promise<AsyncIterator<String[]>>
+  previousValues: <T = GuildBanPreviousValuesSubscription>() => T
+}
+
+export interface AggregateConnection {
+  count: Int
+}
+
+export interface AggregateConnectionPromise
+  extends Promise<AggregateConnection>,
+    Fragmentable {
+  count: () => Promise<Int>
+}
+
+export interface AggregateConnectionSubscription
+  extends Promise<AsyncIterator<AggregateConnection>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>
+}
+
+export interface GuildBanPreviousValues {
+  ip?: String
+}
+
+export interface GuildBanPreviousValuesPromise
+  extends Promise<GuildBanPreviousValues>,
+    Fragmentable {
+  ip: () => Promise<String>
+}
+
+export interface GuildBanPreviousValuesSubscription
+  extends Promise<AsyncIterator<GuildBanPreviousValues>>,
+    Fragmentable {
+  ip: () => Promise<AsyncIterator<String>>
+}
+
+export interface ThemeColorsConnection {
+  pageInfo: PageInfo
+  edges: ThemeColorsEdge[]
+}
+
+export interface ThemeColorsConnectionPromise
+  extends Promise<ThemeColorsConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T
+  edges: <T = FragmentableArray<ThemeColorsEdge>>() => T
+  aggregate: <T = AggregateThemeColorsPromise>() => T
+}
+
+export interface ThemeColorsConnectionSubscription
+  extends Promise<AsyncIterator<ThemeColorsConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T
+  edges: <T = Promise<AsyncIterator<ThemeColorsEdgeSubscription>>>() => T
+  aggregate: <T = AggregateThemeColorsSubscription>() => T
+}
+
+export interface Theme {
+  id: ID_Output
+  css?: String
+}
+
+export interface ThemePromise extends Promise<Theme>, Fragmentable {
+  id: () => Promise<ID_Output>
+  guilds: <T = FragmentableArray<Guild>>(
+    args?: {
+      where?: GuildWhereInput
+      orderBy?: GuildOrderByInput
+      skip?: Int
+      after?: String
+      before?: String
+      first?: Int
+      last?: Int
+    }
+  ) => T
+  css: () => Promise<String>
+  colors: <T = ThemeColorsPromise>() => T
+}
+
+export interface ThemeSubscription
+  extends Promise<AsyncIterator<Theme>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>
+  guilds: <T = Promise<AsyncIterator<GuildSubscription>>>(
+    args?: {
+      where?: GuildWhereInput
+      orderBy?: GuildOrderByInput
+      skip?: Int
+      after?: String
+      before?: String
+      first?: Int
+      last?: Int
+    }
+  ) => T
+  css: () => Promise<AsyncIterator<String>>
+  colors: <T = ThemeColorsSubscription>() => T
+}
+
+export interface ThemeConnection {
+  pageInfo: PageInfo
+  edges: ThemeEdge[]
+}
+
+export interface ThemeConnectionPromise
+  extends Promise<ThemeConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T
+  edges: <T = FragmentableArray<ThemeEdge>>() => T
+  aggregate: <T = AggregateThemePromise>() => T
+}
+
+export interface ThemeConnectionSubscription
+  extends Promise<AsyncIterator<ThemeConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T
+  edges: <T = Promise<AsyncIterator<ThemeEdgeSubscription>>>() => T
+  aggregate: <T = AggregateThemeSubscription>() => T
+}
+
+export interface GuildGuestSubscriptionPayload {
+  mutation: MutationType
+  node: GuildGuest
+  updatedFields: String[]
+  previousValues: GuildGuestPreviousValues
+}
+
+export interface GuildGuestSubscriptionPayloadPromise
+  extends Promise<GuildGuestSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>
+  node: <T = GuildGuestPromise>() => T
+  updatedFields: () => Promise<String[]>
+  previousValues: <T = GuildGuestPreviousValuesPromise>() => T
+}
+
+export interface GuildGuestSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<GuildGuestSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>
+  node: <T = GuildGuestSubscription>() => T
+  updatedFields: () => Promise<AsyncIterator<String[]>>
+  previousValues: <T = GuildGuestPreviousValuesSubscription>() => T
+}
+
+export interface AggregateGuildGuest {
+  count: Int
+}
+
+export interface AggregateGuildGuestPromise
+  extends Promise<AggregateGuildGuest>,
+    Fragmentable {
+  count: () => Promise<Int>
+}
+
+export interface AggregateGuildGuestSubscription
+  extends Promise<AsyncIterator<AggregateGuildGuest>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>
+}
+
+export interface GuildGuestPreviousValues {
+  id: ID_Output
+  nickname?: String
+}
+
+export interface GuildGuestPreviousValuesPromise
+  extends Promise<GuildGuestPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>
+  nickname: () => Promise<String>
+}
+
+export interface GuildGuestPreviousValuesSubscription
+  extends Promise<AsyncIterator<GuildGuestPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>
+  nickname: () => Promise<AsyncIterator<String>>
+}
+
+export interface GuildBanEdge {
+  node: GuildBan
+  cursor: String
+}
+
+export interface GuildBanEdgePromise
+  extends Promise<GuildBanEdge>,
+    Fragmentable {
+  node: <T = GuildBanPromise>() => T
+  cursor: () => Promise<String>
+}
+
+export interface GuildBanEdgeSubscription
+  extends Promise<AsyncIterator<GuildBanEdge>>,
+    Fragmentable {
+  node: <T = GuildBanSubscription>() => T
   cursor: () => Promise<AsyncIterator<String>>
 }
 
@@ -1413,97 +2261,6 @@ export interface GuildConnectionSubscription
   aggregate: <T = AggregateGuildSubscription>() => T
 }
 
-export interface Theme {
-  id: ID_Output
-  css?: String
-}
-
-export interface ThemePromise extends Promise<Theme>, Fragmentable {
-  id: () => Promise<ID_Output>
-  guilds: <T = FragmentableArray<Guild>>(
-    args?: {
-      where?: GuildWhereInput
-      orderBy?: GuildOrderByInput
-      skip?: Int
-      after?: String
-      before?: String
-      first?: Int
-      last?: Int
-    }
-  ) => T
-  css: () => Promise<String>
-  colors: <T = ThemeColorsPromise>() => T
-}
-
-export interface ThemeSubscription
-  extends Promise<AsyncIterator<Theme>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>
-  guilds: <T = Promise<AsyncIterator<GuildSubscription>>>(
-    args?: {
-      where?: GuildWhereInput
-      orderBy?: GuildOrderByInput
-      skip?: Int
-      after?: String
-      before?: String
-      first?: Int
-      last?: Int
-    }
-  ) => T
-  css: () => Promise<AsyncIterator<String>>
-  colors: <T = ThemeColorsSubscription>() => T
-}
-
-export interface GuildBan {
-  ip?: String
-}
-
-export interface GuildBanPromise extends Promise<GuildBan>, Fragmentable {
-  guild: <T = GuildPromise>() => T
-  ip: () => Promise<String>
-  profile: <T = ProfilePromise>() => T
-}
-
-export interface GuildBanSubscription
-  extends Promise<AsyncIterator<GuildBan>>,
-    Fragmentable {
-  guild: <T = GuildSubscription>() => T
-  ip: () => Promise<AsyncIterator<String>>
-  profile: <T = ProfileSubscription>() => T
-}
-
-export interface BatchPayload {
-  count: Long
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>
-}
-
-export interface AggregateConnection {
-  count: Int
-}
-
-export interface AggregateConnectionPromise
-  extends Promise<AggregateConnection>,
-    Fragmentable {
-  count: () => Promise<Int>
-}
-
-export interface AggregateConnectionSubscription
-  extends Promise<AsyncIterator<AggregateConnection>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>
-}
-
 export interface ThemeSubscriptionPayload {
   mutation: MutationType
   node: Theme
@@ -1529,415 +2286,6 @@ export interface ThemeSubscriptionPayloadSubscription
   previousValues: <T = ThemePreviousValuesSubscription>() => T
 }
 
-export interface AggregateThemeColors {
-  count: Int
-}
-
-export interface AggregateThemeColorsPromise
-  extends Promise<AggregateThemeColors>,
-    Fragmentable {
-  count: () => Promise<Int>
-}
-
-export interface AggregateThemeColorsSubscription
-  extends Promise<AsyncIterator<AggregateThemeColors>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>
-}
-
-export interface ThemeColorsEdge {
-  node: ThemeColors
-  cursor: String
-}
-
-export interface ThemeColorsEdgePromise
-  extends Promise<ThemeColorsEdge>,
-    Fragmentable {
-  node: <T = ThemeColorsPromise>() => T
-  cursor: () => Promise<String>
-}
-
-export interface ThemeColorsEdgeSubscription
-  extends Promise<AsyncIterator<ThemeColorsEdge>>,
-    Fragmentable {
-  node: <T = ThemeColorsSubscription>() => T
-  cursor: () => Promise<AsyncIterator<String>>
-}
-
-export interface ThemeColorsConnection {
-  pageInfo: PageInfo
-  edges: ThemeColorsEdge[]
-}
-
-export interface ThemeColorsConnectionPromise
-  extends Promise<ThemeColorsConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T
-  edges: <T = FragmentableArray<ThemeColorsEdge>>() => T
-  aggregate: <T = AggregateThemeColorsPromise>() => T
-}
-
-export interface ThemeColorsConnectionSubscription
-  extends Promise<AsyncIterator<ThemeColorsConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T
-  edges: <T = Promise<AsyncIterator<ThemeColorsEdgeSubscription>>>() => T
-  aggregate: <T = AggregateThemeColorsSubscription>() => T
-}
-
-export interface AggregateTheme {
-  count: Int
-}
-
-export interface AggregateThemePromise
-  extends Promise<AggregateTheme>,
-    Fragmentable {
-  count: () => Promise<Int>
-}
-
-export interface AggregateThemeSubscription
-  extends Promise<AsyncIterator<AggregateTheme>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>
-}
-
-export interface ConnectionSubscriptionPayload {
-  mutation: MutationType
-  node: Connection
-  updatedFields: String[]
-  previousValues: ConnectionPreviousValues
-}
-
-export interface ConnectionSubscriptionPayloadPromise
-  extends Promise<ConnectionSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>
-  node: <T = ConnectionPromise>() => T
-  updatedFields: () => Promise<String[]>
-  previousValues: <T = ConnectionPreviousValuesPromise>() => T
-}
-
-export interface ConnectionSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ConnectionSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>
-  node: <T = ConnectionSubscription>() => T
-  updatedFields: () => Promise<AsyncIterator<String[]>>
-  previousValues: <T = ConnectionPreviousValuesSubscription>() => T
-}
-
-export interface ThemeConnection {
-  pageInfo: PageInfo
-  edges: ThemeEdge[]
-}
-
-export interface ThemeConnectionPromise
-  extends Promise<ThemeConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T
-  edges: <T = FragmentableArray<ThemeEdge>>() => T
-  aggregate: <T = AggregateThemePromise>() => T
-}
-
-export interface ThemeConnectionSubscription
-  extends Promise<AsyncIterator<ThemeConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T
-  edges: <T = Promise<AsyncIterator<ThemeEdgeSubscription>>>() => T
-  aggregate: <T = AggregateThemeSubscription>() => T
-}
-
-export interface ConnectionPreviousValues {
-  type: String
-  data: String
-}
-
-export interface ConnectionPreviousValuesPromise
-  extends Promise<ConnectionPreviousValues>,
-    Fragmentable {
-  type: () => Promise<String>
-  data: () => Promise<String>
-}
-
-export interface ConnectionPreviousValuesSubscription
-  extends Promise<AsyncIterator<ConnectionPreviousValues>>,
-    Fragmentable {
-  type: () => Promise<AsyncIterator<String>>
-  data: () => Promise<AsyncIterator<String>>
-}
-
-export interface AggregateProfile {
-  count: Int
-}
-
-export interface AggregateProfilePromise
-  extends Promise<AggregateProfile>,
-    Fragmentable {
-  count: () => Promise<Int>
-}
-
-export interface AggregateProfileSubscription
-  extends Promise<AsyncIterator<AggregateProfile>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>
-}
-
-export interface ThemePreviousValues {
-  id: ID_Output
-  css?: String
-}
-
-export interface ThemePreviousValuesPromise
-  extends Promise<ThemePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>
-  css: () => Promise<String>
-}
-
-export interface ThemePreviousValuesSubscription
-  extends Promise<AsyncIterator<ThemePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>
-  css: () => Promise<AsyncIterator<String>>
-}
-
-export interface ProfileConnection {
-  pageInfo: PageInfo
-  edges: ProfileEdge[]
-}
-
-export interface ProfileConnectionPromise
-  extends Promise<ProfileConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T
-  edges: <T = FragmentableArray<ProfileEdge>>() => T
-  aggregate: <T = AggregateProfilePromise>() => T
-}
-
-export interface ProfileConnectionSubscription
-  extends Promise<AsyncIterator<ProfileConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T
-  edges: <T = Promise<AsyncIterator<ProfileEdgeSubscription>>>() => T
-  aggregate: <T = AggregateProfileSubscription>() => T
-}
-
-export interface GuildSubscriptionPayload {
-  mutation: MutationType
-  node: Guild
-  updatedFields: String[]
-  previousValues: GuildPreviousValues
-}
-
-export interface GuildSubscriptionPayloadPromise
-  extends Promise<GuildSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>
-  node: <T = GuildPromise>() => T
-  updatedFields: () => Promise<String[]>
-  previousValues: <T = GuildPreviousValuesPromise>() => T
-}
-
-export interface GuildSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<GuildSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>
-  node: <T = GuildSubscription>() => T
-  updatedFields: () => Promise<AsyncIterator<String[]>>
-  previousValues: <T = GuildPreviousValuesSubscription>() => T
-}
-
-export interface AggregateGuildGuest {
-  count: Int
-}
-
-export interface AggregateGuildGuestPromise
-  extends Promise<AggregateGuildGuest>,
-    Fragmentable {
-  count: () => Promise<Int>
-}
-
-export interface AggregateGuildGuestSubscription
-  extends Promise<AsyncIterator<AggregateGuildGuest>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>
-}
-
-export interface GuildPreviousValues {
-  snowflake: ID_Output
-}
-
-export interface GuildPreviousValuesPromise
-  extends Promise<GuildPreviousValues>,
-    Fragmentable {
-  snowflake: () => Promise<ID_Output>
-}
-
-export interface GuildPreviousValuesSubscription
-  extends Promise<AsyncIterator<GuildPreviousValues>>,
-    Fragmentable {
-  snowflake: () => Promise<AsyncIterator<ID_Output>>
-}
-
-export interface GuildGuestConnection {
-  pageInfo: PageInfo
-  edges: GuildGuestEdge[]
-}
-
-export interface GuildGuestConnectionPromise
-  extends Promise<GuildGuestConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T
-  edges: <T = FragmentableArray<GuildGuestEdge>>() => T
-  aggregate: <T = AggregateGuildGuestPromise>() => T
-}
-
-export interface GuildGuestConnectionSubscription
-  extends Promise<AsyncIterator<GuildGuestConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T
-  edges: <T = Promise<AsyncIterator<GuildGuestEdgeSubscription>>>() => T
-  aggregate: <T = AggregateGuildGuestSubscription>() => T
-}
-
-export interface Profile {
-  id: ID_Output
-  username: String
-  avatarURL?: String
-  email?: String
-}
-
-export interface ProfilePromise extends Promise<Profile>, Fragmentable {
-  id: () => Promise<ID_Output>
-  username: () => Promise<String>
-  avatarURL: () => Promise<String>
-  connections: <T = FragmentableArray<Connection>>(
-    args?: {
-      where?: ConnectionWhereInput
-      orderBy?: ConnectionOrderByInput
-      skip?: Int
-      after?: String
-      before?: String
-      first?: Int
-      last?: Int
-    }
-  ) => T
-  email: () => Promise<String>
-}
-
-export interface ProfileSubscription
-  extends Promise<AsyncIterator<Profile>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>
-  username: () => Promise<AsyncIterator<String>>
-  avatarURL: () => Promise<AsyncIterator<String>>
-  connections: <T = Promise<AsyncIterator<ConnectionSubscription>>>(
-    args?: {
-      where?: ConnectionWhereInput
-      orderBy?: ConnectionOrderByInput
-      skip?: Int
-      after?: String
-      before?: String
-      first?: Int
-      last?: Int
-    }
-  ) => T
-  email: () => Promise<AsyncIterator<String>>
-}
-
-export interface GuildBanEdge {
-  node: GuildBan
-  cursor: String
-}
-
-export interface GuildBanEdgePromise
-  extends Promise<GuildBanEdge>,
-    Fragmentable {
-  node: <T = GuildBanPromise>() => T
-  cursor: () => Promise<String>
-}
-
-export interface GuildBanEdgeSubscription
-  extends Promise<AsyncIterator<GuildBanEdge>>,
-    Fragmentable {
-  node: <T = GuildBanSubscription>() => T
-  cursor: () => Promise<AsyncIterator<String>>
-}
-
-export interface GuildBanSubscriptionPayload {
-  mutation: MutationType
-  node: GuildBan
-  updatedFields: String[]
-  previousValues: GuildBanPreviousValues
-}
-
-export interface GuildBanSubscriptionPayloadPromise
-  extends Promise<GuildBanSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>
-  node: <T = GuildBanPromise>() => T
-  updatedFields: () => Promise<String[]>
-  previousValues: <T = GuildBanPreviousValuesPromise>() => T
-}
-
-export interface GuildBanSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<GuildBanSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>
-  node: <T = GuildBanSubscription>() => T
-  updatedFields: () => Promise<AsyncIterator<String[]>>
-  previousValues: <T = GuildBanPreviousValuesSubscription>() => T
-}
-
-export interface AggregateGuild {
-  count: Int
-}
-
-export interface AggregateGuildPromise
-  extends Promise<AggregateGuild>,
-    Fragmentable {
-  count: () => Promise<Int>
-}
-
-export interface AggregateGuildSubscription
-  extends Promise<AsyncIterator<AggregateGuild>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>
-}
-
-export interface GuildBanPreviousValues {
-  ip?: String
-}
-
-export interface GuildBanPreviousValuesPromise
-  extends Promise<GuildBanPreviousValues>,
-    Fragmentable {
-  ip: () => Promise<String>
-}
-
-export interface GuildBanPreviousValuesSubscription
-  extends Promise<AsyncIterator<GuildBanPreviousValues>>,
-    Fragmentable {
-  ip: () => Promise<AsyncIterator<String>>
-}
-
-export interface Connection {
-  type: String
-  data: String
-}
-
-export interface ConnectionPromise extends Promise<Connection>, Fragmentable {
-  type: () => Promise<String>
-  data: () => Promise<String>
-}
-
-export interface ConnectionSubscription
-  extends Promise<AsyncIterator<Connection>>,
-    Fragmentable {
-  type: () => Promise<AsyncIterator<String>>
-  data: () => Promise<AsyncIterator<String>>
-}
-
 export interface GuildGuest {
   id: ID_Output
   nickname?: String
@@ -1957,155 +2305,6 @@ export interface GuildGuestSubscription
   guild: <T = GuildSubscription>() => T
   profile: <T = ProfileSubscription>() => T
   nickname: () => Promise<AsyncIterator<String>>
-}
-
-export interface ConnectionConnection {
-  pageInfo: PageInfo
-  edges: ConnectionEdge[]
-}
-
-export interface ConnectionConnectionPromise
-  extends Promise<ConnectionConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T
-  edges: <T = FragmentableArray<ConnectionEdge>>() => T
-  aggregate: <T = AggregateConnectionPromise>() => T
-}
-
-export interface ConnectionConnectionSubscription
-  extends Promise<AsyncIterator<ConnectionConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T
-  edges: <T = Promise<AsyncIterator<ConnectionEdgeSubscription>>>() => T
-  aggregate: <T = AggregateConnectionSubscription>() => T
-}
-
-export interface GuildGuestSubscriptionPayload {
-  mutation: MutationType
-  node: GuildGuest
-  updatedFields: String[]
-  previousValues: GuildGuestPreviousValues
-}
-
-export interface GuildGuestSubscriptionPayloadPromise
-  extends Promise<GuildGuestSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>
-  node: <T = GuildGuestPromise>() => T
-  updatedFields: () => Promise<String[]>
-  previousValues: <T = GuildGuestPreviousValuesPromise>() => T
-}
-
-export interface GuildGuestSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<GuildGuestSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>
-  node: <T = GuildGuestSubscription>() => T
-  updatedFields: () => Promise<AsyncIterator<String[]>>
-  previousValues: <T = GuildGuestPreviousValuesSubscription>() => T
-}
-
-export interface PageInfo {
-  hasNextPage: Boolean
-  hasPreviousPage: Boolean
-  startCursor?: String
-  endCursor?: String
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>
-  hasPreviousPage: () => Promise<Boolean>
-  startCursor: () => Promise<String>
-  endCursor: () => Promise<String>
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>
-  startCursor: () => Promise<AsyncIterator<String>>
-  endCursor: () => Promise<AsyncIterator<String>>
-}
-
-export interface GuildGuestPreviousValues {
-  id: ID_Output
-  nickname?: String
-}
-
-export interface GuildGuestPreviousValuesPromise
-  extends Promise<GuildGuestPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>
-  nickname: () => Promise<String>
-}
-
-export interface GuildGuestPreviousValuesSubscription
-  extends Promise<AsyncIterator<GuildGuestPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>
-  nickname: () => Promise<AsyncIterator<String>>
-}
-
-export interface AggregateGuildBan {
-  count: Int
-}
-
-export interface AggregateGuildBanPromise
-  extends Promise<AggregateGuildBan>,
-    Fragmentable {
-  count: () => Promise<Int>
-}
-
-export interface AggregateGuildBanSubscription
-  extends Promise<AsyncIterator<AggregateGuildBan>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>
-}
-
-export interface ThemeColorsSubscriptionPayload {
-  mutation: MutationType
-  node: ThemeColors
-  updatedFields: String[]
-  previousValues: ThemeColorsPreviousValues
-}
-
-export interface ThemeColorsSubscriptionPayloadPromise
-  extends Promise<ThemeColorsSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>
-  node: <T = ThemeColorsPromise>() => T
-  updatedFields: () => Promise<String[]>
-  previousValues: <T = ThemeColorsPreviousValuesPromise>() => T
-}
-
-export interface ThemeColorsSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ThemeColorsSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>
-  node: <T = ThemeColorsSubscription>() => T
-  updatedFields: () => Promise<AsyncIterator<String[]>>
-  previousValues: <T = ThemeColorsPreviousValuesSubscription>() => T
-}
-
-export interface ThemeColors {
-  primary?: String
-  accent?: String
-  background?: String
-}
-
-export interface ThemeColorsPromise extends Promise<ThemeColors>, Fragmentable {
-  primary: () => Promise<String>
-  accent: () => Promise<String>
-  background: () => Promise<String>
-}
-
-export interface ThemeColorsSubscription
-  extends Promise<AsyncIterator<ThemeColors>>,
-    Fragmentable {
-  primary: () => Promise<AsyncIterator<String>>
-  accent: () => Promise<AsyncIterator<String>>
-  background: () => Promise<AsyncIterator<String>>
 }
 
 export interface ProfilePreviousValues {
@@ -2158,80 +2357,57 @@ export interface ProfileSubscriptionPayloadSubscription
   previousValues: <T = ProfilePreviousValuesSubscription>() => T
 }
 
-export interface ConnectionEdge {
-  node: Connection
-  cursor: String
+export interface AggregateThemeColors {
+  count: Int
 }
 
-export interface ConnectionEdgePromise
-  extends Promise<ConnectionEdge>,
+export interface AggregateThemeColorsPromise
+  extends Promise<AggregateThemeColors>,
     Fragmentable {
-  node: <T = ConnectionPromise>() => T
-  cursor: () => Promise<String>
+  count: () => Promise<Int>
 }
 
-export interface ConnectionEdgeSubscription
-  extends Promise<AsyncIterator<ConnectionEdge>>,
+export interface AggregateThemeColorsSubscription
+  extends Promise<AsyncIterator<AggregateThemeColors>>,
     Fragmentable {
-  node: <T = ConnectionSubscription>() => T
-  cursor: () => Promise<AsyncIterator<String>>
+  count: () => Promise<AsyncIterator<Int>>
 }
 
-export interface ThemeEdge {
-  node: Theme
-  cursor: String
+export interface AggregateGuild {
+  count: Int
 }
 
-export interface ThemeEdgePromise extends Promise<ThemeEdge>, Fragmentable {
-  node: <T = ThemePromise>() => T
-  cursor: () => Promise<String>
-}
-
-export interface ThemeEdgeSubscription
-  extends Promise<AsyncIterator<ThemeEdge>>,
+export interface AggregateGuildPromise
+  extends Promise<AggregateGuild>,
     Fragmentable {
-  node: <T = ThemeSubscription>() => T
-  cursor: () => Promise<AsyncIterator<String>>
+  count: () => Promise<Int>
 }
 
-export interface GuildBanConnection {
+export interface AggregateGuildSubscription
+  extends Promise<AsyncIterator<AggregateGuild>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>
+}
+
+export interface GuildGuestConnection {
   pageInfo: PageInfo
-  edges: GuildBanEdge[]
+  edges: GuildGuestEdge[]
 }
 
-export interface GuildBanConnectionPromise
-  extends Promise<GuildBanConnection>,
+export interface GuildGuestConnectionPromise
+  extends Promise<GuildGuestConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T
-  edges: <T = FragmentableArray<GuildBanEdge>>() => T
-  aggregate: <T = AggregateGuildBanPromise>() => T
+  edges: <T = FragmentableArray<GuildGuestEdge>>() => T
+  aggregate: <T = AggregateGuildGuestPromise>() => T
 }
 
-export interface GuildBanConnectionSubscription
-  extends Promise<AsyncIterator<GuildBanConnection>>,
+export interface GuildGuestConnectionSubscription
+  extends Promise<AsyncIterator<GuildGuestConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T
-  edges: <T = Promise<AsyncIterator<GuildBanEdgeSubscription>>>() => T
-  aggregate: <T = AggregateGuildBanSubscription>() => T
-}
-
-export interface GuildGuestEdge {
-  node: GuildGuest
-  cursor: String
-}
-
-export interface GuildGuestEdgePromise
-  extends Promise<GuildGuestEdge>,
-    Fragmentable {
-  node: <T = GuildGuestPromise>() => T
-  cursor: () => Promise<String>
-}
-
-export interface GuildGuestEdgeSubscription
-  extends Promise<AsyncIterator<GuildGuestEdge>>,
-    Fragmentable {
-  node: <T = GuildGuestSubscription>() => T
-  cursor: () => Promise<AsyncIterator<String>>
+  edges: <T = Promise<AsyncIterator<GuildGuestEdgeSubscription>>>() => T
+  aggregate: <T = AggregateGuildGuestSubscription>() => T
 }
 
 export interface ProfileEdge {
@@ -2251,15 +2427,33 @@ export interface ProfileEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>
 }
 
+export interface AggregateTheme {
+  count: Int
+}
+
+export interface AggregateThemePromise
+  extends Promise<AggregateTheme>,
+    Fragmentable {
+  count: () => Promise<Int>
+}
+
+export interface AggregateThemeSubscription
+  extends Promise<AsyncIterator<AggregateTheme>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>
+}
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean
+
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
 export type Int = number
 
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string
+export type Long = string
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -2267,12 +2461,10 @@ The `ID` scalar type represents a unique identifier, often used to refetch an ob
 export type ID_Input = string | number
 export type ID_Output = string
 
-export type Long = string
-
 /*
-The `Boolean` scalar type represents `true` or `false`.
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
-export type Boolean = boolean
+export type String = string
 
 /**
  * Model Metadata

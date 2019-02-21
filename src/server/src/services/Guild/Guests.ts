@@ -10,8 +10,6 @@ import ProfilesService from '@services/Profiles'
 import DatabaseService from '@services/Database'
 import { GuildGuest } from '@widgetbot/database'
 
-const gql = String.raw
-
 @Service('guild.guests')
 export class GuestsService {
   @Inject(type => ProfilesService)
@@ -114,13 +112,15 @@ export class GuestsService {
    */
   public async sendMessage(channelID: Snowflake, user: User, content: string) {
     const guild = getGuildFromChannel(channelID)
+
     const ban = await this.bansService.checkBanned(
       guild,
       user.profileId,
       user.ip
     )
-
     if (ban) throw `You have been banned!`
+
+    const guest = await this.joinGuild(guild, user.profileId)
 
     const message = await this.messagingService.sendMessage(
       channelID,
