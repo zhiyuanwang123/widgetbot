@@ -1,6 +1,6 @@
-datamodel: datamodel.prisma
+datamodel: src/datamodel.prisma
 seed:
-  import: seed.graphql
+  import: src/seed.graphql
 
 generate:
   - generator: typescript-client

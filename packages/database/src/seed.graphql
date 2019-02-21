@@ -1,0 +1,72 @@
+mutation {
+  guildone: createGuild(
+    data: {
+      snowflake: "299881420891881473"
+      theme: {
+        create: {
+          css: "test"
+          colors: {
+            create: { primary: "white", accent: "red", background: "black" }
+          }
+        }
+      }
+    }
+  ) {
+    snowflake
+  }
+
+  guildtwo: createGuild(
+    data: {
+      snowflake: "436136130035843082"
+      theme: {
+        create: {
+          css: "test2"
+          colors: {
+            create: { primary: "black", accent: "blue", background: "white" }
+          }
+        }
+      }
+    }
+  ) {
+    snowflake
+  }
+
+  profileone: createProfile(data: { username: "samdd" }) {
+    id
+  }
+
+  profiletwo: createProfile(data: { username: "samdd2" }) {
+    id
+  }
+
+  profilethree: createProfile(data: { username: "samdd3" }) {
+    id
+  }
+
+  guestone: createGuildGuest(
+    data: {
+      nickname: "SAM"
+      guild: { connect: { snowflake: "299881420891881473" } }
+      profile: { connect: { username: "samdd" } }
+    }
+  ) {
+    nickname
+  }
+  guesttwo: createGuildGuest(
+    data: {
+      nickname: "SAM"
+      guild: { connect: { snowflake: "299881420891881473" } }
+      profile: { connect: { username: "samdd2" } }
+    }
+  ) {
+    nickname
+  }
+  guestthree: createGuildGuest(
+    data: {
+      guild: { connect: { snowflake: "299881420891881473" } }
+      profile: { connect: { username: "samdd3" } }
+    }
+  ) {
+    nickname
+  }
+}

@@ -10,9 +10,10 @@
   "scripts": {
     "prisma": "prisma",
     "deploy": "prisma deploy",
-    "backup": "prisma export --path mock-data.zip",
-    "restore": "prisma import --data mock-data.zip",
+    "backup": "prisma export --path backup-data.zip",
+    "restore": "prisma import --data backup-data.zip",
     "reset": "prisma reset",
+    "seed": "yarn reset --force && prisma seed",
     "generate": "prisma generate",
     "build": "yarn generate && tsc"
   },
