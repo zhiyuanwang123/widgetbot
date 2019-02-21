@@ -8,8 +8,10 @@ type Profile {
   id: ID! @unique
   username: String! @unique
   avatarURL: String
-  connections: [Connection!]! @relation(name: "ProfileToConnections")
-  guilds: [GuildGuest!]! @relation(name: "ProfileToGuilds")
+  connections: [Connection!]!
+    @relation(name: "ProfileToConnections", onDelete: CASCADE)
+  guests: [GuildGuest!]!
+    @relation(name: "ProfileToGuildGuests", onDelete: CASCADE) @rename(oldName: "guilds")
   email: String
   bans: [GuildBan!]! @relation(name: "GuildBanToProfile")
 }
@@ -18,7 +20,7 @@ type ThemeColors {
   primary: String @default(value: "white")
   accent: String @default(value: "red")
   background: String @default(value: "black")
-  theme: Theme! @relation(name: "ThemeColorsToTheme")
+  theme: Theme! @relation(name: "ThemeColorsToTheme", onDelete: CASCADE)
 }
 
 type Theme {
@@ -31,7 +33,7 @@ type Theme {
 type GuildGuest {
   id: ID! @unique
   guild: Guild! @relation(name: "GuildToGuests")
-  profile: Profile! @relation(name: "ProfileToGuilds")
+  profile: Profile! @relation(name: "ProfileToGuildGuests")
   nickname: String
 }
 
@@ -44,6 +46,6 @@ type GuildBan {
 type Guild {
   snowflake: ID! @unique
   theme: Theme @relation(name: "ThemeToGuilds")
-  guests: [GuildGuest!]! @relation(name: "GuildToGuests")
-  bans: [GuildBan!]! @relation(name: "GuildToGuildBans")
+  guests: [GuildGuest!]! @relation(name: "GuildToGuests", onDelete: CASCADE)
+  bans: [GuildBan!]! @relation(name: "GuildToGuildBans", onDelete: CASCADE)
 }
