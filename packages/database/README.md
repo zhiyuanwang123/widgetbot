@@ -22,6 +22,16 @@ It runs with MongoDB, SQL or PostGres, and can either be hosted for free in the 
 
 TODO: add documentation
 
+# Development
+
+1.  Make the neccesary schema changes to `src/datamodel.prisma`
+2.  Run the following
+    ```bash
+    yarn workspace @widgetbot/database build
+    yarn workspace @widgetbot/database deploy
+    ```
+3.  Now the new fields will be available to use inside the server
+
 # Module usage
 
 ```typescript
