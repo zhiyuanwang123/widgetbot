@@ -1,7 +1,6 @@
 import produce from 'immer'
 import { MESSAGES, DELETED_MESSAGES, NEW_MESSAGES, UPDATED_MESSAGES } from '.'
-import { useQuery } from 'react-apollo-hooks'
-import { useEffect } from 'react'
+import { useQuery, useSubscription } from 'react-apollo-hooks'
 
 export const useMessages = (channel: string) => {
   const query = useQuery(MESSAGES, {
@@ -42,56 +41,50 @@ export const useMessages = (channel: string) => {
     })
   }
 
-  useEffect(
-    () =>
-      query.subscribeToMore({
-        document: NEW_MESSAGES,
-        variables: { channel },
-        updateQuery: (prev, { subscriptionData }) =>
-          produce(prev, ({ channel }) => {
-            channel.messages = [
-              ...channel.messages,
-              subscriptionData.data.message
-            ]
-          })
-      }),
-    [channel]
-  )
+  useSubscription(NEW_MESSAGES, {
+    variables: { channel },
+    onSubscriptionData({ subscriptionData }) {
+      query.updateQuery(prev =>
+        produce(prev, ({ channel }) => {
+          channel.messages = [
+            ...channel.messages,
+            subscriptionData.data.message
+          ]
+        })
+      )
+    }
+  })
 
-  useEffect(
-    () =>
-      query.subscribeToMore({
-        document: UPDATED_MESSAGES,
-        variables: { channel },
-        updateQuery: (prev, { subscriptionData }) =>
-          produce(prev, ({ channel: { messages } }) => {
-            const message = subscriptionData.data.messageUpdate
-            const index = messages.findIndex(m => m.id === message.id)
+  useSubscription(UPDATED_MESSAGES, {
+    variables: { channel },
+    onSubscriptionData({ subscriptionData }) {
+      query.updateQuery(prev =>
+        produce(prev, ({ channel: { messages } }) => {
+          const message = subscriptionData.data.messageUpdate
+          const index = messages.findIndex(m => m.id === message.id)
 
-            if (index > -1) {
-              messages[index] = message
-            }
-          })
-      }),
-    [channel]
-  )
+          if (index > -1) {
+            messages[index] = message
+          }
+        })
+      )
+    }
+  })
 
-  useEffect(
-    () =>
-      query.subscribeToMore({
-        document: DELETED_MESSAGES,
-        variables: { channel },
-        updateQuery: (prev, { subscriptionData }) =>
-          produce(prev, ({ channel }) => {
-            const deletedMessages = subscriptionData.data.messageDelete
+  useSubscription(DELETED_MESSAGES, {
+    variables: { channel },
+    onSubscriptionData({ subscriptionData }) {
+      query.updateQuery(prev =>
+        produce(prev, ({ channel }) => {
+          const deletedMessages = subscriptionData.data.messageDelete
 
-            channel.messages = channel.messages.filter(
-              message => !deletedMessages.find(m => m.id === message.id)
-            )
-          })
-      }),
-    [channel]
-  )
+          channel.messages = channel.messages.filter(
+            message => !deletedMessages.find(m => m.id === message.id)
+          )
+        })
+      )
+    }
+  })
 
   return { ready, messages, fetchMore, error: query.error }
 }
