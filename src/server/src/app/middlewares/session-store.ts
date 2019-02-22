@@ -12,7 +12,7 @@ export class SessionStore implements ExpressMiddlewareInterface {
   })
 
   public use = session({
-    secret: 'asd', // @TODO: Change
+    secret: 'asd', // TODO: !DO NOT LET INTO PRODUCTION! Change
     store: this.store,
     resave: false,
     saveUninitialized: false,

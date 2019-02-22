@@ -1,8 +1,5 @@
 import produce from 'immer'
-import MESSAGES from './Messages.graphql'
-import NEW_MESSAGES from './NewMessages.graphql'
-import UPDATED_MESSAGES from './UpdatedMessages.graphql'
-import DELETED_MESSAGES from './DeletedMessages.graphql'
+import { MESSAGES, DELETED_MESSAGES, NEW_MESSAGES, UPDATED_MESSAGES } from '.'
 import { useQuery } from 'react-apollo-hooks'
 import { useEffect } from 'react'
 

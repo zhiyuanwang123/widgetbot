@@ -12,6 +12,7 @@ import autobind from 'autobind-decorator'
 import client from '@lib/apollo'
 import { history } from '@lib/history'
 import { string } from 'mobx-state-tree/dist/internal'
+import { MESSAGES } from '@hooks'
 
 @autobind
 class Chat extends React.PureComponent<withI18nProps> {
@@ -30,7 +31,9 @@ class Chat extends React.PureComponent<withI18nProps> {
   async onSubmit(content: string) {
     if (content.length === 0) return
 
-    const match = matchPath<{ guild: string; channel: string }>(
+    const {
+      params: { channel }
+    } = matchPath<{ guild: string; channel: string }>(
       history.location.pathname,
       {
         path: '/:guild/:channel'
@@ -39,11 +42,40 @@ class Chat extends React.PureComponent<withI18nProps> {
 
     // TODO: Clear the input field only when the user is signed in.
     this.input.value = ''
-    await client.mutate({
+    await client.mutate<any>({
       mutation: SEND_MESSAGE,
       variables: {
-        channel: match.params.channel,
+        channel,
         content
+      },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        sendMessage: {
+          __typename: 'TextMessage',
+          id: Math.random(),
+          createdAt: +new Date(),
+          editedAt: null,
+          content,
+          // TODO: Get the guests info to provide the proper optimistic response
+          author: {
+            id: '',
+            username: '',
+            discriminator: '0000',
+            avatarURL: null,
+            __typename: 'GuestMember'
+          },
+          reactions: [],
+          attachments: [],
+          embeds: []
+        }
+      },
+      update: (proxy, { data: { sendMessage } }) => {
+        const data = proxy.readQuery<any>({
+          query: MESSAGES,
+          variables: { channel }
+        })
+        data.channel.messages.push(sendMessage)
+        proxy.writeQuery({ query: MESSAGES, variables: { channel }, data })
       }
     })
   }
