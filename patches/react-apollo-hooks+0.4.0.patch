@@ -1,21 +1,16 @@
 diff --git a/node_modules/react-apollo-hooks/es/useQuery.js b/node_modules/react-apollo-hooks/es/useQuery.js
-old mode 100644
-new mode 100755
-index bfb6ae3..bea9de6
+index bfb6ae3..c481ff6
 --- a/node_modules/react-apollo-hooks/es/useQuery.js
 +++ b/node_modules/react-apollo-hooks/es/useQuery.js
-@@ -94,7 +94,7 @@ export function useQuery(query, _temp) {
+@@ -94,6 +94,7 @@ export function useQuery(query, _temp) {
    }, [shouldSkip, observableQuery]);
    ensureSupportedFetchPolicy(suspend, fetchPolicy);
    var helpers = {
--    fetchMore: observableQuery.fetchMore.bind(observableQuery),
 +    subscribeToMore: observableQuery.subscribeToMore.bind(observableQuery),
+     fetchMore: observableQuery.fetchMore.bind(observableQuery),
      refetch: observableQuery.refetch.bind(observableQuery),
      startPolling: observableQuery.startPolling.bind(observableQuery),
-     stopPolling: observableQuery.stopPolling.bind(observableQuery),
 diff --git a/node_modules/react-apollo-hooks/lib/useQuery.d.ts b/node_modules/react-apollo-hooks/lib/useQuery.d.ts
-old mode 100644
-new mode 100755
 index bc79c75..0cb9cc3
 --- a/node_modules/react-apollo-hooks/lib/useQuery.d.ts
 +++ b/node_modules/react-apollo-hooks/lib/useQuery.d.ts
@@ -29,8 +24,6 @@ index bc79c75..0cb9cc3
  }
  export declare function useQuery<TData = any, TVariables = OperationVariables>(query: DocumentNode, { ssr, skip, suspend, pollInterval, notifyOnNetworkStatusChange, context, metadata, variables, fetchPolicy: actualCachePolicy, errorPolicy, fetchResults, }?: QueryHookOptions<TVariables>): QueryHookResult<TData, TVariables>;
 diff --git a/node_modules/react-apollo-hooks/lib/useQuery.js b/node_modules/react-apollo-hooks/lib/useQuery.js
-old mode 100644
-new mode 100755
 index 4a4fcad..3658290
 --- a/node_modules/react-apollo-hooks/lib/useQuery.js
 +++ b/node_modules/react-apollo-hooks/lib/useQuery.js
