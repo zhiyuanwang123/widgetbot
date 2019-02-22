@@ -4,10 +4,14 @@ import { Field, Root } from './elements'
 import Input from './Input'
 import { withI18n, withI18nProps } from '@lingui/react'
 import { Query } from 'react-apollo'
-import { ChannelName, ThemeVariables, ChannelNameVariables } from '@generated'
+import { ChannelName, ChannelNameVariables } from '@generated'
 import GET_CHANNEL_NAME from './ChannelName.graphql'
-import { Route } from 'react-router'
+import SEND_MESSAGE from './SendMessage.graphql'
+import { Route, matchPath } from 'react-router-dom'
 import autobind from 'autobind-decorator'
+import client from '@lib/apollo'
+import { history } from '@lib/history'
+import { string } from 'mobx-state-tree/dist/internal'
 
 @autobind
 class Chat extends React.PureComponent<withI18nProps> {
@@ -23,14 +27,25 @@ class Chat extends React.PureComponent<withI18nProps> {
     this.typing()
   }
 
-  onSubmit(message: string) {
-    if (message.length === 0) return
-    // TODO: FIX
+  async onSubmit(content: string) {
+    if (content.length === 0) return
+
+    const match = matchPath<{ guild: string; channel: string }>(
+      history.location.pathname,
+      {
+        path: '/:guild/:channel'
+      }
+    )
 
     // TODO: Clear the input field only when the user is signed in.
     this.input.value = ''
-
-    console.log(message)
+    await client.mutate({
+      mutation: SEND_MESSAGE,
+      variables: {
+        channel: match.params.channel,
+        content
+      }
+    })
   }
 
   isTyping(typing: boolean) {
@@ -64,7 +79,6 @@ class Chat extends React.PureComponent<withI18nProps> {
                       onSubmit={this.onSubmit}
                       innerRef={ref => (this.input = ref)}
                       innerProps={{
-                        // TODO: FIX
                         placeholder: channel
                           ? i18n.t`Message #${channel}`
                           : null

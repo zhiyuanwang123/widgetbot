@@ -1,0 +1,5 @@
+subscription DeletedMessages($channel: Snowflake!) {
+  messageDelete(filter: { channel: $channel }) {
+    id
+  }
+}

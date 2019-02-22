@@ -1,0 +1,7 @@
+#import "./Fragments/Message.graphql"
+
+subscription UpdatedMessages($channel: Snowflake!) {
+  messageUpdate(filter: { channel: $channel }) {
+    ...Message
+  }
+}

@@ -2,7 +2,6 @@ import * as Discord from '@widgetbot/discord.js'
 import { client } from 'engine'
 import { Args, Query, Resolver } from 'type-graphql'
 import Channel, { ChannelArgs } from '@entities/Channel'
-import GuildChannel from '@entities/GuildChannel'
 
 import typify from '@utils/typify'
 import TextChannel from '@entities/TextChannel'
@@ -29,7 +28,7 @@ export class ChannelResolver /*implements ResolverInterface<Channel>*/ {
     return resolved
   }
 
-  @Query(type => GuildChannel, { nullable: true })
+  @Query(type => Channel, { nullable: true })
   channel(@Args() { id }: ChannelArgs) {
     const channel = client.channels.get(id)
     if (!channel) return null

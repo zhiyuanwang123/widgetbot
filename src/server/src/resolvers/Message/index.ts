@@ -8,15 +8,11 @@ import {
   Ctx
 } from 'type-graphql'
 import { SendMessageArgs } from '@entities/Message/mutation'
-import {
-  MessageDeleteSub,
-  MessageSub,
-  MessageUpdateSub
-} from '@entities/Message/subscription'
+import { MessageDeleteSub } from '@entities/Message/subscription'
 import { Filter, filter } from '@entities/subscription.type'
 
 import * as Topics from '../subscriptions'
-import { TextMessage } from '@entities/Message'
+import Message, { TextMessage } from '@entities/Message'
 import { Inject } from 'typedi'
 import GuildService from '@services/Guild'
 import { CacheService } from '@services/Messaging'
@@ -25,37 +21,32 @@ import { Context } from '@app'
 @Resolver()
 export class MessageResolver {
   @Inject() private guildService: GuildService
-
   @Inject() private cacheService: CacheService
 
-  @Subscription({
+  @Subscription(type => Message, {
     topics: Topics.MESSAGE,
     filter
   })
-  message(@Root() data: MessageSub, @Args() args: Filter): MessageSub {
-    return data
+  async message(@Root() message, @Args() args: Filter) {
+    return await this.cacheService.parse(message)
   }
 
-  @Subscription({
+  @Subscription(type => Message, {
     topics: Topics.MESSAGE_UPDATE,
     filter
   })
-  messageUpdate(
-    @Root() data: MessageUpdateSub,
-    @Args() args: Filter
-  ): MessageUpdateSub {
-    return data
+  async messageUpdate(@Root() message, @Args() args: Filter) {
+    return await this.cacheService.parse(message)
   }
 
-  @Subscription({
+  @Subscription(type => [Message], {
     topics: Topics.MESSAGE_DELETE,
     filter
   })
-  messageDelete(
-    @Root() data: MessageDeleteSub,
-    @Args() args: Filter
-  ): MessageDeleteSub {
-    return data
+  async messageDelete(@Root() data: any[], @Args() args: Filter) {
+    return await Promise.all(
+      data.map(message => this.cacheService.parse(message))
+    )
   }
 
   @Mutation(type => TextMessage, { nullable: true })

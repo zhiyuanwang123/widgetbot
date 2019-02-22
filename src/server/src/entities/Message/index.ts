@@ -1,7 +1,6 @@
 import { Field, ID, InterfaceType, ObjectType } from 'type-graphql'
 import User from '@entities/User'
 import { Snowflake } from '@utils/scalars'
-import Channel from '@entities/Channel'
 import Guild from '@entities/Guild'
 import GuildMember from '@entities/GuildMember'
 import Member from '@entities/Member'
@@ -9,6 +8,7 @@ import GuestMember from '@entities/GuestMember'
 import { JoinMessage } from './JoinMessage'
 import { TextMessage } from './TextMessage'
 import { PinnedMessage } from './PinnedMessage'
+import Channel from '@entities/Channel'
 
 @InterfaceType()
 export default class Message {

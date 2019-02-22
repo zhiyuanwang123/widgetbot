@@ -10,7 +10,6 @@ import { Inject, Service } from 'typedi'
 
 import * as Topics from '../resolvers/subscriptions'
 import Guests from './guests'
-import { CacheService } from '@services/Messaging'
 
 export const client = new Client(options)
 export const guests = new Guests()
@@ -24,8 +23,6 @@ export default class Discord {
 
   @Inject(type => App)
   private appService: App
-
-  @Inject() private cacheService: CacheService
 
   public client = client
 
@@ -49,8 +46,6 @@ export default class Discord {
   }
 
   private attachListeners() {
-    const { parse } = this.cacheService
-
     /**
      * Message events
      */
@@ -58,47 +53,25 @@ export default class Discord {
       // Command engine
       if (message.mentions.users.has(this.client.user.id)) Commands(message)
 
-      this.appService.pubsub.publish(Topics.MESSAGE, {
-        guild: message.guild.id,
-        channel: message.channel.id,
-        get message() {
-          return parse(message)
-        }
-      })
+      this.appService.pubsub.publish(Topics.MESSAGE, message)
     })
 
     /**
      * Message edit events
      */
     this.client.on('messageUpdate', (_, message) => {
-      this.appService.pubsub.publish(Topics.MESSAGE_UPDATE, {
-        guild: message.guild.id,
-        channel: message.channel.id,
-        get message() {
-          return parse(message)
-        }
-      })
+      this.appService.pubsub.publish(Topics.MESSAGE_UPDATE, message)
     })
 
     /**
      * Message delete events
      */
     this.client.on('messageDelete', message => {
-      this.appService.pubsub.publish(Topics.MESSAGE_DELETE, {
-        guild: message.guild.id,
-        channel: message.channel.id,
-        ids: [message.id]
-      })
+      this.appService.pubsub.publish(Topics.MESSAGE_DELETE, [message])
     })
 
     this.client.on('messageDeleteBulk', messages => {
-      const message = messages.first()
-
-      this.appService.pubsub.publish(Topics.MESSAGE_DELETE, {
-        guild: message.guild.id,
-        channel: message.channel.id,
-        ids: messages.map(message => message.id)
-      })
+      this.appService.pubsub.publish(Topics.MESSAGE_DELETE, messages)
     })
 
     /**

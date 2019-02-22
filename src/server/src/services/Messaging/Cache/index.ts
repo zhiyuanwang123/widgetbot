@@ -11,6 +11,8 @@ import { Inject, Service } from 'typedi'
 
 import { Metadata } from './Metadata'
 import { sortByTimestamp, resolveMessageType } from './utils'
+import { ChannelResolver } from '@resolvers'
+import TextChannel from '@entities/TextChannel'
 
 type Messages = Discord.Collection<Discord.Snowflake, Discord.Message>
 
@@ -104,7 +106,8 @@ export class CacheService {
     const resolvedMessage = resolveMessageType(message)
 
     // Switch out author
-    message.author = typify(user, message.author)
+    resolvedMessage.author = typify(user, message.author)
+    resolvedMessage.channel = ChannelResolver.resolve(message.channel)
 
     return resolvedMessage
   }

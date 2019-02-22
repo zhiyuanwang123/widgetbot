@@ -11,7 +11,11 @@ export const Store = types
   })
   .actions(self => ({}))
 
-export const store = Store.create({ sidebar: {}, locale: {}, modal: {} })
+export const store = Store.create({
+  sidebar: {},
+  locale: {},
+  modal: {}
+})
 
 // Debugging
 ;(window as any).store = store

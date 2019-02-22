@@ -1,7 +1,7 @@
 import Tooltip from 'rc-tooltip'
 import * as React from 'react'
 import { Query } from 'react-apollo'
-import { Route } from 'react-router'
+import { Route } from 'react-router-dom'
 
 import { GuildInfo, GuildInfoVariables } from '@generated'
 import { Count, Icon, Name, Root } from './elements'

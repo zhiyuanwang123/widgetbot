@@ -1,6 +1,6 @@
 import { Service, Inject } from 'typedi'
 import DatabaseService from '@services/Database'
-import { ThemeColorsUpdateDataInput } from '@widgetbot/database'
+import { ThemeColorsUpdateWithoutThemeDataInput } from '@widgetbot/database'
 
 @Service('theme')
 export class ThemeService {
@@ -19,7 +19,10 @@ export class ThemeService {
     return await this.databaseService.connection.theme({ id }).colors()
   }
 
-  public async updateColors(id: string, colors: ThemeColorsUpdateDataInput) {
+  public async updateColors(
+    id: string,
+    colors: ThemeColorsUpdateWithoutThemeDataInput
+  ) {
     return await this.databaseService.connection.updateTheme({
       where: { id },
       data: {

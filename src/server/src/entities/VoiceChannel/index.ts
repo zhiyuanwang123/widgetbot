@@ -1,9 +1,9 @@
 import { Field, ObjectType } from 'type-graphql'
-import GuildChannel from '@entities/GuildChannel'
+import Channel from '@entities/Channel'
 import CategoryChannel from '@entities/CategoryChannel'
 
-@ObjectType({ implements: GuildChannel })
-export default class VoiceChannel extends GuildChannel {
+@ObjectType({ implements: Channel })
+export default class VoiceChannel extends Channel {
   @Field() bitrate: number
   @Field() full: boolean
   @Field() joinable: boolean

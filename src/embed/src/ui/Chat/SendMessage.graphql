@@ -1,0 +1,5 @@
+mutation SendMessage($channel: Snowflake!, $content: String!) {
+  sendMessage(channel: $channel, content: $content) {
+    id
+  }
+}

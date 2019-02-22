@@ -58,6 +58,7 @@ class Emoji extends React.PureComponent<Props> {
 
       return emoji ? (
         <Tooltip
+          key={key}
           placement="top"
           overlay={`:${emoji.keywords[0]}:`}
           mouseEnterDelay={0.6}

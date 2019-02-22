@@ -14,6 +14,7 @@
       "@constants": ["src/constants/index"],
       "@ui/*": ["src/ui/*"],
       "@models": ["src/models/index"],
+      "@hooks": ["src/hooks/index"],
       "@views/*": ["src/views/*"],
       "@services/*": ["src/services/*"],
       "@generated": ["src/__generated__/index"],

@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from 'type-graphql'
 import CategoryChannel from '@entities/CategoryChannel'
-import GuildChannel from '@entities/GuildChannel'
+import Channel from '@entities/Channel'
 import TextChannel from '@entities/TextChannel'
 import { Snowflake } from '@utils/scalars'
 import Theme from '@entities/Theme'
@@ -27,7 +27,7 @@ export default class Guild {
   @Field(type => Snowflake)
   id: string
 
-  @Field(type => GuildChannel)
+  @Field(type => Channel)
   channels: (TextChannel | CategoryChannel)[]
 
   // @Field(type => GuildMember) owner: GuildMember

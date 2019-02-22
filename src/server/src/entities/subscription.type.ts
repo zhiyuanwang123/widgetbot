@@ -1,5 +1,6 @@
 import { ArgsType, Field, ID, InputType, InterfaceType } from 'type-graphql'
 import { Snowflake } from '@utils/scalars'
+import { Message } from '@widgetbot/discord.js'
 
 @InterfaceType()
 export class SubFilter {
@@ -32,12 +33,14 @@ export const filter = ({
   payload,
   args: { filter }
 }: {
-  payload: IFilter & { [key: string]: any }
-  args: Filter & { [key: string]: any }
+  payload: Message | Message[]
+  args: Filter
 }) => {
-  if (!filter || !payload) return true
-  if ('guild' in filter && filter.guild !== payload.guild) return false
-  if ('channel' in filter && filter.channel !== payload.channel) return false
+  const message = payload instanceof Array ? payload[0] : payload
+
+  if (!filter || !message) return true
+  if (filter.guild && filter.guild !== message.guild.id) return false
+  if (filter.channel && filter.channel !== message.channel.id) return false
 
   return true
 }

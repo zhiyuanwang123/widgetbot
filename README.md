@@ -62,6 +62,9 @@ The server uses Node.JS with Typescript.
 The server is responsible for providing a [GraphQL API](https://graphql.com) to interact with the Discord API.
 
 ```bash
+# Ensure all the packages are built
+yarn workspace @widgetbot/database build
+
 yarn workspace server start
 # Access the GraphQL API at http://localhost:7000/api/graphql
 # Server will automatically restart on changes
