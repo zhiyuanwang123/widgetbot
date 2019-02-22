@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "pull": "git stash && git pull && yarn && yarn build",
+    "postinstall": "patch-package",
     "precommit": "pretty-quick --staged"
   },
   "dependencies": {

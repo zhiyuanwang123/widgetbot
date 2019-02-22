@@ -40,8 +40,9 @@ class Chat extends React.PureComponent<withI18nProps> {
       }
     )
 
-    // TODO: Clear the input field only when the user is signed in.
+    // TODO: Clear the input field only when the user is signed in, otherwise they lose their message
     this.input.value = ''
+
     await client.mutate<any>({
       mutation: SEND_MESSAGE,
       variables: {
