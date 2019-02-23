@@ -4,7 +4,7 @@ import { useMessages } from '@hooks'
 import { groupMessages, formatError } from './utils'
 import ErrorAhoy from '@ui/Overlays/ErrorAhoy'
 import { Loading, NoMessages, Info } from '@ui/Overlays'
-import { MessagesWrapper, Scroller } from './elements'
+import { MessagesWrapper, Scroller, MessageList } from './elements'
 import {
   AutoSizer,
   InfiniteLoader,
@@ -21,7 +21,8 @@ type MessagesProps = {
 }
 
 export const Messages = observer(({ guild, channel }: MessagesProps) => {
-  const { messages, error, ready, fetchMore } = useMessages(channel)
+  const { messages, error, ready, stale, fetchMore } = useMessages(channel)
+
   const groupedMessages = groupMessages(messages)
   const scroller = useObservable({
     isLoadingMore: false,
@@ -65,8 +66,8 @@ export const Messages = observer(({ guild, channel }: MessagesProps) => {
       : scroller.scrollToIndex
 
   return (
-    <MessagesWrapper className="messages">
-      <AutoSizer>
+    <MessagesWrapper stale={stale} className="messages">
+      <MessageList>
         {({ width, height }) => {
           scroller.width = width
 
@@ -133,7 +134,8 @@ export const Messages = observer(({ guild, channel }: MessagesProps) => {
             </InfiniteLoader>
           )
         }}
-      </AutoSizer>
+      </MessageList>
+      {stale && <Loading />}
     </MessagesWrapper>
   )
 })

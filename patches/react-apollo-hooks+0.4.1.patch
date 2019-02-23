@@ -1,0 +1,166 @@
+diff --git a/node_modules/react-apollo-hooks/CHANGELOG.md b/node_modules/react-apollo-hooks/CHANGELOG.md
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/LICENSE b/node_modules/react-apollo-hooks/LICENSE
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/README.md b/node_modules/react-apollo-hooks/README.md
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/es/ApolloContext.js b/node_modules/react-apollo-hooks/es/ApolloContext.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/es/SuspenseSSR.js b/node_modules/react-apollo-hooks/es/SuspenseSSR.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/es/getMarkupFromTree.js b/node_modules/react-apollo-hooks/es/getMarkupFromTree.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/es/index.js b/node_modules/react-apollo-hooks/es/index.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/es/internal/SSRContext.js b/node_modules/react-apollo-hooks/es/internal/SSRContext.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/es/internal/__mocks__/actHack.js b/node_modules/react-apollo-hooks/es/internal/__mocks__/actHack.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/es/internal/actHack.js b/node_modules/react-apollo-hooks/es/internal/actHack.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/es/queryCache.js b/node_modules/react-apollo-hooks/es/queryCache.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/es/useMutation.js b/node_modules/react-apollo-hooks/es/useMutation.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/es/useQuery.js b/node_modules/react-apollo-hooks/es/useQuery.js
+old mode 100644
+new mode 100755
+index bfb6ae3..56def0d
+--- a/node_modules/react-apollo-hooks/es/useQuery.js
++++ b/node_modules/react-apollo-hooks/es/useQuery.js
+@@ -54,6 +54,7 @@ export function useQuery(query, _temp) {
+       setResponseId = _useState[1];
+ 
+   var currentResult = useMemo(function () {
++    var justLoadedFromCache = !observableQuery.lastResult;
+     var result = observableQuery.currentResult();
+     return {
+       data: result.data,
+@@ -66,6 +67,7 @@ export function useQuery(query, _temp) {
+       // because it's unreliable in that case
+       // https://github.com/trojanowski/react-apollo-hooks/pull/68
+       networkStatus: suspend ? undefined : result.networkStatus,
++      stale: Object.keys(result.data).length > 0 && (result.loading || justLoadedFromCache),
+       partial: result.partial
+     };
+   }, [shouldSkip, responseId, observableQuery]);
+diff --git a/node_modules/react-apollo-hooks/es/useSubscription.js b/node_modules/react-apollo-hooks/es/useSubscription.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/es/utils.js b/node_modules/react-apollo-hooks/es/utils.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/ApolloContext.d.ts b/node_modules/react-apollo-hooks/lib/ApolloContext.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/ApolloContext.js b/node_modules/react-apollo-hooks/lib/ApolloContext.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/SuspenseSSR.d.ts b/node_modules/react-apollo-hooks/lib/SuspenseSSR.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/SuspenseSSR.js b/node_modules/react-apollo-hooks/lib/SuspenseSSR.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/getMarkupFromTree.d.ts b/node_modules/react-apollo-hooks/lib/getMarkupFromTree.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/getMarkupFromTree.js b/node_modules/react-apollo-hooks/lib/getMarkupFromTree.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/index.d.ts b/node_modules/react-apollo-hooks/lib/index.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/index.js b/node_modules/react-apollo-hooks/lib/index.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/internal/SSRContext.d.ts b/node_modules/react-apollo-hooks/lib/internal/SSRContext.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/internal/SSRContext.js b/node_modules/react-apollo-hooks/lib/internal/SSRContext.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/internal/__mocks__/actHack.d.ts b/node_modules/react-apollo-hooks/lib/internal/__mocks__/actHack.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/internal/__mocks__/actHack.js b/node_modules/react-apollo-hooks/lib/internal/__mocks__/actHack.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/internal/actHack.d.ts b/node_modules/react-apollo-hooks/lib/internal/actHack.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/internal/actHack.js b/node_modules/react-apollo-hooks/lib/internal/actHack.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/queryCache.d.ts b/node_modules/react-apollo-hooks/lib/queryCache.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/queryCache.js b/node_modules/react-apollo-hooks/lib/queryCache.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/useMutation.d.ts b/node_modules/react-apollo-hooks/lib/useMutation.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/useMutation.js b/node_modules/react-apollo-hooks/lib/useMutation.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/useQuery.d.ts b/node_modules/react-apollo-hooks/lib/useQuery.d.ts
+old mode 100644
+new mode 100755
+index bc79c75..f06f117
+--- a/node_modules/react-apollo-hooks/lib/useQuery.d.ts
++++ b/node_modules/react-apollo-hooks/lib/useQuery.d.ts
+@@ -3,6 +3,7 @@ import { DocumentNode } from 'graphql';
+ import { Omit } from './utils';
+ export interface QueryHookState<TData> extends Pick<ApolloCurrentResult<undefined | TData>, 'error' | 'errors' | 'loading' | 'partial'> {
+     data?: TData;
++    stale: boolean;
+     networkStatus: NetworkStatus | undefined;
+ }
+ export interface QueryHookOptions<TVariables> extends Omit<QueryOptions<TVariables>, 'query'> {
+diff --git a/node_modules/react-apollo-hooks/lib/useQuery.js b/node_modules/react-apollo-hooks/lib/useQuery.js
+old mode 100644
+new mode 100755
+index 4a4fcad..9f4e41c
+--- a/node_modules/react-apollo-hooks/lib/useQuery.js
++++ b/node_modules/react-apollo-hooks/lib/useQuery.js
+@@ -68,6 +68,7 @@ function useQuery(query, _temp) {
+       setResponseId = _useState[1];
+ 
+   var currentResult = (0, _react.useMemo)(function () {
++    var justLoadedFromCache = !observableQuery.lastResult;
+     var result = observableQuery.currentResult();
+     return {
+       data: result.data,
+@@ -80,6 +81,7 @@ function useQuery(query, _temp) {
+       // because it's unreliable in that case
+       // https://github.com/trojanowski/react-apollo-hooks/pull/68
+       networkStatus: suspend ? undefined : result.networkStatus,
++      stale: Object.keys(result.data).length > 0 && (result.loading || justLoadedFromCache),
+       partial: result.partial
+     };
+   }, [shouldSkip, responseId, observableQuery]);
+diff --git a/node_modules/react-apollo-hooks/lib/useSubscription.d.ts b/node_modules/react-apollo-hooks/lib/useSubscription.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/useSubscription.js b/node_modules/react-apollo-hooks/lib/useSubscription.js
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/utils.d.ts b/node_modules/react-apollo-hooks/lib/utils.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/react-apollo-hooks/lib/utils.js b/node_modules/react-apollo-hooks/lib/utils.js
+old mode 100644
+new mode 100755

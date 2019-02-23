@@ -1,4 +1,4 @@
-query Channel($channel: Snowflake!) {
+query ChannelHeader($channel: Snowflake!) {
   channel(id: $channel) {
     name
     id

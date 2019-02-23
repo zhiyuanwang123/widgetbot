@@ -18,7 +18,11 @@ const cache = new InMemoryCache({
   cacheRedirects,
   dataIdFromObject
 })
-persistCache({ cache, storage: localForage as any })
+
+export const cacheLoaded = persistCache({
+  cache,
+  storage: localForage as any
+})
 
 export default cache
 ;(window as any).cache = cache

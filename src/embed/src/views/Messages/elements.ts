@@ -17,6 +17,17 @@ export const Root = styled('div')<Props>`
 
 export const Scroller = ScrollVisible.withComponent(SmartList)
 
-export const MessagesWrapper = styled('div')`
+export interface MessagesWrapperProps {
+  stale: boolean
+}
+
+export const MessageList = styled(AutoSizer)``
+
+export const MessagesWrapper = styled('div')<MessagesWrapperProps>`
   flex-grow: 1;
+
+  ${MessageList} {
+    transition: opacity 0.2s ease;
+    opacity: ${({ stale }) => (stale ? 0.4 : 1)};
+  }
 `

@@ -2,6 +2,10 @@ import produce from 'immer'
 import { MESSAGES, DELETED_MESSAGES, NEW_MESSAGES, UPDATED_MESSAGES } from '.'
 import { useQuery, useSubscription } from 'react-apollo-hooks'
 
+/**
+ * Fetches the messages for a channel
+ * The returned messages may not be in the correct order
+ */
 export const useMessages = (channel: string) => {
   const query = useQuery(MESSAGES, {
     variables: { channel },
@@ -9,7 +13,6 @@ export const useMessages = (channel: string) => {
   })
 
   const ready =
-    !query.loading ||
     (query.data && query.data.channel && query.data.channel.id === channel) ||
     false
 
@@ -86,5 +89,11 @@ export const useMessages = (channel: string) => {
     }
   })
 
-  return { ready, messages, fetchMore, error: query.error }
+  return {
+    ready,
+    messages,
+    fetchMore,
+    error: query.error,
+    stale: query.stale
+  }
 }

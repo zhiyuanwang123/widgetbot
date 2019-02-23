@@ -2,10 +2,8 @@ import * as React from 'react'
 import Emoji from '@ui/shared/Emoji'
 import styled, { css } from '@lib/emotion'
 
-const svg = css``
-
 const Root = styled('div')`
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 100%;
   > *:first-child {
