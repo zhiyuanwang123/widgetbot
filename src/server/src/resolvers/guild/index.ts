@@ -87,9 +87,9 @@ export class GuildResolver implements ResolverInterface<Guild, Discord.Guild> {
 
   @FieldResolver()
   async guests(@Root() guild: Discord.Guild) {
-    const guests: any[] = await this.guildService.guests.getAll(guild.id)
+    const guests = await this.guildService.guests.getAll(guild.id)
 
-    return guests.map(guest => typify(GuestMember, guest))
+    return guests.map(guest => typify(GuestMember, guest)) as any[]
   }
 
   @FieldResolver()

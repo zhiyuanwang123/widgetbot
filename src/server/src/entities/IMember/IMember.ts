@@ -4,6 +4,7 @@ import User from '@entities/User'
 @InterfaceType()
 export class IMember {
   @Field() displayName: string
+  @Field() avatarURL: string
 
   @Field(type => User, { nullable: true })
   user?: User

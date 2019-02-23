@@ -1,5 +1,5 @@
 import { Service, Inject } from 'typedi'
-import { Snowflake } from '@widgetbot/discord.js'
+import { Snowflake, User } from '@widgetbot/discord.js'
 import DatabaseService from '@services/Database'
 
 @Service('profiles')
@@ -11,10 +11,9 @@ class ProfilesService {
     return await this.databaseService.connection.profile({ id })
   }
 
-  public async getGuestProfile(guestId: string) {
-    return await this.databaseService.connection
-      .guildGuest({ id: guestId })
-      .profile()
+  public async getDiscordUser(id: string): Promise<User> {
+    // @TODO: implement
+    return null
   }
 
   public async create(username = 'Guest') {

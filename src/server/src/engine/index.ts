@@ -12,6 +12,7 @@ import * as Topics from '../resolvers/subscriptions'
 import Guests from './guests'
 
 export const client = new Client(options)
+
 export const guests = new Guests()
 
 const meta = Meta('Discord')

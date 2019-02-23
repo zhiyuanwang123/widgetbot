@@ -8,7 +8,30 @@ import MessagingService from '@services/Messaging'
 import ProfilesService from '@services/Profiles'
 
 import DatabaseService from '@services/Database'
-import { GuildGuest } from '@widgetbot/database'
+import * as DB from '@widgetbot/database'
+
+const gql = String.raw
+
+interface GuildGuest extends DB.GuildGuest {
+  guild: {
+    snowflake: string
+  }
+  profile: {
+    id: string
+  }
+}
+
+const GUEST_FRAGMENT = gql`
+  fragment GuestsSelection on Guest {
+    guild {
+      snowflake
+    }
+    nickname
+    profile {
+      id
+    }
+  }
+`
 
 @Service('guild.guests')
 export class GuestsService {
@@ -30,7 +53,8 @@ export class GuestsService {
   public async get(snowflake: Snowflake, profileId: string) {
     const [guildGuest] = await this.databaseService.connection
       .guild({ snowflake })
-      .guests<GuildGuest[]>({ where: { profile: { id: profileId } } })
+      .guests({ where: { profile: { id: profileId } } })
+      .$fragment<GuildGuest[]>(GUEST_FRAGMENT)
 
     return guildGuest
   }
@@ -39,11 +63,13 @@ export class GuestsService {
    * Gets all the guests in the guild
    */
   public async getAll(snowflake: string) {
-    const guests = await this.databaseService.connection.guildGuests({
-      where: {
-        guild: { snowflake }
-      }
-    })
+    const guests = await this.databaseService.connection
+      .guildGuests({
+        where: {
+          guild: { snowflake }
+        }
+      })
+      .$fragment<GuildGuest[]>(GUEST_FRAGMENT)
 
     return guests
   }
@@ -51,29 +77,31 @@ export class GuestsService {
   /**
    * Adds a profile to a guild
    */
-  public async joinGuild(snowflake: Snowflake, profile: string) {
+  public async joinGuild(snowflake: Snowflake, profileId: string) {
     const [existingGuest] = await this.databaseService.connection.guildGuests({
-      where: { guild: { snowflake }, profile: { id: profile } }
+      where: { guild: { snowflake }, profile: { id: profileId } }
     })
 
     if (existingGuest) return existingGuest
 
-    return await this.databaseService.connection.createGuildGuest({
-      profile: {
-        connect: { id: profile }
-      },
-      nickname: null,
-      guild: { connect: { snowflake } }
-    })
+    return await this.databaseService.connection
+      .createGuildGuest({
+        profile: {
+          connect: { id: profileId }
+        },
+        nickname: null,
+        guild: { connect: { snowflake } }
+      })
+      .$fragment<GuildGuest>(GUEST_FRAGMENT)
   }
 
   /**
    * Clears the guest from a guild, resets nickname, total message count etc.
    */
-  public async leaveGuild(snowflake: Snowflake, profile: string) {
+  public async leaveGuild(snowflake: Snowflake, profileId: string) {
     await this.databaseService.connection.deleteManyGuildGuests({
       guild: { snowflake },
-      profile: { id: profile }
+      profile: { id: profileId }
     })
   }
 

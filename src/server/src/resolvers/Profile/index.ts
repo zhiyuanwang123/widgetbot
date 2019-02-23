@@ -84,4 +84,9 @@ export class ProfileResolver /*implements ResolverInterface<Profile>*/ {
 
     return true
   }
+
+  @FieldResolver()
+  async user(@Ctx() { user }: Context) {
+    return await this.profilesService.getDiscordUser(user.profileId)
+  }
 }
