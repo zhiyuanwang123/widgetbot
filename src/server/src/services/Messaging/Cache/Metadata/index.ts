@@ -4,13 +4,14 @@ import { Service } from 'typedi'
 
 import { IMetadata, IMetadataStorage } from './types'
 import { Pos, unseen } from './unseen-data'
-import { isValidEmbed, extractProfileLink } from './utils'
+import { isValidEmbed, extractProfileLink, extractIdFromUrl } from './utils'
 import { isWidgetbotWebhookFromId } from '@utils'
 
 @Service('messaging.metadata')
 export class Metadata {
   /**
    * Serializes metadata into zero-width binary
+   * @deprecated
    */
   public serialize(meta: IMetadata) {
     const storage: IMetadataStorage = [
@@ -26,46 +27,30 @@ export class Metadata {
   /**
    * Deserializes the metadata from a message
    */
-  public deserialize(message: string) {
-    try {
-      var [content] = message.split(Pos.start)
+  // public deserialize(message: string) {
+  //   try {
+  //     var [content] = message.split(Pos.start)
 
-      const start = message.indexOf(Pos.start)
-      const end = message.lastIndexOf(Pos.end)
-      if (start === -1 || end === -1) throw false
+  //     const start = message.indexOf(Pos.start)
+  //     const end = message.lastIndexOf(Pos.end)
+  //     if (start === -1 || end === -1) throw false
 
-      const data = message.substring(start + Pos.start.length, end)
+  //     const data = message.substring(start + Pos.start.length, end)
 
-      var [name, id, type, avatar]: IMetadataStorage = unseen.decode(data)
-    } catch (e) {
-      return { meta: {}, content }
-    }
+  //     var [name, id, type, avatar]: IMetadataStorage = unseen.decode(data)
+  //   } catch (e) {
+  //     return { meta: {}, content }
+  //   }
 
-    const meta: IMetadata = {
-      ...(['guest', 'member'].includes(type) && { type }),
-      ...(is.string(name) && { name }),
-      ...(is.string(id) && { id }),
-      ...(is.string(avatar) && { avatar })
-    }
+  //   const meta: IMetadata = {
+  //     ...(['guest', 'member'].includes(type) && { type }),
+  //     ...(is.string(name) && { name }),
+  //     ...(is.string(id) && { id }),
+  //     ...(is.string(avatar) && { avatar })
+  //   }
 
-    return { meta, content }
-  }
-
-  public async fetchProfile(profileUrl: string) {
-    // const url = new URL(profileUrl)
-
-    return null
-  }
-
-  public async extractAndPatch(message: Discord.Message) {
-    const extraction = await this.extract(message)
-    if (!extraction) return null
-
-    message.content = extraction.cleanedContent
-    message.embeds = extraction.filteredEmbeds
-
-    return extraction
-  }
+  //   return { meta, content }
+  // }
 
   /**
    * Extracts the profile URL
@@ -118,18 +103,23 @@ export class Metadata {
     cleanedContent: string,
     filteredEmbeds: Discord.MessageEmbed[],
     authorName: string,
-    profileUrl: string
+    profileUri: string
   ) {
     if (!is.string(cleanedContent)) return null // Messages need content
     if (!is.string(authorName)) return null
-    if (!is.string(profileUrl)) return null
+    if (!is.string(profileUri)) return null
+
+    const profileUrl = new URL(profileUri)
+
+    // @TODO: [Optimization] Ensure the profileUrl domain is the same as the currently running server
+    const profileId = extractIdFromUrl(profileUrl)
 
     const extraction = {
       cleanedContent,
       filteredEmbeds,
       authorName,
       profileUrl,
-      fetchProfile: () => this.fetchProfile(profileUrl)
+      profileId
     }
 
     // TODO: Validate url is correct

@@ -9,15 +9,26 @@ import {
   Root,
   Ctx,
   Authorized,
-  Mutation,
-  Arg
+  Field,
+  ArgsType
 } from 'type-graphql'
 import Guild, { GuildArgs, GuildChannelArgs } from '@entities/Guild'
 import { ChannelResolver } from '@resolvers'
-import ImageOptions from '@entities/InputTypes/ImageOptions'
 import GuildService from '@services/Guild'
 import { Inject } from 'typedi'
 import { Context } from '@app'
+import typify from '@utils/typify'
+import GuildMember from '@entities/GuildMember'
+import { AvatarOptions } from '@entities/AvatarOptions'
+import { Min } from 'class-validator'
+import { GuestMember } from '@entities/GuestMember'
+
+@ArgsType()
+export class GuildMembersArgs {
+  @Field({ nullable: true })
+  @Min(0)
+  limit?: number
+}
 
 @Resolver(of => Guild)
 export class GuildResolver implements ResolverInterface<Guild, Discord.Guild> {
@@ -42,7 +53,17 @@ export class GuildResolver implements ResolverInterface<Guild, Discord.Guild> {
   }
 
   @FieldResolver()
-  iconURL(@Root() guild, @Args() options: ImageOptions) {
+  members(
+    @Root() guild: Discord.Guild,
+    @Args() { limit }: GuildMembersArgs
+  ): any {
+    const members = limit ? guild.members.first(limit) : guild.members.array()
+
+    return members.map(member => typify(GuildMember, member))
+  }
+
+  @FieldResolver()
+  iconURL(@Root() guild, @Args() options: AvatarOptions) {
     return guild.iconURL(options)
   }
 
@@ -67,7 +88,8 @@ export class GuildResolver implements ResolverInterface<Guild, Discord.Guild> {
   @FieldResolver()
   async guests(@Root() guild: Discord.Guild) {
     const guests: any[] = await this.guildService.guests.getAll(guild.id)
-    return guests
+
+    return guests.map(guest => typify(GuestMember, guest))
   }
 
   @FieldResolver()

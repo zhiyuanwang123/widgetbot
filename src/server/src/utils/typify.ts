@@ -10,6 +10,8 @@ const typify = <T extends any, O extends Object>(
   target: O
 ): T & O => {
   if (!Class) return undefined
+  if (!target) target = {} as O
+
   const obj = Class.constructor === Function ? new Class() : Class
 
   const proxy = new Proxy(obj, {

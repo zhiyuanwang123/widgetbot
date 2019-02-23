@@ -4,8 +4,9 @@ import Channel from '@entities/Channel'
 import TextChannel from '@entities/TextChannel'
 import { Snowflake } from '@utils/scalars'
 import Theme from '@entities/Theme'
-import { GuildGuest } from './GuildGuest'
 import { GuildBan } from '@entities/Guild/GuildBans'
+import GuildMember from '@entities/GuildMember'
+import { GuestMember } from '@entities/GuestMember'
 
 @ObjectType()
 export default class Guild {
@@ -30,7 +31,8 @@ export default class Guild {
   @Field(type => Channel)
   channels: (TextChannel | CategoryChannel)[]
 
-  // @Field(type => GuildMember) owner: GuildMember
+  @Field(type => GuildMember)
+  members: (GuildMember)[]
 
   @Field(type => Theme)
   theme: Theme
@@ -41,16 +43,15 @@ export default class Guild {
   @Field(type => ID)
   region: string
 
-  @Field(type => [GuildGuest])
-  guests: GuildGuest[]
+  @Field(type => [GuestMember])
+  guests: GuestMember[]
 
-  @Field(type => GuildGuest, { nullable: true })
-  me?: GuildGuest
+  @Field(type => GuestMember, { nullable: true })
+  me?: GuestMember
 
   @Field(type => [GuildBan])
   bans: GuildBan[]
 }
 
 export * from './args'
-export * from './GuildGuest'
 export * from './GuildBans'

@@ -11,7 +11,7 @@ import {
   Args,
   Ctx
 } from 'type-graphql'
-import { GuildGuest } from '@entities/Guild'
+import { GuestMember } from '@entities/GuestMember'
 import ProfilesService from '@services/Profiles'
 import { Inject } from 'typedi'
 import { Snowflake } from '@utils/scalars'
@@ -30,23 +30,10 @@ export class LeaveGuildArgs {
   guild: string
 }
 
-@Resolver(of => GuildGuest)
-export class GuildGuestResolver implements ResolverInterface<GuildGuest> {
+@Resolver(of => GuestMember)
+export class GuestMemberResolver implements ResolverInterface<GuestMember> {
   @Inject() private profilesService: ProfilesService
   @Inject() private guestsService: GuestsService
-
-  @FieldResolver()
-  async profile(@Root() guildGuest) {
-    return await this.profilesService.getGuestProfile(guildGuest.id)
-  }
-
-  @FieldResolver()
-  async displayName(@Root() guildGuest) {
-    if (guildGuest.nickname) return guildGuest.nickname
-
-    const profile = await this.profilesService.getGuestProfile(guildGuest.id)
-    return profile.username
-  }
 
   @Authorized()
   @Mutation(type => Boolean)
@@ -63,5 +50,18 @@ export class GuildGuestResolver implements ResolverInterface<GuildGuest> {
   ) {
     await this.guestsService.leaveGuild(guild, user.profileId)
     return true
+  }
+
+  @FieldResolver()
+  async profile(@Root() guestMember) {
+    return await this.profilesService.getGuestProfile(guestMember.id)
+  }
+
+  @FieldResolver(type => String)
+  async displayName(@Root() guestMember) {
+    if (guestMember.nickname) return guestMember.nickname
+
+    const profile = await this.profilesService.getGuestProfile(guestMember.id)
+    return profile.username
   }
 }

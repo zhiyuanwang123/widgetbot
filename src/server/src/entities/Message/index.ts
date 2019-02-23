@@ -1,22 +1,19 @@
-import { Field, ID, InterfaceType, ObjectType } from 'type-graphql'
-import User from '@entities/User'
+import { Field, InterfaceType, createUnionType } from 'type-graphql'
 import { Snowflake } from '@utils/scalars'
 import Guild from '@entities/Guild'
-import GuildMember from '@entities/GuildMember'
-import Member from '@entities/Member'
-import GuestMember from '@entities/GuestMember'
 import { JoinMessage } from './JoinMessage'
 import { TextMessage } from './TextMessage'
 import { PinnedMessage } from './PinnedMessage'
 import Channel from '@entities/Channel'
+import { IMember } from '@entities/IMember'
 
 @InterfaceType()
 export default class Message {
   @Field(type => Snowflake, { description: 'Message ID' })
   id: string
 
-  @Field(type => User, { description: 'Message author' })
-  author: GuildMember | Member | GuestMember
+  @Field(type => IMember, { description: 'Message author' })
+  author: IMember
 
   @Field(type => Channel)
   channel: Channel

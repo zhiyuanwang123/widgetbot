@@ -1,11 +1,11 @@
 import { Snowflake } from '@utils/scalars'
-import { Field, InterfaceType } from 'type-graphql'
+import { Field, ObjectType } from 'type-graphql'
 
 import Presence from './Presence'
 
 export type UserType = 'bot' | 'sysadmin' | 'guest' | 'member'
 
-@InterfaceType()
+@ObjectType()
 class User {
   @Field() username: string
   @Field() discriminator: string

@@ -1,18 +1,17 @@
 import * as Discord from '@widgetbot/discord.js'
-import GuestMember from '@entities/GuestMember'
-import GuildMember, { createGuildMember } from '@entities/GuildMember'
+import { GuestMember } from '@entities/GuestMember'
 import Member from '@entities/Member'
 import Message, { TextMessage, IMessage } from '@entities/Message'
 import Messages from '@utils/messages'
-import typify from '@utils/typify'
 import autobind from 'autobind-decorator'
 import { client } from 'engine'
 import { Inject, Service } from 'typedi'
 
 import { Metadata } from './Metadata'
 import { sortByTimestamp, resolveMessageType } from './utils'
-import { ChannelResolver } from '@resolvers'
-import TextChannel from '@entities/TextChannel'
+import GuildMember from '@entities/GuildMember'
+import typify from '@utils/typify'
+import { GuestsService } from '@services/Guild'
 
 type Messages = Discord.Collection<Discord.Snowflake, Discord.Message>
 
@@ -27,6 +26,9 @@ interface IMessagesServiceOptions {
 export class CacheService {
   @Inject(type => Metadata)
   private metadataService: Metadata
+
+  @Inject(type => GuestsService)
+  private guestsService: GuestsService
 
   /**
    * Fetches the messages for a channel
@@ -73,27 +75,27 @@ export class CacheService {
     return parsed.filter(Boolean)
   }
 
-  private async resolveUser(message: Discord.Message) {
+  public async resolveMessageAuthor(message: Discord.Message) {
+    const guild = (message.channel as Discord.TextChannel).guild
+
     if (message.type === 'DEFAULT') {
-      const extraction = await this.metadataService.extractAndPatch(message)
+      const extraction = await this.metadataService.extract(message)
 
       if (extraction) {
-        const user = new GuestMember()
-        const profile = await extraction.fetchProfile()
+        const guest = extraction.profileId
+          ? await this.guestsService.get(guild.id, extraction.profileId)
+          : null
 
-        user.username = extraction.authorName
-
-        return user
+        return typify(GuestMember, guest)
       }
     }
 
-    const guildMember = (message.channel as Discord.TextChannel).guild.member(
-      message.author
-    )
+    const guildMember = guild.member(message.author)
+    if (guildMember) return typify(GuildMember, guildMember)
 
-    const user = guildMember ? createGuildMember(guildMember) : new Member()
-
-    return user
+    const member = new Member()
+    member.user = client.users.get(message.author.id) as any
+    return member
   }
 
   /**
@@ -102,12 +104,7 @@ export class CacheService {
   @autobind
   public async parse(message: Discord.Message): Promise<IMessage> {
     if (!message) return null
-    const user = await this.resolveUser(message)
     const resolvedMessage = resolveMessageType(message)
-
-    // Switch out author
-    resolvedMessage.author = typify(user, message.author)
-    resolvedMessage.channel = ChannelResolver.resolve(message.channel)
 
     return resolvedMessage
   }

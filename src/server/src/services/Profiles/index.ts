@@ -5,7 +5,7 @@ import DatabaseService from '@services/Database'
 @Service('profiles')
 class ProfilesService {
   @Inject(type => DatabaseService)
-  public databaseService: DatabaseService
+  private databaseService: DatabaseService
 
   public async get(id: string) {
     return await this.databaseService.connection.profile({ id })

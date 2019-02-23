@@ -20,5 +20,3 @@ export default class TextChannel extends Channel {
   @Field(type => CategoryChannel, { nullable: true })
   parent?: CategoryChannel
 }
-
-export * from './args'

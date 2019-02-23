@@ -1,7 +1,7 @@
-import { ObjectType } from 'type-graphql'
-import User from '@entities/User'
+import { ObjectType, Field } from 'type-graphql'
+import { IMember } from '@entities/IMember'
 
-@ObjectType({ implements: User })
-class Member extends User {}
+@ObjectType({ implements: IMember })
+class Member extends IMember {}
 
 export default Member

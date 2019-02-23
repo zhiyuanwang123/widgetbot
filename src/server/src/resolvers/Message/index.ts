@@ -8,7 +8,6 @@ import {
   Ctx
 } from 'type-graphql'
 import { SendMessageArgs } from '@entities/Message/mutation'
-import { MessageDeleteSub } from '@entities/Message/subscription'
 import { Filter, filter } from '@entities/subscription.type'
 
 import * as Topics from '../subscriptions'
