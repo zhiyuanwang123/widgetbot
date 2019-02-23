@@ -7,7 +7,7 @@ import { MessagesView } from '@views/Messages'
 import Notifications from 'notify'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
-import ThemeProvider from './ThemeProvider'
+import { ThemeProvider } from './ThemeProvider'
 import i18n from '@lib/i18n'
 import { observer } from 'mobx-react-lite'
 import { store } from '@models'

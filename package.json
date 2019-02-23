@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "pull": "git stash && git pull && yarn && yarn build",
-    "postinstall": "patch-package",
+    "postinstall": "git apply --ignore-whitespace patches/**.patch || true",
     "precommit": "pretty-quick --staged"
   },
   "dependencies": {

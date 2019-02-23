@@ -17,10 +17,11 @@ type Profile {
 }
 
 type ThemeColors {
+  id: ID! @unique
+  theme: Theme! @relation(name: "ThemeColorsToTheme", onDelete: CASCADE)
   primary: String @default(value: "white")
   accent: String @default(value: "red")
   background: String @default(value: "black")
-  theme: Theme! @relation(name: "ThemeColorsToTheme", onDelete: CASCADE)
 }
 
 type Theme {

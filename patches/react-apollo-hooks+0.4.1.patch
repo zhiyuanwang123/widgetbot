@@ -133,7 +133,7 @@ index bc79c75..f06f117
 diff --git a/node_modules/react-apollo-hooks/lib/useQuery.js b/node_modules/react-apollo-hooks/lib/useQuery.js
 old mode 100644
 new mode 100755
-index 4a4fcad..9f4e41c
+index 4a4fcad..3617107
 --- a/node_modules/react-apollo-hooks/lib/useQuery.js
 +++ b/node_modules/react-apollo-hooks/lib/useQuery.js
 @@ -68,6 +68,7 @@ function useQuery(query, _temp) {
