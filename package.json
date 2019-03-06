@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "react": "^16.8.4",
-    "react-dom": "^16.4.2"
+    "react-dom": "^16.8.4"
   },
   "devDependencies": {
     "lerna": "^3.1.4"
