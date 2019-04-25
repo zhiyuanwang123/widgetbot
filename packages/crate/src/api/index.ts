@@ -28,7 +28,7 @@ class Crate extends EmbedAPI {
       indicator: true,
       timeout: 10000,
 
-      shard: 'https://widgetbot.io',
+      shard: 'https://disweb.deploys.io',
       defer: false
     },
     this.setOptions.bind(this)
